@@ -42,12 +42,13 @@ router.post("/upload", (req, res) => {
         new Payroll({
           EUID: record.EUID,
           EMP: record.EMP,
-          C: record.C,
-          D: record.D,
-          E: record.E,
-          F: record.F,
-          G: record.G,
-          H: record.H,
+          WRKD_FLG: record.WRKD_FLG,
+          HRS_VER_FLG: record.HRS_VER_FLG,
+          BNS_FLG: record.BNS_FLG,
+          TIMESHEET_FLG: record.TIMESHEET_FLG,
+          PICKUP_PAY_FLG: record.PICKUP_PAY_FLG,
+          ADJ_FLG: record.ADJ_FLG,
+          ADJUSTMENT: record.ADJUSTMENT,
           SP_RATE: record.SP_RATE,
           NOTES: record.NOTES,
           REG_HRS: record.REG_HRS,
@@ -99,6 +100,7 @@ router.get("/records/:EUID", async (req, res) => {
       EUID: req.params.EUID
     });
     res.status(200).json(record);
+    console.log(record);
   } catch (err) {
     console.error("ERROR GETTING RECORD BY EUID: " + err);
     res.status(404).send(err);
