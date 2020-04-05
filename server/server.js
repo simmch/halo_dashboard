@@ -6,6 +6,11 @@ const port = process.env.PORT || 3000;
 
 connectDB();
 
+// body-parser is built into Express now
+// You must "app.use" json to parse the req body
+// This configuration works across all routes now
+app.use(express.json({ extended: false }));
+
 app.listen(port, () => {
   console.log("SERVER LIVE: " + port);
 });
