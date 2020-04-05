@@ -1,10 +1,14 @@
 const express = require("express");
+const auth = require("../middleware/auth");
 const router = express.Router();
-const fileData = require("../common/xlsx/xlsx");
+const fileData = require("../../common/xlsx/xlsx");
+const payDates = require("../../common/payDates");
 const cors = require("cors");
 const multer = require("multer");
 const moment = require("moment");
-const Payroll = require("../model/database/payroll");
+const Payroll = require("../../model/database/payroll/payroll");
+const PayDates = require("../../model/database/payroll/paydates");
+const User = require("../../model/database/user/user");
 
 // @Type File Uploader Settings
 // @desc Settings for uploading file from Client
@@ -14,20 +18,16 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     cb(null, moment().format("MMMM Do YYYY") + "-" + file.originalname);
-  }
+  },
 });
 
 const upload = multer({ storage: storage }).single("file");
-
-router.get("/test", (req, res) => {
-  console.log("Payroll hit by frontend");
-});
 
 // @route   POST payroll/upload
 // @desc    Save file data to database
 // @access  Admin
 router.post("/upload", (req, res) => {
-  upload(req, res, err => {
+  upload(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
       return res.status(500).json(err);
     } else if (err) {
@@ -35,10 +35,27 @@ router.post("/upload", (req, res) => {
     }
 
     try {
+      // const user = await User.findOne({ user: req.user.id });
+      // console.log(user);
       let filename = req.file.filename;
       let data = fileData(filename);
+      let paydates = payDates(filename);
 
-      data.map(record => {
+      paydates.map((record) => {
+        new PayDates({
+          PAYDATE: record.PAYDATE,
+          UPDATED: record.UPDATED,
+        })
+          .save()
+          .then(() => {
+            console.log("SUCCESS SAVING PAYDATES TO DB!");
+          })
+          .catch((err) => {
+            console.error("ERROR SAVING PAYDATES DATA: " + err);
+          });
+      });
+
+      data.map((record) => {
         new Payroll({
           EUID: record.EUID,
           EMP: record.EMP,
@@ -66,11 +83,11 @@ router.post("/upload", (req, res) => {
           BNS_RATE_C: record.BNS_RATE_C,
           BNS_HR_D: record.BNS_HR_D,
           BNS_RATE_D: record.BNS_RATE_D,
-          SHEET_DATE: record.SHEET_DATE,
-          UPDATED: record.UPDATED
+          PAY_DATE: record.PAY_DATE,
+          UPDATED: record.UPDATED,
         })
           .save()
-          .catch(err => {
+          .catch((err) => {
             console.error("ERROR SAVING FILE DATA: " + err);
           });
       });
@@ -78,7 +95,7 @@ router.post("/upload", (req, res) => {
       res.status(200).send(req.file);
     } catch (err) {
       console.error("ERROR SAVING TO DB: " + err);
-      res.status(500).json({ msg: err });
+      res.status(500).json({ msg: "ERROR SAVING TO DB: " + err });
     }
   });
 });
@@ -102,7 +119,7 @@ router.get("/records/all", async (req, res) => {
 router.get("/records/euid/:EUID", async (req, res) => {
   try {
     const record = await Payroll.findOne({
-      EUID: req.params.EUID
+      EUID: req.params.EUID,
     });
     res.status(200).json(record);
     console.log(record);
@@ -112,13 +129,13 @@ router.get("/records/euid/:EUID", async (req, res) => {
   }
 });
 
-// @route  GET payroll/records/:sheet_date
-// @desc   Get all records by SHEET_DATE
+// @route  GET payroll/records/:pay_date
+// @desc   Get all records by PAY_DATE
 // @access Public
-router.get("/records/sheet_date/:SHEET_DATE", async (req, res) => {
+router.get("/records/sheet_date/:PAY_DATE", async (req, res) => {
   try {
     const record = await Payroll.find({
-      SHEET_DATE: req.params.SHEET_DATE
+      PAY_DATE: req.params.PAY_DATE,
     });
     res.status(200).json(record);
   } catch (err) {
@@ -131,14 +148,14 @@ router.get("/records/sheet_date/:SHEET_DATE", async (req, res) => {
 // @desc  Save new record
 // @acc   Public
 router.post("/records/new", async (req, res) => {
-  if (!req.body.EMP || !req.body.EUID || !req.body.SHEET_DATE) {
-    res.status(500).json({ msg: "EMPTY RECORD" });
+  if (!req.body.EMP || !req.body.EUID || !req.body.PAY_DATE) {
+    res.status(500).json({ msg: "INVALID RECORD" });
   } else {
     try {
       const exists = await Payroll.find({
         EUID: req.body.EUID,
         EMP: req.body.EMP,
-        SHEET_DATE: req.body.SHEET_DATE
+        PAY_DATE: req.body.PAY_DATE,
       });
 
       if (exists.UPDATED) {
@@ -173,11 +190,17 @@ router.post("/records/new", async (req, res) => {
         BNS_RATE_C: req.body.BNS_RATE_C,
         BNS_HR_D: req.body.BNS_HR_D,
         BNS_RATE_D: req.body.BNS_RATE_D,
-        SHEET_DATE: req.body.SHEET_DATE,
-        UPDATED: moment().format()
+        PAY_DATE: req.body.PAY_DATE,
+        UPDATED: moment().format(),
+      });
+
+      const paydates = new PayDates({
+        PAYDATE: record.PAYDATE,
+        UPDATED: moment().format(),
       });
 
       await record.save();
+      await paydates.save();
       res.status(200).json({ msg: "RECORD SAVED" });
     } catch (err) {
       res.status(500).json({ msg: "ERROR SAVING NEW RECORD: " + err });

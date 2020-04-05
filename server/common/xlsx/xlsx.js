@@ -1,16 +1,19 @@
 const xlsx = require("xlsx");
-const fileData = filename => {
+const fileData = (filename) => {
   var moment = require("moment");
   var wb = xlsx.readFile("./files/" + filename, { cellDates: true });
 
+  // Sheetnames from Excel
+  // Also referred to as PAYDATE
+  // Array
   var sheets = wb.SheetNames;
 
-  var res = sheets.map(sheetname => {
+  var res = sheets.map((sheetname) => {
     var ws = wb.Sheets[sheetname];
     var data = xlsx.utils.sheet_to_json(ws);
 
     var mappedData = data
-      .map(record => {
+      .map((record) => {
         if (record.Employee) {
           var payload = {
             EUID: record.EUID || null,
@@ -39,14 +42,14 @@ const fileData = filename => {
             BNS_RATE_C: record.BONUS_RATE_C || 0,
             BNS_HR_D: record.BONUS_HR_D || 0,
             BNS_RATE_D: record.BONUS_RATE_D || 0,
-            SHEET_DATE: sheetname || null,
-            UPDATED: moment().format()
+            PAY_DATE: sheetname || null,
+            UPDATED: moment().format(),
           };
         }
         return payload;
       })
       // Filters out undefined (empty) values
-      .filter(items => {
+      .filter((items) => {
         return items !== undefined;
       });
     return mappedData;

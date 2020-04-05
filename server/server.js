@@ -15,8 +15,6 @@ app.listen(port, () => {
   console.log("SERVER LIVE: " + port);
 });
 
-app.get("/", (req, res) => {
-  res.send("Hello World");
-});
-
-app.use("/payroll", require("./routes/payroll"));
+app.use("/payroll", require("./routes/payroll/payroll"));
+app.use("/users", require("./routes/user/user"));
+app.use("/auth", require("./routes/user/authenticate"));
