@@ -10,6 +10,9 @@ import Register from "./components/auth/register";
 import Uploader from "./components/xlsx/upload";
 import setAuthToken from "./utils/auth/setAuthToken";
 import { loadUser } from "./actions/auth/auth";
+import Navbar from "./components/dashboard/navbar";
+import Sidebar from "./components/dashboard/sidebar";
+import { connect } from "react-redux";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -18,14 +21,16 @@ if (localStorage.token) {
 const App = () => {
   useEffect(() => {
     store.dispatch(loadUser());
+    console.log();
   }, []);
-
   return (
     <Provider store={store}>
       <Router>
         <Fragment>
           <section className="container-scroller">
+            <Sidebar />
             <div className="container-fluid page-body-wrapper">
+              <Navbar />
               <div className="main-panel">
                 <div className="content-wrapper">
                   <Route exact path="/" component={Landing} />

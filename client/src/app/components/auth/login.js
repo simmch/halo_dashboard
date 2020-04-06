@@ -25,8 +25,6 @@ const Login = ({ login, isAuthenticated }) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
 
-  console.log(loginData);
-
   return (
     <div>
       <div className="d-flex align-items-center auth px-0">
