@@ -63,11 +63,30 @@ body {
   }
 }
 
+.login-card {
+  margin-right: 150px;
+}
+
 .content-wrapper {
   background: $content-bg;
   padding: $content-padding;
   width: 100%;
+  margin-left: 100px;
   @include flex-grow(1);
+}
+
+@media (max-width: 991px) {
+  .content-wrapper {
+    background: $content-bg;
+    padding: $content-padding;
+    width: 100%;
+    margin-left: 0px;
+    @include flex-grow(1);
+  }
+
+  .login-card {
+    margin-right: 0px;
+  }
 }
 
 .container-scroller {

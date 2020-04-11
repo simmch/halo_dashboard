@@ -1,7 +1,9 @@
 /* Sidebar */
 
 .sidebar {
-  min-height: calc(100vh - #{$navbar-height});
+  // min-height: calc(100vh - #{$navbar-height});
+  position: fixed;
+  height: 100%;
   background: $sidebar-bg;
   font-weight: normal;
   padding: 0;
@@ -56,16 +58,16 @@
       img {
         width: calc(#{$sidebar-width-lg} - 120px);
         max-width: 100%;
-        height: 28px;
+        height: 80px;
         margin: auto;
         vertical-align: middle;
       }
       &.brand-logo-mini {
         display: none;
         img {
-          width: calc(#{$sidebar-width-icon} - 50px);
+          width: calc(70px - 50px);
           max-width: 100%;
-          height: 28px;
+          height: 50px;
           margin: auto;
         }
       }

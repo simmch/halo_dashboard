@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 
 const Landing = ({ isAuthenticated }) => {
+
   if (!isAuthenticated) {
     return <Redirect to="/login" />;
   }

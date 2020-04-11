@@ -1,9 +1,9 @@
 import React, { Fragment, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, forceRefresh } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.scss";
-
+import PrivateRoute from "./components/routing/PrivateRoute";
 import Landing from "./components/landing/landing";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
@@ -19,22 +19,24 @@ if (localStorage.token) {
 }
 
 const App = () => {
+
   useEffect(() => {
     store.dispatch(loadUser());
-    console.log();
   }, []);
+
+
   return (
     <Provider store={store}>
       <Router>
         <Fragment>
           <section className="container-scroller">
-            <Sidebar />
+            <PrivateRoute component={Sidebar} />
             <div className="container-fluid page-body-wrapper">
-              <Navbar />
+              <PrivateRoute component={Navbar} />
               <div className="main-panel">
                 <div className="content-wrapper">
-                  <Route exact path="/" component={Landing} />
                   <Switch>
+                    <Route exact path="/" component={Landing} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Register} />
                   </Switch>
