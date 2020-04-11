@@ -14,7 +14,7 @@ const Register = ({ register, isAuthenticated }) => {
   const { name, email, password } = registerData;
 
   if (isAuthenticated) {
-    return <Redirect to="/" />;
+    return <Redirect to="/dashboard" />;
   }
 
   const onSubmit = async (e) => {

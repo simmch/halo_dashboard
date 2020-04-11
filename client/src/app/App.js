@@ -1,17 +1,17 @@
 import React, { Fragment, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch, forceRefresh } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, IndexRoute } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.scss";
 import PrivateRoute from "./components/routing/PrivateRoute";
-import Landing from "./components/landing/landing";
+import Landing from "./components/dashboard/landing";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import Uploader from "./components/xlsx/upload";
 import setAuthToken from "./utils/auth/setAuthToken";
 import { loadUser } from "./actions/auth/auth";
-import Navbar from "./components/dashboard/navbar";
-import Sidebar from "./components/dashboard/sidebar";
+import Navbar from "./components/navigation/navbar";
+import Sidebar from "./components/navigation/sidebar";
 import { connect } from "react-redux";
 
 if (localStorage.token) {
@@ -36,7 +36,7 @@ const App = () => {
               <div className="main-panel">
                 <div className="content-wrapper">
                   <Switch>
-                    <Route exact path="/" component={Landing} />
+                    <Route exact path="/dashboard" component={Landing} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Register} />
                   </Switch>
