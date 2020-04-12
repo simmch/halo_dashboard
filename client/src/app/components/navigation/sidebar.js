@@ -3,9 +3,15 @@ import { Link, withRouter, Redirect } from 'react-router-dom';
 import { Collapse, Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { Trans } from 'react-i18next';
+import { logout } from '../../actions/auth/auth';
 
 const Sidebar = (props) => {
   const { auth } = props;
+
+  const logoutUser = (e) => {
+    e.preventDefault();
+    logout();
+  }
 
   const [menuState, setMenuState] = useState({});
 
@@ -88,14 +94,14 @@ const Sidebar = (props) => {
 
 
   return auth.user === null ? (
-    <div>Loading</div>
+    <div></div>
   ) : (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
         <div className="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-          <a className="sidebar-brand brand-logo" href="index.html">
+          <a className="sidebar-brand brand-logo" href="/dashboard">
             <img src={require("../../../assets/images/halo_logo.png")} alt="logo" />
           </a>
-          <a className="sidebar-brand brand-logo-mini" href="index.html">
+          <a className="sidebar-brand brand-logo-mini" href="/dashboard">
             <img
               src={require("../../../assets/images/halo_logo.png")}
               alt="logo"
@@ -110,66 +116,9 @@ const Sidebar = (props) => {
                   <Trans>{auth.user.name}</Trans>
                 </h5>
                 <span>
-                  <Trans>Logged In</Trans>
+                  <Trans>Admin</Trans>
                 </span>
               </div>
-              <Dropdown alignRight>
-                <Dropdown.Toggle as="a" className="cursor-pointer no-caret">
-                  <i className="mdi mdi-dots-vertical"></i>
-                </Dropdown.Toggle>
-                <Dropdown.Menu className="sidebar-dropdown preview-list">
-                  <a
-                    href="!#"
-                    className="dropdown-item preview-item"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <div className="preview-thumbnail">
-                      <div className="preview-icon bg-dark rounded-circle">
-                        <i className="mdi mdi-settings text-primary"></i>
-                      </div>
-                    </div>
-                    <div className="preview-item-content">
-                      <p className="preview-subject ellipsis mb-1 text-small">
-                        <Trans>Account settings</Trans>
-                      </p>
-                    </div>
-                  </a>
-                  <div className="dropdown-divider"></div>
-                  <a
-                    href="!#"
-                    className="dropdown-item preview-item"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <div className="preview-thumbnail">
-                      <div className="preview-icon bg-dark rounded-circle">
-                        <i className="mdi mdi-onepassword  text-info"></i>
-                      </div>
-                    </div>
-                    <div className="preview-item-content">
-                      <p className="preview-subject ellipsis mb-1 text-small">
-                        <Trans>Change Password</Trans>
-                      </p>
-                    </div>
-                  </a>
-                  <div className="dropdown-divider"></div>
-                  <a
-                    href="!#"
-                    className="dropdown-item preview-item"
-                    onClick={(evt) => evt.preventDefault()}
-                  >
-                    <div className="preview-thumbnail">
-                      <div className="preview-icon bg-dark rounded-circle">
-                        <i className="mdi mdi-calendar-today text-success"></i>
-                      </div>
-                    </div>
-                    <div className="preview-item-content">
-                      <p className="preview-subject ellipsis mb-1 text-small">
-                        <Trans>To-do list</Trans>
-                      </p>
-                    </div>
-                  </a>
-                </Dropdown.Menu>
-              </Dropdown>
             </div>
           </li>
           <li className="nav-item nav-category">
@@ -250,4 +199,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps)(withRouter(Sidebar));
+export default connect(mapStateToProps, { logout })(withRouter(Sidebar));

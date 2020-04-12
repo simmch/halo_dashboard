@@ -92,10 +92,10 @@ router.post("/upload", (req, res) => {
           });
       });
       console.log("SUCCESS SAVING TO DB");
-      res.status(200).send(req.file);
+      res.status(200).send({ success: [{ msg: "File uploaded successfully." }] })
     } catch (err) {
       console.error("ERROR SAVING TO DB: " + err);
-      res.status(500).json({ msg: "ERROR SAVING TO DB: " + err });
+      res.status(500).json({ errors: [{ msg: "ERROR SAVING TO DB: " + err }] });
     }
   });
 });
@@ -109,7 +109,7 @@ router.get("/records/all", async (req, res) => {
     res.status(200).json(records);
   } catch (err) {
     console.error("ERROR GETTING ALL RECORDS: " + err);
-    res.status(500).send(err);
+    res.status(500).send({ errors: [{ msg: err }] });
   }
 });
 
@@ -124,8 +124,7 @@ router.get("/records/euid/:EUID", async (req, res) => {
     res.status(200).json(record);
     console.log(record);
   } catch (err) {
-    console.error("ERROR GETTING RECORD BY EUID: " + err);
-    res.status(404).send(err);
+    res.status(404).send({ errors: [{ msg: "ERROR GETTING RECORD BY EUID: " + err }] });
   }
 });
 
@@ -139,8 +138,7 @@ router.get("/records/sheet_date/:PAY_DATE", async (req, res) => {
     });
     res.status(200).json(record);
   } catch (err) {
-    res.status(500).json({ msg: "ERROR FETCHING BY SHEET DATE" + err });
-    console.error("ERROR FETCHING BY SHEET DATE: " + err);
+    res.status(500).json({ errors: [{ msg: "ERROR FETCHING BY SHEET DATE" + err }] });
   }
 });
 
@@ -201,11 +199,9 @@ router.post("/records/new", async (req, res) => {
 
       await record.save();
       await paydates.save();
-      res.status(200).json({ msg: "RECORD SAVED" });
+      res.status(200).json({ success: [{ msg: "Record has been saved." }] });
     } catch (err) {
-      res.status(500).json({ msg: "ERROR SAVING NEW RECORD: " + err });
-      console.error("ERROR SAVING NEW RECORD: " + err);
-      console.log(req.body);
+      res.status(500).json({ errors: [{ msg: "Error saving new record: " + err }] });
     }
   }
 });
@@ -217,13 +213,13 @@ router.delete("/records/remove/:id", async (req, res) => {
   try {
     const record = await Payroll.findById(req.params.id);
     if (!record) {
-      res.status(404).json({ msg: "Record Not found" });
+      res.status(404).json({ errors: [{ msg: "Record Not found" }] });
     }
 
     record.remove();
-    res.status(200).json({ msg: "RECORD DELETED" });
+    res.status(200).json({ success: [{ msg: "RECORD DELETED" }] });
   } catch (err) {
-    res.status(500).json({ msg: err });
+    res.status(500).json({ errors: [{ msg: err }] });
   }
 });
 

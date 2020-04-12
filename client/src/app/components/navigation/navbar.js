@@ -21,7 +21,7 @@ const Navbar = ({ auth, logout }) => {
 
 
   return auth.user === null ? (
-    <div> LOADING </div>
+    <div> </div>
   ) : (
       <nav className="navbar p-0 fixed-top d-flex flex-row">
         <div className="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
@@ -40,8 +40,10 @@ const Navbar = ({ auth, logout }) => {
           >
             <span className="mdi mdi-menu"></span>
           </button>
+          <ul className="navbar-nav w-100"></ul>
           <ul className="navbar-nav navbar-nav-right">
             <div as="li" className="nav-item d-none d-lg-block">
+              <div as="li" className="nav-item dropdown"></div>
               <div className="nav-link btn btn-success create-new-button no-caret">
                 <Link to="/upload" className="nav-link">  + <Trans>Upload Payroll</Trans> </Link>
               </div>

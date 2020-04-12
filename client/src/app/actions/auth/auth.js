@@ -1,5 +1,6 @@
 import axios from "axios";
 import setAuthToken from "../../utils/auth/setAuthToken";
+import { setAlert } from "../alerts";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -18,6 +19,7 @@ export const loadUser = () => async (dispatch) => {
 
   try {
     const res = await axios.get("/auth");
+
 
     dispatch({
       type: USER_LOADED,
@@ -74,15 +76,17 @@ export const login = (email, password) => async (dispatch) => {
 
     dispatch(loadUser());
   } catch (err) {
-    console.log("ERROR LOGGING IN");
-    dispatch({
-      type: LOGIN_FAIL,
-    });
-    // const err = err.response.data.errors;
+    console.log(err.response.data.errors);
 
-    // if(err) {
-    //     err.forEach(err => dispatch())
-    // }
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    }
+
+    dispatch({
+      type: LOGIN_FAIL
+    });
   }
 };
 

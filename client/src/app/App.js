@@ -5,9 +5,12 @@ import store from "./store";
 import "./App.scss";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import Landing from "./components/dashboard/landing";
+import Alert from "./components/alerts/alerts";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
-import Uploader from "./components/xlsx/upload";
+import Upload from "./components/upload/upload";
+import Download from "./components/download/download";
+import Employees from "./components/employees/employees";
 import setAuthToken from "./utils/auth/setAuthToken";
 import { loadUser } from "./actions/auth/auth";
 import Navbar from "./components/navigation/navbar";
@@ -37,6 +40,9 @@ const App = () => {
                 <div className="content-wrapper">
                   <Switch>
                     <Route exact path="/dashboard" component={Landing} />
+                    <PrivateRoute exact path="/upload" component={Upload} />
+                    <PrivateRoute exact path="/download" component={Download} />
+                    <PrivateRoute exact path="/employees" component={Employees} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Register} />
                   </Switch>

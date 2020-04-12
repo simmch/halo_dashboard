@@ -14,10 +14,11 @@ const auth = require("../middleware/auth");
 router.get("/", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
+    // res.status(200).json({ success: [{ msg: "User has been found." }] });
     res.json(user);
   } catch (err) {
     console.error(err.message);
-    res.status(500).send("Server Error Found");
+    res.status(404).send({ errors: [{ msg: "Unable to Find User" }] });
   }
 });
 
@@ -36,7 +37,7 @@ router.post(
     if (!errors.isEmpty()) {
       return res
         .status(400)
-        .json({ errors: "USER NOT FOUND " + errors.array() });
+        .json({ errors: errors.array() });
     }
 
     const { email, password } = req.body;
@@ -70,12 +71,13 @@ router.post(
         { expiresIn: 36000 },
         (err, token) => {
           if (err) throw err;
-          res.json({ token });
+          res.status(200).json({ token, success: [{ msg: "Logged in successfully." }] });
         }
       );
+      // res.status(200).send({ success: [{ msg: "Logged in successfully." }] })
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("Server error.");
+      res.status(500).send({ errors: [{ msg: "Server error." }] });
     }
   }
 );
