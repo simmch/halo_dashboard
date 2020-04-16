@@ -1,32 +1,27 @@
-import React, { Component, useState, useEffect } from 'react';
-import { Link, withRouter, Redirect } from 'react-router-dom';
-import { Collapse, Dropdown } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { Trans } from 'react-i18next';
 import { logout } from '../../actions/auth/auth';
 
+
 const Sidebar = (props) => {
   const { auth } = props;
 
-  const logoutUser = (e) => {
-    e.preventDefault();
-    logout();
-  }
-
   const [menuState, setMenuState] = useState({});
 
-  const toggleMenuState = (menuPath) => {
-    if (menuState[menuPath]) {
-      setMenuState({ [menuPath]: false });
-    } else if (Object.keys(menuState).length === 0) {
-      setMenuState({ [menuPath]: true });
-    } else {
-      Object.keys(menuState).forEach((i) => {
-        setMenuState({ [i]: false });
-      });
-      setMenuState({ [menuPath]: true });
-    }
-  };
+  // const toggleMenuState = (menuPath) => {
+  //   if (menuState[menuPath]) {
+  //     setMenuState({ [menuPath]: false });
+  //   } else if (Object.keys(menuState).length === 0) {
+  //     setMenuState({ [menuPath]: true });
+  //   } else {
+  //     Object.keys(menuState).forEach((i) => {
+  //       setMenuState({ [i]: false });
+  //     });
+  //     setMenuState({ [menuPath]: true });
+  //   }
+  // };
 
   const onRouteChanged = () => {
     document.querySelector("#sidebar").classList.remove("active");

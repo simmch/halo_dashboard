@@ -1,6 +1,4 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { isLogin } from "../utils"
 

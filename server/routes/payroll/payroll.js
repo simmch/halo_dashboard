@@ -29,9 +29,9 @@ const upload = multer({ storage: storage }).single("file");
 router.post("/upload", (req, res) => {
   upload(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
-      return res.status(500).json(err);
+      return res.status(500).json({ errors: [{ msg: err }] });
     } else if (err) {
-      return res.status(500).json(err);
+      return res.status(500).json({ errors: [{ msg: err }] });
     }
 
     try {
@@ -95,7 +95,7 @@ router.post("/upload", (req, res) => {
       res.status(200).send({ success: [{ msg: "File uploaded successfully." }] })
     } catch (err) {
       console.error("ERROR SAVING TO DB: " + err);
-      res.status(500).json({ errors: [{ msg: "ERROR SAVING TO DB: " + err }] });
+      res.status(500).json({ errors: [{ msg: "ERROR SAVING TO Database: " + err }] });
     }
   });
 });
@@ -147,7 +147,7 @@ router.get("/records/sheet_date/:PAY_DATE", async (req, res) => {
 // @acc   Public
 router.post("/records/new", async (req, res) => {
   if (!req.body.EMP || !req.body.EUID || !req.body.PAY_DATE) {
-    res.status(500).json({ msg: "INVALID RECORD" });
+    res.status(500).json({ errors: [{ msg: "INVALID RECORD" }] });
   } else {
     try {
       const exists = await Payroll.find({

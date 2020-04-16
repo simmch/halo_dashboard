@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect } from "react-router-dom";
 import { Form } from "react-bootstrap";
@@ -26,7 +26,6 @@ const Login = ({ login, auth }) => {
   const onChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
   };
-  console.log(auth)
 
   return localStorage.token ? (
     <Spinner />

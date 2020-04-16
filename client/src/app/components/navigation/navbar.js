@@ -1,24 +1,24 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { connect } from "react-redux";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { logout } from "../../actions/auth/auth";
+import Alert from "../alerts/alerts"
 
 const Navbar = ({ auth, logout }) => {
 
   const toggleOffcanvas = () => {
     document.querySelector(".sidebar-offcanvas").classList.toggle("active");
   }
-  const toggleRightSidebar = () => {
-    document.querySelector(".right-sidebar").classList.toggle("open");
-  }
+  // const toggleRightSidebar = () => {
+  //   document.querySelector(".right-sidebar").classList.toggle("open");
+  // }
 
   const logoutUser = (e) => {
     e.preventDefault();
     logout();
   }
-
 
   return auth.user === null ? (
     <div> </div>
@@ -40,7 +40,9 @@ const Navbar = ({ auth, logout }) => {
           >
             <span className="mdi mdi-menu"></span>
           </button>
-          <ul className="navbar-nav w-100"></ul>
+          <ul className="navbar-nav w-100">
+
+          </ul>
           <ul className="navbar-nav navbar-nav-right">
             <div as="li" className="nav-item d-none d-lg-block">
               <div as="li" className="nav-item dropdown"></div>

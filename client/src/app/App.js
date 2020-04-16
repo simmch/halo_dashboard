@@ -1,11 +1,10 @@
 import React, { Fragment, useEffect } from "react";
-import { BrowserRouter as Router, Route, Switch, IndexRoute } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Provider } from "react-redux";
 import store from "./store";
 import "./App.scss";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import Landing from "./components/dashboard/landing";
-import Alert from "./components/alerts/alerts";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import Upload from "./components/upload/upload";
@@ -15,7 +14,7 @@ import setAuthToken from "./utils/auth/setAuthToken";
 import { loadUser } from "./actions/auth/auth";
 import Navbar from "./components/navigation/navbar";
 import Sidebar from "./components/navigation/sidebar";
-import { connect } from "react-redux";
+import Alert from "./components/alerts/alerts";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
