@@ -93,10 +93,10 @@ const Sidebar = (props) => {
   ) : (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
         <div className="sidebar-brand-wrapper d-none d-lg-flex align-items-center justify-content-center fixed-top">
-          <a className="sidebar-brand brand-logo" href="/dashboard">
+          <a className="sidebar-brand brand-logo" href="/">
             <img src={require("../../../assets/images/halo_logo.png")} alt="logo" />
           </a>
-          <a className="sidebar-brand brand-logo-mini" href="/dashboard">
+          <a className="sidebar-brand brand-logo-mini" href="/">
             <img
               src={require("../../../assets/images/halo_logo.png")}
               alt="logo"
@@ -128,7 +128,7 @@ const Sidebar = (props) => {
                 : "nav-item menu-items"
             }
           >
-            <Link className="nav-link" to="/dashboard">
+            <Link className="nav-link" to="/">
               <span className="menu-icon">
                 <i className="mdi mdi-speedometer"></i>
               </span>

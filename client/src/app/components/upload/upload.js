@@ -1,14 +1,12 @@
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import Spinner from '../isLoading/spinner';
-import axios from 'axios';
-import Alert from '../alerts/alerts'
-import { setAlert } from '../../actions/alerts';
 import { uploadFile } from '../../actions/upload/upload';
 import { Form } from 'react-bootstrap';
+import Alerts from "../alerts/alerts";
+import { removeAlert } from '../../actions/alerts';
 
-const Upload = ({ setAlert, isLoading, uploadFile }) => {
-
+const Upload = ({ isLoading, uploadFile }) => {
     const [uploadData, setUploadData] = useState({
         selectedFile: null,
         fileName: null,
@@ -26,24 +24,11 @@ const Upload = ({ setAlert, isLoading, uploadFile }) => {
         setUploadData({ ...uploadData, loading: true })
         const data = new FormData();
         data.append("file", uploadData.selectedFile);
-        uploadFile(data)
+        uploadFile(data);
     };
 
     return isLoading ? (
-
-        <div>
-            <div className="d-flex align-items-center login-card auth px-0">
-                <div className="row w-100 mx-0">
-                    <div className="col-lg-8 mx-auto">
-                        <Alert />
-                        <Spinner />
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
+        <Spinner />
     ) : (
             <div className="col-12 grid-margin stretch-card">
                 <div className="card">
@@ -60,6 +45,7 @@ const Upload = ({ setAlert, isLoading, uploadFile }) => {
                                         </Form.File.Label>
                                     </Form.File>
                                 </div>
+                                <Alerts />
                             </Form.Group>
                             <button type="submit" className="btn btn-primary mr-2" onClick={onClickHandler}>Submit</button>
                             <button className="btn btn-dark">Cancel</button>
@@ -76,4 +62,4 @@ const mapStateToProps = (state) => ({
     uploadFile: state.upload,
 });
 
-export default connect(mapStateToProps, { setAlert, uploadFile })(Upload);
+export default connect(mapStateToProps, { uploadFile, removeAlert })(Upload);

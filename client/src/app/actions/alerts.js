@@ -1,13 +1,27 @@
 import uuid from 'uuid';
-import { SET_ALERT, REMOVE_ALERT } from '../actionTypes/types';
+import { SET_SUCCESS_ALERT, SET_ERROR_ALERT, REMOVE_ALERT } from '../actionTypes/types';
 
-export const setAlert = (msg, alertType, timeout = 3000) => dispatch => {
+export const setSuccessAlert = (msg, alertType) => async dispatch => {
     const id = uuid.v4();
 
     dispatch({
-        type: SET_ALERT,
+        type: SET_SUCCESS_ALERT,
         payload: { msg, alertType, id }
     })
 
-    setTimeout(() => dispatch({ type: REMOVE_ALERT, payload: id }), timeout);
+}
+
+export const setErrorAlert = (msg, alertType) => async dispatch => {
+    const id = uuid.v4();
+
+    dispatch({
+        type: SET_ERROR_ALERT,
+        payload: { msg, alertType, id }
+    })
+}
+
+export const removeAlert = () => async dispatch => {
+    dispatch({
+        type: REMOVE_ALERT,
+    })
 }

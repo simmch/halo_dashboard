@@ -1,5 +1,4 @@
-import { UPLOAD_FILE } from '../../actionTypes/types';
-import { setAlert } from '../alerts';
+import { UPLOAD_FILE, SET_ERROR_ALERT, SET_SUCCESS_ALERT } from '../../actionTypes/types';
 import { loadUser } from '../auth/auth';
 import axios from 'axios';
 
@@ -13,21 +12,27 @@ export const uploadFile = (file) => async dispatch => {
             type: UPLOAD_FILE,
             payload: res.data
         })
-
-        const success = res.data.success;
+        const success = res.data.success[0].msg;
 
         if (success) {
-            success.forEach(success => dispatch(setAlert(success.msg, "success")))
+            dispatch({
+                type: SET_SUCCESS_ALERT,
+                payload: success
+            })
         }
         dispatch(loadUser())
     } catch (err) {
-        console.log(err.response.data.errors);
 
-        const errors = err.response.data.errors;
 
-        if (errors) {
-            errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+        const error = err.response.data.errors[0].msg;
+
+        if (error) {
+            dispatch({
+                type: SET_ERROR_ALERT,
+                payload: error
+            });
         }
+        dispatch(loadUser())
 
     }
 }

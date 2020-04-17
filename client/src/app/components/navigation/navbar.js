@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Dropdown } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { logout } from "../../actions/auth/auth";
-import Alert from "../alerts/alerts"
+import { loadDates } from "../../actions/paydates/paydates";
+import PaydateDropdown from "../navigation/paydateDropdown/paydateDropdown";
 
-const Navbar = ({ auth, logout }) => {
+
+const Navbar = ({ auth, logout, loadDates, paydates }) => {
 
   const toggleOffcanvas = () => {
     document.querySelector(".sidebar-offcanvas").classList.toggle("active");
@@ -14,6 +16,10 @@ const Navbar = ({ auth, logout }) => {
   // const toggleRightSidebar = () => {
   //   document.querySelector(".right-sidebar").classList.toggle("open");
   // }
+
+  useEffect(() => {
+    loadDates();
+  }, [])
 
   const logoutUser = (e) => {
     e.preventDefault();
@@ -41,6 +47,8 @@ const Navbar = ({ auth, logout }) => {
             <span className="mdi mdi-menu"></span>
           </button>
           <ul className="navbar-nav w-100">
+
+            <PaydateDropdown />
 
           </ul>
           <ul className="navbar-nav navbar-nav-right">
@@ -78,7 +86,7 @@ const Navbar = ({ auth, logout }) => {
                   </div>
                   <div className="preview-item-content">
                     <p className="preview-subject mb-1" onClick={logoutUser}>
-                      <Trans>Log Out</Trans>
+                      <Link to="/login" className="nav-link"><Trans>Log Out</Trans></Link>
                     </p>
                   </div>
                 </Dropdown.Item>
@@ -102,6 +110,7 @@ const Navbar = ({ auth, logout }) => {
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
+  paydates: state.paydates,
 })
 
-export default connect(mapStateToProps, { logout })(Navbar);
+export default connect(mapStateToProps, { logout, loadDates })(Navbar);

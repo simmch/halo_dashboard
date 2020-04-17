@@ -3,7 +3,6 @@ const auth = require("../middleware/auth");
 const router = express.Router();
 const fileData = require("../../common/xlsx/xlsx");
 const payDates = require("../../common/payDates");
-const cors = require("cors");
 const multer = require("multer");
 const moment = require("moment");
 const Payroll = require("../../model/database/payroll/payroll");
@@ -41,105 +40,91 @@ router.post("/upload", (req, res) => {
       let data = fileData(filename);
       let paydates = payDates(filename);
 
-      paydates.map((record) => {
-        new PayDates({
-          PAYDATE: record.PAYDATE,
-          UPDATED: record.UPDATED,
+      const exist = paydates.map(record => {
+        var exists = PayDates.find({
+          PAYDATE: record.PAYDATE
         })
-          .save()
-          .then(() => {
-            console.log("SUCCESS SAVING PAYDATES TO DB!");
-          })
-          .catch((err) => {
-            console.error("ERROR SAVING PAYDATES DATA: " + err);
-          });
-      });
+        return exists;
+      })
 
-      data.map((record) => {
-        new Payroll({
-          EUID: record.EUID,
-          EMP: record.EMP,
-          WRKD_FLG: record.WRKD_FLG,
-          HRS_VER_FLG: record.HRS_VER_FLG,
-          BNS_FLG: record.BNS_FLG,
-          TIMESHEET_FLG: record.TIMESHEET_FLG,
-          PICKUP_PAY_FLG: record.PICKUP_PAY_FLG,
-          ADJ_FLG: record.ADJ_FLG,
-          ADJUSTMENT: record.ADJUSTMENT,
-          SP_RATE: record.SP_RATE,
-          NOTES: record.NOTES,
-          REG_HRS: record.REG_HRS,
-          SCH_HRS: record.SCH_HRS,
-          UNVH: record.UNVH,
-          S: record.S,
-          TS_HRS: record.TS_HRS,
-          SUP: record.SUP,
-          SDP: record.SDP,
-          BNS_HRS: record.BNS_HRS,
-          BNS_RATE: record.BNS_RATE,
-          BNS_HRS_B: record.BNS_HRS_B,
-          BNS_RATE_B: record.BNS_RATE_B,
-          BNS_HR_C: record.BNS_HR_C,
-          BNS_RATE_C: record.BNS_RATE_C,
-          BNS_HR_D: record.BNS_HR_D,
-          BNS_RATE_D: record.BNS_RATE_D,
-          PAY_DATE: record.PAY_DATE,
-          UPDATED: record.UPDATED,
+      Promise.all(exist).then(response => {
+
+        const recordsArray = [];
+
+        response.map(record => {
+          record.map(item => {
+            recordsArray.push(item)
+          })
+        });
+
+        let isExist = null;
+
+        recordsArray.map(record => {
+          if (record.PAYDATE) {
+            isExist = record.UPDATED;
+          }
         })
-          .save()
-          .catch((err) => {
-            console.error("ERROR SAVING FILE DATA: " + err);
-          });
-      });
-      console.log("SUCCESS SAVING TO DB");
-      res.status(200).send({ success: [{ msg: "File uploaded successfully." }] })
+
+        if (isExist) {
+          return res.status(500).send({ errors: [{ msg: "Record already exists. Added on: " + isExist }] })
+        }
+
+        paydates.map((record) => {
+          new PayDates({
+            PAYDATE: record.PAYDATE,
+            UPDATED: record.UPDATED,
+          })
+            .save()
+            .then(() => {
+              console.log("SUCCESS SAVING PAYDATES TO DB!");
+            })
+            .catch((err) => {
+              console.error("ERROR SAVING PAYDATES DATA: " + err);
+            });
+        });
+
+        data.map((record) => {
+          new Payroll({
+            EUID: record.EUID,
+            EMP: record.EMP,
+            WRKD_FLG: record.WRKD_FLG,
+            HRS_VER_FLG: record.HRS_VER_FLG,
+            BNS_FLG: record.BNS_FLG,
+            TIMESHEET_FLG: record.TIMESHEET_FLG,
+            PICKUP_PAY_FLG: record.PICKUP_PAY_FLG,
+            ADJ_FLG: record.ADJ_FLG,
+            ADJUSTMENT: record.ADJUSTMENT,
+            SP_RATE: record.SP_RATE,
+            NOTES: record.NOTES,
+            REG_HRS: record.REG_HRS,
+            SCH_HRS: record.SCH_HRS,
+            UNVH: record.UNVH,
+            S: record.S,
+            TS_HRS: record.TS_HRS,
+            SUP: record.SUP,
+            SDP: record.SDP,
+            BNS_HRS: record.BNS_HRS,
+            BNS_RATE: record.BNS_RATE,
+            BNS_HRS_B: record.BNS_HRS_B,
+            BNS_RATE_B: record.BNS_RATE_B,
+            BNS_HR_C: record.BNS_HR_C,
+            BNS_RATE_C: record.BNS_RATE_C,
+            BNS_HR_D: record.BNS_HR_D,
+            BNS_RATE_D: record.BNS_RATE_D,
+            PAY_DATE: record.PAY_DATE,
+            UPDATED: record.UPDATED,
+          })
+            .save()
+            .catch((err) => {
+              console.error("ERROR SAVING FILE DATA: " + err);
+            });
+        });
+        res.status(200).send({ success: [{ msg: "File uploaded successfully." }] })
+      }).catch(err => console.log(err));
     } catch (err) {
-      console.error("ERROR SAVING TO DB: " + err);
       res.status(500).json({ errors: [{ msg: "ERROR SAVING TO Database: " + err }] });
     }
   });
-});
-
-// @route  GET payroll/records/all
-// @desc   Get all records
-// @access Public
-router.get("/records/all", async (req, res) => {
-  try {
-    const records = await Payroll.find();
-    res.status(200).json(records);
-  } catch (err) {
-    console.error("ERROR GETTING ALL RECORDS: " + err);
-    res.status(500).send({ errors: [{ msg: err }] });
-  }
-});
-
-// @route  GET payroll/records/:euid
-// @desc   Get records by EUID
-// @access Public
-router.get("/records/euid/:EUID", async (req, res) => {
-  try {
-    const record = await Payroll.findOne({
-      EUID: req.params.EUID,
-    });
-    res.status(200).json(record);
-    console.log(record);
-  } catch (err) {
-    res.status(404).send({ errors: [{ msg: "ERROR GETTING RECORD BY EUID: " + err }] });
-  }
-});
-
-// @route  GET payroll/records/:pay_date
-// @desc   Get all records by PAY_DATE
-// @access Public
-router.get("/records/sheet_date/:PAY_DATE", async (req, res) => {
-  try {
-    const record = await Payroll.find({
-      PAY_DATE: req.params.PAY_DATE,
-    });
-    res.status(200).json(record);
-  } catch (err) {
-    res.status(500).json({ errors: [{ msg: "ERROR FETCHING BY SHEET DATE" + err }] });
-  }
 });
 
 // @route POST payroll/records/new
@@ -205,6 +190,59 @@ router.post("/records/new", async (req, res) => {
     }
   }
 });
+
+// @route  GET payroll/records/all
+// @desc   Get all records
+// @access Public
+router.get("/records/all", async (req, res) => {
+  try {
+    const records = await Payroll.find();
+    res.status(200).json(records);
+  } catch (err) {
+    console.error("ERROR GETTING ALL RECORDS: " + err);
+    res.status(500).send({ errors: [{ msg: err }] });
+  }
+});
+
+router.get("/records/paydates/all", async (req, res) => {
+  try {
+    const paydates = await PayDates.find();
+    res.status(200).json(paydates)
+  } catch (err) {
+    console.log("ERROR GETTING PAYDATES: " + err);
+    res.status(500).send({ errors: [{ msg: err }] });
+  }
+})
+
+// @route  GET payroll/records/euid/:euid
+// @desc   Get records by EUID
+// @access Public
+router.get("/records/euid/:EUID", async (req, res) => {
+  try {
+    const record = await Payroll.findOne({
+      EUID: req.params.EUID,
+    });
+    res.status(200).json(record);
+    console.log(record);
+  } catch (err) {
+    res.status(404).send({ errors: [{ msg: "ERROR GETTING RECORD BY EUID: " + err }] });
+  }
+});
+
+// @route  GET payroll/records/:pay_date
+// @desc   Get all records by PAY_DATE
+// @access Public
+router.get("/records/sheet_date/:PAY_DATE", async (req, res) => {
+  try {
+    const record = await Payroll.find({
+      PAY_DATE: req.params.PAY_DATE,
+    });
+    res.status(200).json(record);
+  } catch (err) {
+    res.status(500).json({ errors: [{ msg: "ERROR FETCHING BY SHEET DATE" + err }] });
+  }
+});
+
 
 // @route DELETE payroll/record/remove
 // @desc  Removes record

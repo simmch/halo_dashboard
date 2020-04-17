@@ -15,7 +15,7 @@ const Login = ({ login, auth }) => {
   const { email, password } = loginData;
 
   if (auth.isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    return <Redirect to="/" />;
   }
 
   const onSubmit = async (e) => {

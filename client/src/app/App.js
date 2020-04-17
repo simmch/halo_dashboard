@@ -14,7 +14,6 @@ import setAuthToken from "./utils/auth/setAuthToken";
 import { loadUser } from "./actions/auth/auth";
 import Navbar from "./components/navigation/navbar";
 import Sidebar from "./components/navigation/sidebar";
-import Alert from "./components/alerts/alerts";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -38,7 +37,7 @@ const App = () => {
               <div className="main-panel">
                 <div className="content-wrapper">
                   <Switch>
-                    <Route exact path="/dashboard" component={Landing} />
+                    <Route exact path="/" component={Landing} />
                     <PrivateRoute exact path="/upload" component={Upload} />
                     <PrivateRoute exact path="/download" component={Download} />
                     <PrivateRoute exact path="/employees" component={Employees} />

@@ -1,6 +1,7 @@
 import axios from "axios";
 import setAuthToken from "../../utils/auth/setAuthToken";
-import { setAlert } from "../alerts";
+import { removeAlert } from "../alerts"
+import { loadDates } from "../../actions/paydates/paydates";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,
@@ -9,6 +10,8 @@ import {
   LOGIN_SUCCESS,
   LOGIN_FAIL,
   LOGOUT,
+  SET_SUCCESS_ALERT,
+  SET_ERROR_ALERT,
 } from "../../actionTypes/types";
 
 // Load User
@@ -20,11 +23,11 @@ export const loadUser = () => async (dispatch) => {
   try {
     const res = await axios.get("/auth");
 
-
     dispatch({
       type: USER_LOADED,
       payload: res.data,
     });
+    removeAlert();
   } catch (err) {
     dispatch({
       type: AUTH_ERROR,
@@ -48,9 +51,25 @@ export const register = (name, email, password) => async (dispatch) => {
       type: REGISTER_SUCCESS,
       payload: res.data,
     });
-    dispatch(loadUser());
+
+    const success = res.data.success[0].msg;
+
+    if (success) {
+      dispatch({
+        type: SET_SUCCESS_ALERT,
+        payload: success
+      })
+    }
+    dispatch(loadUser())
   } catch (err) {
-    console.log("FAILED TO REGISTER USER");
+    const error = err.response.data.errors[0].msg;
+
+    if (error) {
+      dispatch({
+        type: SET_ERROR_ALERT,
+        payload: error
+      });
+    }
     dispatch({
       type: REGISTER_FAIL,
     });
@@ -74,14 +93,15 @@ export const login = (email, password) => async (dispatch) => {
       payload: res.data,
     });
 
-    dispatch(loadUser());
+    // dispatch(loadUser())
   } catch (err) {
-    console.log(err.response.data.errors);
+    const error = err.response.data.errors[0].msg;
 
-    const errors = err.response.data.errors;
-
-    if (errors) {
-      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    if (error) {
+      dispatch({
+        type: SET_ERROR_ALERT,
+        payload: error
+      });
     }
 
     dispatch({
