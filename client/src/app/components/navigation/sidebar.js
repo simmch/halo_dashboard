@@ -151,6 +151,7 @@ const Sidebar = (props) => {
               <span className="menu-title">Upload</span>
             </Link>
           </li>
+
           <li
             className={
               isPathActive("/employees")
