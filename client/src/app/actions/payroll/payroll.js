@@ -22,3 +22,19 @@ export const getPayrollByDate = (date) => async dispatch => {
         console.log(err)
     }
 }
+
+export const getPayrollById = (id) => async dispatch => {
+    console.log("TRYING TO GET DATA BY ID")
+    try {
+        const res = await axios.get(`/payroll/records/euid/${id}`)
+        dispatch({
+            type: GET_DATA_BY_ID,
+            payload: res.data,
+        })
+        dispatch(loadUser());
+        console.log("Data Loaded")
+    } catch (err) {
+        console.log(err)
+
+    }
+}

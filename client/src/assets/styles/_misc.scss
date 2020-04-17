@@ -71,7 +71,7 @@ body {
   background: $content-bg;
   padding: $content-padding;
   width: 100%;
-  margin-left: 100px;
+  padding-left: 150px;
   @include flex-grow(1);
 }
 

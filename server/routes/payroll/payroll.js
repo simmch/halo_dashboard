@@ -219,7 +219,7 @@ router.get("/records/paydates/all", async (req, res) => {
 // @access Public
 router.get("/records/euid/:EUID", async (req, res) => {
   try {
-    const record = await Payroll.findOne({
+    const record = await Payroll.find({
       EUID: req.params.EUID,
     });
     res.status(200).json(record);

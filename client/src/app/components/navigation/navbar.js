@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Dropdown } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { logout } from "../../actions/auth/auth";
 import { loadDates } from "../../actions/paydates/paydates";
-import PaydateDropdown from "../navigation/paydateDropdown/paydateDropdown";
+import PaydateDropdown from "./paydateDropdown/paydateDropdown";
+import PayrollSearch from "./payrollSearch/payrollSearch";
 
 
-const Navbar = ({ auth, logout, loadDates, paydates }) => {
+const Navbar = ({ auth, logout, loadDates, paydates, history }) => {
+
+  const { location } = history;
 
   const toggleOffcanvas = () => {
     document.querySelector(".sidebar-offcanvas").classList.toggle("active");
@@ -17,7 +20,8 @@ const Navbar = ({ auth, logout, loadDates, paydates }) => {
   //   document.querySelector(".right-sidebar").classList.toggle("open");
   // }
 
-  useEffect(() => {
+  useEffect((props) => {
+    console.log(props)
     loadDates();
   }, [])
 
@@ -48,7 +52,7 @@ const Navbar = ({ auth, logout, loadDates, paydates }) => {
           </button>
           <ul className="navbar-nav w-100">
 
-            <PaydateDropdown />
+            {location.pathname !== "/" ? <PayrollSearch /> : <PaydateDropdown />}
 
           </ul>
           <ul className="navbar-nav navbar-nav-right">
@@ -113,4 +117,4 @@ const mapStateToProps = (state) => ({
   paydates: state.paydates,
 })
 
-export default connect(mapStateToProps, { logout, loadDates })(Navbar);
+export default connect(mapStateToProps, { logout, loadDates })(withRouter(Navbar));

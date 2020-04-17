@@ -1,19 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { getPayrollByDate } from '../../../actions/payroll/payroll';
 const PaydateDropdown = ({ paydates, getPayrollByDate }) => {
-    const [selectedDate, setSelectedDate] = useState({
-        date: null,
-    })
+
     const onClickHandler = (e) => {
         e.preventDefault();
         let date = e.target.name;
         getPayrollByDate(e.target.name)
-        setSelectedDate({
-            ...selectedDate,
-            date: e.target.name
-        })
+        console.log(e.target.name)
     }
 
     const listDates = paydates.map(record => {
@@ -26,8 +21,8 @@ const PaydateDropdown = ({ paydates, getPayrollByDate }) => {
 
         <Dropdown>
             <Dropdown.Toggle variant="btn btn-outline-primary" id="dropdownMenuOutlineButton1">
-                {selectedDate.date === null ? 'Pay Date Options' : selectedDate.date}
-            </Dropdown.Toggle>
+                Pay Date Options
+                    </Dropdown.Toggle>
             <Dropdown.Menu>
                 {listDates}
             </Dropdown.Menu>

@@ -8,7 +8,7 @@ import {
 
 const initialState = {
     payrollData: [],
-    loading: true
+    loading: true,
 }
 
 export default function (state = initialState, action) {

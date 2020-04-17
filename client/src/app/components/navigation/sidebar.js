@@ -153,23 +153,6 @@ const Sidebar = (props) => {
           </li>
           <li
             className={
-              isPathActive("/download")
-                ? "nav-item menu-items active"
-                : "nav-item menu-items"
-            }
-          >
-
-            <Link className="nav-link" to="/download">
-              <span className="menu-icon">
-                <i className="mdi mdi-download"></i>
-              </span>
-              <span className="menu-title">
-                <Trans>Download</Trans>
-              </span>
-            </Link>
-          </li>
-          <li
-            className={
               isPathActive("/employees")
                 ? "nav-item menu-items active"
                 : "nav-item menu-items"

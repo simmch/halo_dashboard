@@ -30,7 +30,7 @@ const Register = ({ register, isAuthenticated }) => {
     <div>
       <div className="d-flex align-items-center login-card auth px-0">
         <div className="row w-100 mx-0">
-          <div className="col-lg-4 mx-auto">
+          <div className="col-lg-8 mx-auto">
             <div className="card text-left py-5 px-4 px-sm-5">
               <div className="brand-logo">
                 <img
