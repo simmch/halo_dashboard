@@ -21,7 +21,6 @@ const Navbar = ({ auth, logout, loadDates, paydates, history }) => {
   // }
 
   useEffect((props) => {
-    console.log(props)
     loadDates();
   }, [])
 

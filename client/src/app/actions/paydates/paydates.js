@@ -4,7 +4,6 @@ import axios from 'axios';
 
 
 export const loadDates = () => async (dispatch) => {
-    console.log("Loading Dates")
     try {
         const res = await axios.get("/payroll/records/paydates/all");
         dispatch({

@@ -13,7 +13,7 @@ export default function (state = initialState, action) {
         case SET_ERROR_ALERT:
             return { ...state, msg: payload, alertType: "danger" };
         case REMOVE_ALERT:
-            return { msg: null, alertType: null };
+            return { ...state, msg: null, alertType: null };
         default:
             return state;
     }

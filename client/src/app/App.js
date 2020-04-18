@@ -14,6 +14,7 @@ import setAuthToken from "./utils/auth/setAuthToken";
 import { loadUser } from "./actions/auth/auth";
 import Navbar from "./components/navigation/navbar";
 import Sidebar from "./components/navigation/sidebar";
+import NewRecord from "./components/newrecord/newrecord";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -41,6 +42,7 @@ const App = () => {
                     <PrivateRoute exact path="/upload" component={Upload} />
                     <PrivateRoute exact path="/download" component={Download} />
                     <PrivateRoute exact path="/employees" component={Employees} />
+                    <PrivateRoute exact path="/newrecord" component={NewRecord} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Register} />
                   </Switch>

@@ -6,6 +6,7 @@ import Widget_3 from "../dashboard/widgets/widget_3";
 import Widget_4 from "../dashboard/widgets/widget_4";
 import Spinner from "../isLoading/spinner";
 import EmpSearchTable from "../dashboard/widgets/empSearchTable";
+import Alerts from "../alerts/alerts";
 
 const Employees = ({ auth, payroll }) => {
 
@@ -20,6 +21,7 @@ const Employees = ({ auth, payroll }) => {
                     <Widget_4 payroll={payroll} />
                 </div>
                 <EmpSearchTable />
+                <Alerts />
             </div>
         )
 }

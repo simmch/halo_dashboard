@@ -25,6 +25,7 @@
     "compass-mixins": "^0.12.10",
     "flag-icons": "^2.0.0",
     "font-awesome": "^4.7.0",
+    "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "nouislider-react": "^3.3.7",
     "react": "^16.13.1",

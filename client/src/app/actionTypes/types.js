@@ -20,3 +20,5 @@ export const GET_DATA_BY_ID = "GET_DATA_BY_ID";
 export const GET_ALL_DATA = "GET_ALL_DATA";
 export const DELETE_DATA_BY_DATE = "DELETE_DATA_BY_DATE";
 export const DELETE_DATA_BY_ID = "DELETE_DATA_BY_ID";
+
+export const SAVE_NEW_RECORD = "SAVE_NEW_RECORD";

@@ -10,9 +10,12 @@ const Widget_1 = ({ payroll }) => {
 
     let sumRegHrs = 0;
 
+
     if (loading === false) {
+        console.log(reg)
         sumRegHrs = reg.reduce((a, b) => a + b);
     }
+
 
 
     return (

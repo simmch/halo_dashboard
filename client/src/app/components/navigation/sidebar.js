@@ -154,6 +154,23 @@ const Sidebar = (props) => {
 
           <li
             className={
+              isPathActive("/newrecord")
+                ? "nav-item menu-items active"
+                : "nav-item menu-items"
+            }
+          >
+            <Link className="nav-link" to="/newrecord">
+              <span className="menu-icon">
+                <i className="mdi mdi-account"></i>
+              </span>
+              <span className="menu-title">
+                <Trans>New Record</Trans>
+              </span>
+            </Link>
+          </li>
+
+          <li
+            className={
               isPathActive("/employees")
                 ? "nav-item menu-items active"
                 : "nav-item menu-items"

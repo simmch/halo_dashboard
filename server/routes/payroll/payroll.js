@@ -131,6 +131,7 @@ router.post("/upload", (req, res) => {
 // @desc  Save new record
 // @acc   Public
 router.post("/records/new", async (req, res) => {
+
   if (!req.body.EMP || !req.body.EUID || !req.body.PAY_DATE) {
     res.status(500).json({ errors: [{ msg: "INVALID RECORD" }] });
   } else {
@@ -147,43 +148,43 @@ router.post("/records/new", async (req, res) => {
       }
 
       const record = new Payroll({
-        EUID: req.body.EUID,
-        EMP: req.body.EMP,
-        WRKD_FLG: req.body.WRKD_FLG,
-        HRS_VER_FLG: req.body.HRS_VER_FLG,
-        BNS_FLG: req.body.BNS_FLG,
-        TIMESHEET_FLG: req.body.TIMESHEET_FLG,
-        PICKUP_PAY_FLG: req.body.PICKUP_PAY_FLG,
-        ADJ_FLG: req.body.ADJ_FLG,
-        ADJUSTMENT: req.body.ADJUSTMENT,
-        SP_RATE: req.body.SP_RATE,
-        NOTES: req.body.NOTES,
-        REG_HRS: req.body.REG_HRS,
-        SCH_HRS: req.body.SCH_HRS,
-        UNVH: req.body.UNVH,
-        S: req.body.S,
-        TS_HRS: req.body.TS_HRS,
-        SUP: req.body.SUP,
-        SDP: req.body.SDP,
-        BNS_HRS: req.body.BNS_HRS,
-        BNS_RATE: req.body.BNS_RATE,
-        BNS_HRS_B: req.body.BNS_HRS_B,
-        BNS_RATE_B: req.body.BNS_RATE_B,
-        BNS_HR_C: req.body.BNS_HR_C,
-        BNS_RATE_C: req.body.BNS_RATE_C,
-        BNS_HR_D: req.body.BNS_HR_D,
-        BNS_RATE_D: req.body.BNS_RATE_D,
+        EUID: req.body.EUID || 0,
+        EMP: req.body.EMP || 'N/A',
+        WRKD_FLG: req.body.WRKD_FLG || 'N/A',
+        HRS_VER_FLG: req.body.HRS_VER_FLG || 'N/A',
+        BNS_FLG: req.body.BNS_FLG || 'N/A',
+        TIMESHEET_FLG: req.body.TIMESHEET_FLG || 'N/A',
+        PICKUP_PAY_FLG: req.body.PICKUP_PAY_FLG || 'N/A',
+        ADJ_FLG: req.body.ADJ_FLG || 'N/A',
+        ADJUSTMENT: req.body.ADJUSTMENT || 'N/A',
+        SP_RATE: req.body.SP_RATE || 'N/A',
+        NOTES: req.body.NOTES || 'N/A',
+        REG_HRS: req.body.REG_HRS || 0,
+        SCH_HRS: req.body.SCH_HRS || 0,
+        UNVH: req.body.UNVH || 0,
+        S: req.body.S || 'N/A',
+        TS_HRS: req.body.TS_HRS || 0,
+        SUP: req.body.SUP || 0,
+        SDP: req.body.SDP || 0,
+        BNS_HRS: req.body.BNS_HRS || 0,
+        BNS_RATE: req.body.BNS_RATE || 0,
+        BNS_HRS_B: req.body.BNS_HRS_B || 0,
+        BNS_RATE_B: req.body.BNS_RATE_B || 0,
+        BNS_HR_C: req.body.BNS_HR_C || 0,
+        BNS_RATE_C: req.body.BNS_RATE_C || 0,
+        BNS_HR_D: req.body.BNS_HR_D || 0,
+        BNS_RATE_D: req.body.BNS_RATE_D || 0,
         PAY_DATE: req.body.PAY_DATE,
         UPDATED: moment().format(),
       });
 
-      const paydates = new PayDates({
-        PAYDATE: record.PAYDATE,
-        UPDATED: moment().format(),
-      });
+      // const paydates = new PayDates({
+      //   PAYDATE: req.body.PAY_DATE,
+      //   UPDATED: moment().format(),
+      // });
 
       await record.save();
-      await paydates.save();
+      // await paydates.save();
       res.status(200).json({ success: [{ msg: "Record has been saved." }] });
     } catch (err) {
       res.status(500).json({ errors: [{ msg: "Error saving new record: " + err }] });
@@ -222,8 +223,12 @@ router.get("/records/euid/:EUID", async (req, res) => {
     const record = await Payroll.find({
       EUID: req.params.EUID,
     });
-    res.status(200).json(record);
-    console.log(record);
+
+    if (record.length !== 0) {
+      res.status(200).json(record);
+    } else {
+      res.status(500).send({ errors: [{ msg: "Record does not exist" }] })
+    }
   } catch (err) {
     res.status(404).send({ errors: [{ msg: "ERROR GETTING RECORD BY EUID: " + err }] });
   }
