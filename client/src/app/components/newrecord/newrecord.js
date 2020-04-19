@@ -8,7 +8,7 @@ import moment from 'moment';
 
 const NewRecord = ({ saveNewRecord, isLoading }) => {
     const [data, setData] = useState({
-        EUID: '' || 0,
+        EUID: '',
         EMP: '',
         WRKD_FLG: '',
         HRS_VER_FLG: '',

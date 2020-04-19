@@ -7,7 +7,7 @@ const multer = require("multer");
 const moment = require("moment");
 const Payroll = require("../../model/database/payroll/payroll");
 const PayDates = require("../../model/database/payroll/paydates");
-const User = require("../../model/database/user/user");
+const fs = require('fs');
 
 // @Type File Uploader Settings
 // @desc Settings for uploading file from Client
@@ -25,7 +25,7 @@ const upload = multer({ storage: storage }).single("file");
 // @route   POST payroll/upload
 // @desc    Save file data to database
 // @access  Admin
-router.post("/upload", (req, res) => {
+router.post("/upload", auth, (req, res) => {
   upload(req, res, async (err) => {
     if (err instanceof multer.MulterError) {
       return res.status(500).json({ errors: [{ msg: err }] });
@@ -34,8 +34,6 @@ router.post("/upload", (req, res) => {
     }
 
     try {
-      // const user = await User.findOne({ user: req.user.id });
-      // console.log(user);
       let filename = req.file.filename;
       let data = fileData(filename);
       let paydates = payDates(filename);
@@ -121,6 +119,8 @@ router.post("/upload", (req, res) => {
         });
         res.status(200).send({ success: [{ msg: "File uploaded successfully." }] })
       }).catch(err => console.log(err));
+      const path = '/Users/csim15/Desktop/halo_dashboard/server/files/' + filename;
+      fs.unlinkSync(path);
     } catch (err) {
       res.status(500).json({ errors: [{ msg: "ERROR SAVING TO Database: " + err }] });
     }
@@ -129,8 +129,8 @@ router.post("/upload", (req, res) => {
 
 // @route POST payroll/records/new
 // @desc  Save new record
-// @acc   Public
-router.post("/records/new", async (req, res) => {
+// @acc   Admin
+router.post("/records/new", auth, async (req, res) => {
 
   if (!req.body.EMP || !req.body.EUID || !req.body.PAY_DATE) {
     res.status(500).json({ errors: [{ msg: "INVALID RECORD" }] });
@@ -178,13 +178,17 @@ router.post("/records/new", async (req, res) => {
         UPDATED: moment().format(),
       });
 
-      // const paydates = new PayDates({
-      //   PAYDATE: req.body.PAY_DATE,
-      //   UPDATED: moment().format(),
-      // });
-
       await record.save();
-      // await paydates.save();
+
+      const paydates = new PayDates({
+        PAYDATE: req.body.PAY_DATE,
+        UPDATED: moment().format(),
+      });
+      await paydates.save().then(() => {
+        console.log("Paydates Saved.")
+      }).catch((err) => {
+        console.log(err)
+      })
       res.status(200).json({ success: [{ msg: "Record has been saved." }] });
     } catch (err) {
       res.status(500).json({ errors: [{ msg: "Error saving new record: " + err }] });
@@ -251,8 +255,8 @@ router.get("/records/sheet_date/:PAY_DATE", async (req, res) => {
 
 // @route DELETE payroll/records/remove
 // @desc  Removes record
-// @acc   Public
-router.delete("/records/remove/:id", async (req, res) => {
+// @acc   Admin
+router.delete("/records/remove/:id", auth, async (req, res) => {
   try {
     const record = await Payroll.findById(req.params.id);
 
@@ -262,5 +266,53 @@ router.delete("/records/remove/:id", async (req, res) => {
     res.status(500).json({ errors: [{ msg: err }] });
   }
 });
+
+// @route UPDATE payroll/records/update
+// @desc Updates record
+// @acc Admin
+router.put("/records/update/:id", async (req, res) => {
+  try {
+    const data = {
+      EUID: req.body.EUID,
+      EMP: req.body.EMP,
+      WRKD_FLG: req.body.WRKD_FLG,
+      HRS_VER_FLG: req.body.HRS_VER_FLG,
+      BNS_FLG: req.body.BNS_FLG,
+      TIMESHEET_FLG: req.body.TIMESHEET_FLG,
+      PICKUP_PAY_FLG: req.body.PICKUP_PAY_FLG,
+      ADJ_FLG: req.body.ADJ_FLG,
+      ADJUSTMENT: req.body.ADJUSTMENT,
+      SP_RATE: req.body.SP_RATE,
+      NOTES: req.body.NOTES,
+      REG_HRS: req.body.REG_HRS,
+      SCH_HRS: req.body.SCH_HRS,
+      UNVH: req.body.UNVH,
+      S: req.body.S,
+      TS_HRS: req.body.TS_HRS,
+      SUP: req.body.SUP,
+      SDP: req.body.SDP,
+      BNS_HRS: req.body.BNS_HRS,
+      BNS_RATE: req.body.BNS_RATE,
+      BNS_HRS_B: req.body.BNS_HRS_B,
+      BNS_RATE_B: req.body.BNS_RATE_B,
+      BNS_HR_C: req.body.BNS_HR_C,
+      BNS_RATE_C: req.body.BNS_RATE_C,
+      BNS_HR_D: req.body.BNS_HR_D,
+      BNS_RATE_D: req.body.BNS_RATE_D,
+      PAY_DATE: req.body.PAY_DATE,
+      UPDATED: moment().format(),
+    };
+    const record = await Payroll.findByIdAndUpdate(req.params.id, data, (err, result) => {
+      if (err) {
+        res.status(500).send({ errors: [{ msg: err }] });
+      } else {
+        res.status(200).send({ success: [{ msg: "Successfully updated the record." }] });
+      }
+    });
+
+  } catch (err) {
+    console.log(err)
+  }
+})
 
 module.exports = router;

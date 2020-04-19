@@ -4,12 +4,12 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Button, Modal } from 'react-bootstrap';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search, CSVExport } from 'react-bootstrap-table2-toolkit';
-import { deleteById } from '../../../actions/payroll/payroll';
-import Alert from '../../alerts/alerts';
+import { deleteById, updateById } from '../../../actions/payroll/payroll';
+import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
 const { SearchBar } = Search;
 const { ExportCSVButton } = CSVExport;
 
-const EmpSearchTable = ({ payroll, deleteById }) => {
+const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
     const [confirm, setConfirm] = useState({
         show: false,
         id: ''
@@ -17,12 +17,23 @@ const EmpSearchTable = ({ payroll, deleteById }) => {
 
     const { show, id } = confirm;
 
-    const onClickHandler = (cellContent) => {
+    const onClickHandlerDelete = (cellContent) => {
         setConfirm({
             ...confirm,
             show: true,
             id: cellContent
         })
+
+    }
+
+    const onClickHandlerUpdate = (id) => {
+
+        function idMatch(payrollData) {
+            return payrollData._id === id;
+        }
+        const data = payrollData.find(idMatch)
+
+        updateById(id, data);
 
     }
 
@@ -38,7 +49,10 @@ const EmpSearchTable = ({ payroll, deleteById }) => {
     const columns = [{
         text: 'ID',
         dataField: 'EUID',
-        sort: true
+        sort: true,
+        editor: {
+            type: Type.TEXT
+        }
     }, {
         text: 'Name',
         dataField: 'EMP',
@@ -149,13 +163,26 @@ const EmpSearchTable = ({ payroll, deleteById }) => {
         sort: true
     }, {
         dataField: '_id',
-        text: 'Action',
+        text: 'Delete',
         sort: false,
         formatter: (cellContent) => {
             return (
                 <div>
-                    <button className="btn btn-dark" onClick={e => { e.preventDefault(); onClickHandler(cellContent) }}>
+                    <button className="btn btn-dark" onClick={e => { e.preventDefault(); onClickHandlerDelete(cellContent) }}>
                         <i className="mdi mdi-delete text-danger"></i>Delete
+                </button>
+                </div>
+            );
+        }
+    }, {
+        dataField: '_id',
+        text: 'Update',
+        sort: false,
+        formatter: (cellContent) => {
+            return (
+                <div>
+                    <button className="btn btn-dark" onClick={e => { e.preventDefault(); onClickHandlerUpdate(cellContent) }}>
+                        <i className="mdi mdi-cloud-upload text-warning"></i>Update
               </button>
                 </div>
             );
@@ -227,6 +254,7 @@ const EmpSearchTable = ({ payroll, deleteById }) => {
                                                             <SearchBar {...props.searchProps} />
                                                         </div>
                                                         <BootstrapTable
+                                                            cellEdit={cellEditFactory({ mode: 'dbclick' })}
                                                             defaultSorted={defaultSorted}
                                                             pagination={paginationFactory()}
                                                             {...props.baseProps}
@@ -253,4 +281,4 @@ const mapStateToProps = (state) => ({
     payroll: state.payroll,
 })
 
-export default connect(mapStateToProps, { deleteById })(EmpSearchTable);
+export default connect(mapStateToProps, { deleteById, updateById })(EmpSearchTable);

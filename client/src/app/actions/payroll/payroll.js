@@ -86,3 +86,22 @@ export const deleteById = (id) => async dispatch => {
         dispatch(loadUser());
     }
 }
+
+export const updateById = (id, data) => async dispatch => {
+    try {
+        const res = await axios.put(`/payroll/records/update/${id}`, data);
+        dispatch({
+            type: SET_SUCCESS_ALERT,
+            payload: res.data.success[0].msg
+        })
+        dispatch(loadUser());
+    } catch (err) {
+        const error = err.response.data.errors[0].msg;
+        dispatch({
+            type: SET_ERROR_ALERT,
+            payload: error
+        })
+
+        dispatch(loadUser());
+    }
+}
