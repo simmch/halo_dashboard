@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import { register } from "../../actions/auth/auth";
 
-const Register = ({ register, isAuthenticated }) => {
+const Register = ({ register, isAuthenticated, history }) => {
   const [registerData, setRegisterData] = useState({
     name: "",
     email: "",
@@ -14,7 +14,7 @@ const Register = ({ register, isAuthenticated }) => {
   const { name, email, password } = registerData;
 
   if (isAuthenticated) {
-    return <Redirect to="/dashboard" />;
+    history.push('/')
   }
 
   const onSubmit = async (e) => {
@@ -103,4 +103,4 @@ const mapStateToProps = (state) => ({
   isAuthenticated: state.auth.isAuthenticated,
 });
 
-export default connect(mapStateToProps, { register })(Register);
+export default connect(mapStateToProps, { register })(withRouter(Register));

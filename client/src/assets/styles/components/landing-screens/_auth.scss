@@ -4,14 +4,15 @@
 	height: 100%;
 	.login-half-bg {
 		// background: url("../../../images/auth/login-bg.jpg");
+		background: black;
 		background-size: cover;
 	}
 	.register-half-bg {
-		// background: url("../../../images/auth/register-bg.jpg");
+		background: black;
 		background-size: cover;
 	}
 	&.lock-full-bg {
-		// background: url("../../../images/auth/lockscreen-bg.jpg");
+		background: black;
 		background-size: cover;
 	}
 	.lock-profile-img {

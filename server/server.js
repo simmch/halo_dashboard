@@ -15,11 +15,11 @@ app.listen(port, () => {
 // You must "app.use" json to parse the req body
 // This configuration works across all routes now
 app.use(express.json({ extended: false }));
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-app.get("/*", (req, res) => {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-})
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+// })
 
 app.use("/payroll", require("./routes/payroll/payroll"));
 app.use("/users", require("./routes/user/user"));

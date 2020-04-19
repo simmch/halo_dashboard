@@ -8,7 +8,6 @@ import Landing from "./components/dashboard/landing";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import Upload from "./components/upload/upload";
-import Download from "./components/download/download";
 import Employees from "./components/employees/employees";
 import setAuthToken from "./utils/auth/setAuthToken";
 import { loadUser } from "./actions/auth/auth";
@@ -22,6 +21,8 @@ if (localStorage.token) {
 
 const App = () => {
 
+  console.log("This is a test")
+
   useEffect(() => {
     store.dispatch(loadUser());
   }, []);
@@ -32,19 +33,18 @@ const App = () => {
       <Router>
         <Fragment>
           <section className="container-scroller">
-            <PrivateRoute component={Sidebar} />
+            <Route component={Sidebar} />
             <div className="container-fluid page-body-wrapper">
-              <PrivateRoute component={Navbar} />
+              <Route component={Navbar} />
               <div className="main-panel">
                 <div className="content-wrapper">
                   <Switch>
-                    <Route exact path="/" component={Landing} />
-                    <PrivateRoute exact path="/upload" component={Upload} />
-                    <PrivateRoute exact path="/download" component={Download} />
-                    <PrivateRoute exact path="/employees" component={Employees} />
-                    <PrivateRoute exact path="/newrecord" component={NewRecord} />
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/register" component={Register} />
+                    <Route exact path="/" component={Landing} />
+                    <Route exact path="/upload" component={Upload} />
+                    <Route exact path="/employees" component={Employees} />
+                    <Route exact path="/newrecord" component={NewRecord} />
                   </Switch>
                 </div>
               </div>

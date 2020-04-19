@@ -26,8 +26,8 @@ const Navbar = ({ auth, logout, loadDates, paydates, history }) => {
     logout();
   }
 
-  return auth.user === null ? (
-    <div> </div>
+  return !auth.isAuthenticated || !auth.user ? (
+    <div></div>
   ) : (
       <nav className="navbar p-0 fixed-top d-flex flex-row">
         <div className="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import { Form } from "react-bootstrap";
 import { login } from "../../actions/auth/auth";
 import Alert from "../alerts/alerts";
 import Spinner from "../isLoading/spinner";
 
-const Login = ({ login, auth }) => {
+const Login = ({ login, auth, history }) => {
   const [loginData, setLoginData] = useState({
     email: "",
     password: "",
@@ -15,7 +15,7 @@ const Login = ({ login, auth }) => {
   const { email, password } = loginData;
 
   if (auth.isAuthenticated) {
-    return <Redirect to="/" />;
+    history.push('/')
   }
 
   const onSubmit = async (e) => {
@@ -98,4 +98,4 @@ const mapStateToProps = (state) => ({
   auth: state.auth,
 });
 
-export default connect(mapStateToProps, { login })(Login);
+export default connect(mapStateToProps, { login })(withRouter(Login));

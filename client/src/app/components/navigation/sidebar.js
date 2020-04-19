@@ -76,7 +76,7 @@ const Sidebar = (props) => {
 
 
 
-  return auth.user === null ? (
+  return !auth.isAuthenticated || !auth.user ? (
     <div></div>
   ) : (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
