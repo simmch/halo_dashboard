@@ -10,18 +10,6 @@ const Sidebar = (props) => {
 
   const [menuState, setMenuState] = useState({});
 
-  // const toggleMenuState = (menuPath) => {
-  //   if (menuState[menuPath]) {
-  //     setMenuState({ [menuPath]: false });
-  //   } else if (Object.keys(menuState).length === 0) {
-  //     setMenuState({ [menuPath]: true });
-  //   } else {
-  //     Object.keys(menuState).forEach((i) => {
-  //       setMenuState({ [i]: false });
-  //     });
-  //     setMenuState({ [menuPath]: true });
-  //   }
-  // };
 
   const onRouteChanged = () => {
     document.querySelector("#sidebar").classList.remove("active");
@@ -77,7 +65,7 @@ const Sidebar = (props) => {
 
   }, []);
 
-  useEffect((prevProps) => {
+  useEffect(() => {
     if (auth.user) {
       if (props.location.pathname !== props.history.location.pathname) {
         onRouteChanged();

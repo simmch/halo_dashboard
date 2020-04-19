@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const isLogin = () => {
     if (localStorage.token) {
         return true
@@ -5,89 +7,116 @@ export const isLogin = () => {
 }
 
 export const columns = [{
-    Header: 'ID',
-    accessor: 'EUID'
+    text: 'ID',
+    dataField: 'EUID',
+    sort: true
 }, {
-    Header: 'Name',
-    accessor: 'EMP'
+    text: 'Name',
+    dataField: 'EMP',
+    sort: true
 }, {
-    Header: 'WRKD_FLG',
-    accessor: 'WRKD_FLG'
+    text: 'Worked Flag',
+    dataField: 'WRKD_FLG',
+    sort: true
 }, {
-    Header: 'HRS_VER_FLG',
-    accessor: 'HRS_VER_FLG'
+    text: 'Hours Verified Flag',
+    dataField: 'HRS_VER_FLG',
+    sort: true
 }, {
-    Header: 'BNS_FLG',
-    accessor: 'BNS_FLG'
+    text: 'Bonus Flag',
+    dataField: 'BNS_FLG',
+    sort: true
 }, {
-    Header: 'TIMESHEET_FLG',
-    accessor: 'TIMESHEET_FLG'
+    text: 'Timesheet Flag',
+    dataField: 'TIMESHEET_FLG',
+    sort: true
 }, {
-    Header: 'PICKUP_PAY_FLG',
-    accessor: 'PICKUP_PAY_FLG'
+    text: 'Pickup Pay Flag',
+    dataField: 'PICKUP_PAY_FLG',
+    sort: true
 }, {
-    Header: 'ADJ_FLG',
-    accessor: 'ADJ_FLG'
+    text: 'Adjustment Flag',
+    dataField: 'ADJ_FLG',
+    sort: true
 }, {
-    Header: 'ADJUSTMENT',
-    accessor: 'ADJUSTMENT'
+    text: 'Adjustment',
+    dataField: 'ADJUSTMENT',
+    sort: true
 }, {
-    Header: 'SP_RATE',
-    accessor: 'SP_RATE'
+    text: 'Special Rate',
+    dataField: 'SP_RATE',
+    sort: true
 }, {
-    Header: 'NOTES',
-    accessor: 'NOTES'
+    text: 'Notes',
+    dataField: 'NOTES',
+    sort: true
 }, {
-    Header: 'REG_HRS',
-    accessor: 'REG_HRS'
+    text: 'Regular Hours',
+    dataField: 'REG_HRS',
+    sort: true
 }, {
-    Header: 'SCH_HRS',
-    accessor: 'SCH_HRS'
+    text: 'Scheduled Hours',
+    dataField: 'SCH_HRS',
+    sort: true
 }, {
-    Header: 'UNVH',
-    accessor: 'UNVH'
+    text: 'Unverfied Hours',
+    dataField: 'UNVH',
+    sort: true
 }, {
-    Header: 'S',
-    accessor: 'S'
+    text: 'S',
+    dataField: 'S',
+    sort: true
 }, {
-    Header: 'TS_HRS',
-    accessor: 'TS_HRS'
+    text: 'TS Hours',
+    dataField: 'TS_HRS',
+    sort: true
 }, {
-    Header: 'SUP',
-    accessor: 'SUP'
+    text: 'SUP',
+    dataField: 'SUP',
+    sort: true
 }, {
-    Header: 'SDP',
-    accessor: 'SDP'
+    text: 'SDP',
+    dataField: 'SDP',
+    sort: true
 }, {
-    Header: 'BNS_HRS',
-    accessor: 'BNS_HRS'
+    text: 'Bonus Hours',
+    dataField: 'BNS_HRS',
+    sort: true
 }, {
-    Header: 'BNS_RATE',
-    accessor: 'BNS_RATE'
+    text: 'Bonus Rate',
+    dataField: 'BNS_RATE',
+    sort: true
 }, {
-    Header: 'BNS_HRS_B',
-    accessor: 'BNS_HRS_B'
+    text: 'BNS_HRS_B',
+    dataField: 'BNS_HRS_B',
+    sort: true
 }, {
-    Header: 'BNS_RATE_B',
-    accessor: 'BNS_RATE_B'
+    text: 'BNS_RATE_B',
+    dataField: 'BNS_RATE_B',
+    sort: true
 }, {
-    Header: 'BNS_HR_C',
-    accessor: 'BNS_HR_C'
+    text: 'BNS_HR_C',
+    dataField: 'BNS_HR_C',
+    sort: true
 }, {
-    Header: 'BNS_RATE_C',
-    accessor: 'BNS_RATE_C'
+    text: 'BNS_RATE_C',
+    dataField: 'BNS_RATE_C',
+    sort: true
 }, {
-    Header: 'BNS_HR_D',
-    accessor: 'BNS_HR_D'
+    text: 'BNS_HR_D',
+    dataField: 'BNS_HR_D',
+    sort: true
 }, {
-    Header: 'BNS_RATE_D',
-    accessor: 'BNS_RATE_D'
+    text: 'BNS_RATE_D',
+    dataField: 'BNS_RATE_D',
+    sort: true
 }, {
-    Header: 'PAY_DATE',
-    accessor: 'PAY_DATE'
+    text: 'PAY_DATE',
+    dataField: 'PAY_DATE',
+    sort: true
 }, {
-    Header: 'UPDATED',
-    accessor: 'UPDATED'
+    text: 'UPDATED',
+    dataField: 'UPDATED',
+    sort: true
 }
-
 ]

@@ -1,7 +1,6 @@
 import axios from "axios";
 import setAuthToken from "../../utils/auth/setAuthToken";
 import { removeAlert } from "../alerts"
-import { loadDates } from "../../actions/paydates/paydates";
 import {
   REGISTER_SUCCESS,
   REGISTER_FAIL,

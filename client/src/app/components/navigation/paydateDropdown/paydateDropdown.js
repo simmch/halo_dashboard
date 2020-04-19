@@ -8,7 +8,6 @@ const PaydateDropdown = ({ paydates, getPayrollByDate }) => {
     })
     const onClickHandler = (e) => {
         e.preventDefault();
-        let date = e.target.name;
         getPayrollByDate(e.target.name)
         setSelectedDate({
             ...selectedDate,

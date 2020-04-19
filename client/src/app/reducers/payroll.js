@@ -3,7 +3,7 @@ import {
     GET_DATA_BY_DATE,
     GET_DATA_BY_ID,
     SAVE_NEW_RECORD,
-    DELETE_DATA_BY_DATE,
+    // DELETE_DATA_BY_DATE,
     DELETE_DATA_BY_ID
 } from '../actionTypes/types';
 
@@ -21,6 +21,8 @@ export default function (state = initialState, action) {
         case GET_DATA_BY_DATE:
             return { ...state, payrollData: payload, loading: false }
         case SAVE_NEW_RECORD:
+            return { ...state, alert: payload }
+        case DELETE_DATA_BY_ID:
             return { ...state, alert: payload }
         default:
             return state;

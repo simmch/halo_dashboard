@@ -12,30 +12,28 @@ const Widget_1 = ({ payroll }) => {
 
 
     if (loading === false) {
-        console.log(reg)
         sumRegHrs = reg.reduce((a, b) => a + b);
     }
 
 
 
     return (
-        <div className="col-xl-3 col-sm-6 grid-margin stretch-card">
-            <div className="card">
+        <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div className="card card-statistics">
                 <div className="card-body">
-                    <div className="row">
-                        <div className="col-9">
-                            <div className="d-flex align-items-center align-self-start">
-                                <h3 className="mb-0">{Math.round(sumRegHrs)}</h3>
-                                <p className="text-success ml-2 mb-0 font-weight-medium"></p>
+                    <div className="clearfix">
+                        <div className="float-left">
+                            <i className="mdi mdi-timer text-danger icon-lg"></i>
+                        </div>
+                        <div className="float-right">
+                            <p className="mb-0 text-right text-light">Regular Hours</p>
+                            <div className="fluid-container">
+                                <h3 className="font-weight-medium text-right mb-0 text-light">{Math.round(sumRegHrs)}</h3>
                             </div>
                         </div>
-                        <div className="col-3">
-                            <div className="icon icon-box-success ">
-                                <span className="mdi mdi-timer icon-item"></span>
-                            </div>
-                        </div>
-                        <h6 className="text-muted font-weight-normal">Regular Hours Worked</h6>
                     </div>
+                    <p className="text-muted mt-3 mb-0">
+                        <i className="mdi mdi-timer mr-1" aria-hidden="true"></i>Regular Hours Worked</p>
                 </div>
             </div>
         </div>

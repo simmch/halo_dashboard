@@ -249,18 +249,15 @@ router.get("/records/sheet_date/:PAY_DATE", async (req, res) => {
 });
 
 
-// @route DELETE payroll/record/remove
+// @route DELETE payroll/records/remove
 // @desc  Removes record
 // @acc   Public
 router.delete("/records/remove/:id", async (req, res) => {
   try {
     const record = await Payroll.findById(req.params.id);
-    if (!record) {
-      res.status(404).json({ errors: [{ msg: "Record Not found" }] });
-    }
 
     record.remove();
-    res.status(200).json({ success: [{ msg: "RECORD DELETED" }] });
+    res.status(200).json({ success: [{ msg: "Record has been deleted." }] });
   } catch (err) {
     res.status(500).json({ errors: [{ msg: err }] });
   }

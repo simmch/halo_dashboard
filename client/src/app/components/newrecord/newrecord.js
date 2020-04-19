@@ -62,12 +62,6 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                     <h3 className="page-title">
                         New Payroll Record
                     </h3>
-                    <nav aria-label="breadcrumb">
-                        <ol className="breadcrumb">
-                            <li className="breadcrumb-item"><a href="!#" onClick={event => event.preventDefault()}>Payroll</a></li>
-                            <li className="breadcrumb-item active" aria-current="page">New Record</li>
-                        </ol>
-                    </nav>
                 </div>
                 <div className="row">
                     <div className="col-md-12 grid-margin">
@@ -83,7 +77,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 value={EUID}
                                                 name="EUID"
                                                 type="text"
-                                                placeholder="ID"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -95,7 +89,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 value={EMP}
                                                 name="EMP"
                                                 type="text"
-                                                placeholder="Employee Name"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -109,7 +103,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="WRKD_FLG"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -123,7 +117,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="HRS_VER_FLG"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -137,7 +131,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 value={BNS_FLG}
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -151,7 +145,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="TIMESHEET_FLG"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -165,7 +159,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="PICKUP_PAY_FLG"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -179,7 +173,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="ADJ_FLG"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -192,7 +186,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="ADJUSTMENT"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -205,7 +199,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="SP_RATE"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -218,7 +212,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="NOTES"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -231,7 +225,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="REG_HRS"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -244,7 +238,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="SCH_HRS"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -257,7 +251,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="UNVH"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -270,7 +264,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="S"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -283,7 +277,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="TS_HRS"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -296,7 +290,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="SUP"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -309,7 +303,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="SDP"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -322,7 +316,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="BNS_HRS"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -335,7 +329,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="BNS_RATE"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -348,7 +342,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="BNS_HRS_B"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -361,7 +355,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="BNS_RATE_B"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -374,7 +368,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="BNS_HR_C"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -387,7 +381,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="BNS_RATE_C"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -400,7 +394,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="BNS_HR_D"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -413,7 +407,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="BNS_RATE_D"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -426,7 +420,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="PAY_DATE"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -439,7 +433,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                                 name="UPDATED"
                                                 required
                                                 type="text"
-                                                placeholder="X"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>

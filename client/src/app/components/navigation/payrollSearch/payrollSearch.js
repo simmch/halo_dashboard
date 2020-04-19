@@ -18,7 +18,6 @@ const PayrollSearch = ({ getPayrollById }) => {
 
     const enterKeyPressed = (e) => {
         if (e.key === "Enter") {
-            console.log("HIIII")
             getPayrollById(id);
             e.preventDefault();
         }

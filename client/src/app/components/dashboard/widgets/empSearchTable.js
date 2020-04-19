@@ -1,39 +1,251 @@
 import React, { useState } from 'react';
-import { columns } from '../../utils';
 import { connect } from 'react-redux';
-import ReactTable from 'react-table';
+import BootstrapTable from 'react-bootstrap-table-next';
+import { Button, Modal } from 'react-bootstrap';
+import paginationFactory from 'react-bootstrap-table2-paginator';
+import ToolkitProvider, { Search, CSVExport } from 'react-bootstrap-table2-toolkit';
+import { deleteById } from '../../../actions/payroll/payroll';
+import Alert from '../../alerts/alerts';
+const { SearchBar } = Search;
+const { ExportCSVButton } = CSVExport;
 
-const EmpSearchTable = ({ payroll }) => {
+const EmpSearchTable = ({ payroll, deleteById }) => {
+    const [confirm, setConfirm] = useState({
+        show: false,
+        id: ''
+    })
+
+    const { show, id } = confirm;
+
+    const onClickHandler = (cellContent) => {
+        setConfirm({
+            ...confirm,
+            show: true,
+            id: cellContent
+        })
+
+    }
+
+    const onSubmitHandler = () => {
+        deleteById(id);
+        setConfirm({
+            ...confirm,
+            show: false
+        })
+    }
+
+
+    const columns = [{
+        text: 'ID',
+        dataField: 'EUID',
+        sort: true
+    }, {
+        text: 'Name',
+        dataField: 'EMP',
+        sort: true
+    }, {
+        text: 'Worked Flag',
+        dataField: 'WRKD_FLG',
+        sort: true
+    }, {
+        text: 'Hours Verified Flag',
+        dataField: 'HRS_VER_FLG',
+        sort: true
+    }, {
+        text: 'Bonus Flag',
+        dataField: 'BNS_FLG',
+        sort: true
+    }, {
+        text: 'Timesheet Flag',
+        dataField: 'TIMESHEET_FLG',
+        sort: true
+    }, {
+        text: 'Pickup Pay Flag',
+        dataField: 'PICKUP_PAY_FLG',
+        sort: true
+    }, {
+        text: 'Adjustment Flag',
+        dataField: 'ADJ_FLG',
+        sort: true
+    }, {
+        text: 'Adjustment',
+        dataField: 'ADJUSTMENT',
+        sort: true
+    }, {
+        text: 'Special Rate',
+        dataField: 'SP_RATE',
+        sort: true
+    }, {
+        text: 'Notes',
+        dataField: 'NOTES',
+        sort: true
+    }, {
+        text: 'Regular Hours',
+        dataField: 'REG_HRS',
+        sort: true
+    }, {
+        text: 'Scheduled Hours',
+        dataField: 'SCH_HRS',
+        sort: true
+    }, {
+        text: 'Unverfied Hours',
+        dataField: 'UNVH',
+        sort: true
+    }, {
+        text: 'S',
+        dataField: 'S',
+        sort: true
+    }, {
+        text: 'TS Hours',
+        dataField: 'TS_HRS',
+        sort: true
+    }, {
+        text: 'SUP',
+        dataField: 'SUP',
+        sort: true
+    }, {
+        text: 'SDP',
+        dataField: 'SDP',
+        sort: true
+    }, {
+        text: 'Bonus Hours',
+        dataField: 'BNS_HRS',
+        sort: true
+    }, {
+        text: 'Bonus Rate',
+        dataField: 'BNS_RATE',
+        sort: true
+    }, {
+        text: 'BNS_HRS_B',
+        dataField: 'BNS_HRS_B',
+        sort: true
+    }, {
+        text: 'BNS_RATE_B',
+        dataField: 'BNS_RATE_B',
+        sort: true
+    }, {
+        text: 'BNS_HR_C',
+        dataField: 'BNS_HR_C',
+        sort: true
+    }, {
+        text: 'BNS_RATE_C',
+        dataField: 'BNS_RATE_C',
+        sort: true
+    }, {
+        text: 'BNS_HR_D',
+        dataField: 'BNS_HR_D',
+        sort: true
+    }, {
+        text: 'BNS_RATE_D',
+        dataField: 'BNS_RATE_D',
+        sort: true
+    }, {
+        text: 'PAY_DATE',
+        dataField: 'PAY_DATE',
+        sort: true
+    }, {
+        text: 'UPDATED',
+        dataField: 'UPDATED',
+        sort: true
+    }, {
+        dataField: '_id',
+        text: 'Action',
+        sort: false,
+        formatter: (cellContent) => {
+            return (
+                <div>
+                    <button className="btn btn-dark" onClick={e => { e.preventDefault(); onClickHandler(cellContent) }}>
+                        <i className="mdi mdi-delete text-danger"></i>Delete
+              </button>
+                </div>
+            );
+        }
+    }
+    ]
+
     const { loading, payrollData } = payroll;
 
+    const defaultSorted = [{
+        dataField: 'id',
+        order: 'desc'
+    }];
+
     return loading ? (
-        <h1>Search by Employee ID.</h1>
+        <h1>Search by Employee ID</h1>
     ) : (
-            <div className="row">
-                <div className="col-12">
-                    <div className="card">
-                        <div className="card-body">
-                            <h4 className="card-title">Payroll</h4>
-                            <div className="row">
-                                <div className="col-12">
-                                    <div>
-                                        <ReactTable
-                                            scrollable
+            <div>
+                <Modal
+                    show={show}
+                    onHide={() => show(false)}
+                    aria-labelledby="example-modal-sizes-title-md"
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title>Confirm Deletion</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body>
+                        <p>Are you sure you want to delete this record?</p>
+                    </Modal.Body>
+
+                    <Modal.Footer className="fleex-wrap">
+                        <Button variant="primary m-2" onClick={(e) => { e.preventDefault(); onSubmitHandler() }}>Confirm</Button>
+                        <Button variant="light m-2" onClick={(e) => { e.preventDefault(); setConfirm({ ...confirm, show: false }) }}>Cancel</Button>
+                    </Modal.Footer>
+                </Modal>
+
+                <div className="page-header">
+                    <h3 className="page-title">
+                        Employee table
+                    </h3>
+
+                </div>
+                <div className="row">
+                    <div className="col-12">
+                        <div className="card">
+                            <div className="card-body">
+                                <h4 className="card-title">Employee Data</h4>
+                                <div className="row">
+                                    <div className="col-12">
+                                        <ToolkitProvider
+                                            keyField="id"
+                                            bootstrap4
                                             data={payrollData}
-                                            filterable={true}
-                                            defaultPageSize={10}
                                             columns={columns}
-                                            style={{
-                                                height: "500px"
-                                            }}
-                                        />
+                                            search
+
+                                        >
+                                            {
+                                                props => (
+                                                    <div>
+                                                        <ExportCSVButton {...props.csvProps}>
+                                                            <button type="button" className="btn download btn-danger btn-rounded btn-icon">
+                                                                <i className="mdi mdi-download"></i>
+                                                            </button>
+                                                        </ExportCSVButton>
+                                                        <div className="d-flex align-items-center">
+                                                            <p className="mb-2 mr-2">Search in table:</p>
+                                                            <SearchBar {...props.searchProps} />
+                                                        </div>
+                                                        <BootstrapTable
+                                                            defaultSorted={defaultSorted}
+                                                            pagination={paginationFactory()}
+                                                            {...props.baseProps}
+                                                            wrapperClasses="table-responsive"
+                                                            striped={true}
+
+                                                        />
+                                                    </div>
+                                                )
+                                            }
+                                        </ToolkitProvider>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div >
         )
 }
 
@@ -41,4 +253,4 @@ const mapStateToProps = (state) => ({
     payroll: state.payroll,
 })
 
-export default connect(mapStateToProps)(EmpSearchTable);
+export default connect(mapStateToProps, { deleteById })(EmpSearchTable);

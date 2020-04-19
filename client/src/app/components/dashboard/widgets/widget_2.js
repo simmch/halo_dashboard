@@ -15,23 +15,22 @@ const Widget_2 = ({ payroll }) => {
     }
 
     return (
-        <div className="col-xl-3 col-sm-6 grid-margin stretch-card">
-            <div className="card">
+        <div className="col-xl-3 col-lg-3 col-md-3 col-sm-6 grid-margin stretch-card">
+            <div className="card card-statistics">
                 <div className="card-body">
-                    <div className="row">
-                        <div className="col-9">
-                            <div className="d-flex align-items-center align-self-start">
-                                <h3 className="mb-0">{Math.round(sumSchHrs)}</h3>
-                                <p className="text-success ml-2 mb-0 font-weight-medium"></p>
+                    <div className="clearfix">
+                        <div className="float-left">
+                            <i className="mdi mdi-receipt text-warning icon-lg"></i>
+                        </div>
+                        <div className="float-right">
+                            <p className="mb-0 text-right text-light">Scheduled Hours</p>
+                            <div className="fluid-container">
+                                <h3 className="font-weight-medium text-right mb-0 text-light">{Math.round(sumSchHrs)}</h3>
                             </div>
                         </div>
-                        <div className="col-3">
-                            <div className="icon icon-box-primary ">
-                                <span className="mdi mdi-timer icon-item"></span>
-                            </div>
-                        </div>
-                        <h6 className="text-muted font-weight-normal">Scheduled Hours</h6>
                     </div>
+                    <p className="text-muted mt-3 mb-0">
+                        <i className="mdi mdi-calendar-outline mr-1" aria-hidden="true"></i> Total Scheduled Hours</p>
                 </div>
             </div>
         </div>

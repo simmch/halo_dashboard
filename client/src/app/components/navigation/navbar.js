@@ -16,13 +16,10 @@ const Navbar = ({ auth, logout, loadDates, paydates, history }) => {
   const toggleOffcanvas = () => {
     document.querySelector(".sidebar-offcanvas").classList.toggle("active");
   }
-  // const toggleRightSidebar = () => {
-  //   document.querySelector(".right-sidebar").classList.toggle("open");
-  // }
 
-  useEffect((props) => {
+  useEffect(() => {
     loadDates();
-  }, [])
+  }, [loadDates])
 
   const logoutUser = (e) => {
     e.preventDefault();
