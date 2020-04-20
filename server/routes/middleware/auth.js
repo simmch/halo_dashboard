@@ -1,5 +1,8 @@
+if (process.env.NODE_ENV !== 'production') {
+  require("dotenv").config();
+}
+
 const jwt = require("jsonwebtoken");
-require("dotenv").config({ silent: process.env.NODE_ENV === 'production' });
 
 module.exports = (req, res, next) => {
   // Get Token from Header

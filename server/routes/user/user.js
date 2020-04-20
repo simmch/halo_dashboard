@@ -1,5 +1,8 @@
+if (process.env.NODE_ENV !== 'production') {
+  require("dotenv").config();
+}
+
 const express = require("express");
-require("dotenv").config();
 const router = express.Router();
 const { check, validationResult } = require("express-validator/check");
 const gravatar = require("gravatar");
