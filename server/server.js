@@ -1,4 +1,4 @@
-require("dotenv").config();
+require("dotenv").config({ silent: process.env.NODE_ENV === 'production' });
 const connectDB = require("./model/database/conn");
 const express = require("express");
 const app = express();
