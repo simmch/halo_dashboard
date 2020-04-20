@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "server": "npm start --prefix server",
-    "client": "npm run build --prefix client",
+    "server": "npm run dev --prefix server",
+    "client": "npm run start --prefix client",
     "local": "cd client && npm run build  && cd .. && npm server",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
     "start": "node server",
