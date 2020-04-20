@@ -9,7 +9,7 @@
     "client": "npm run build --prefix client",
     "local": "cd client && npm run build  && cd .. && npm server",
     "dev": "concurrently \"npm run client\" \"npm run server\"",
-    "start": "node server --prefix server",
+    "start": "node server",
     "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build && cd ../server && npm install && npm install --only=dev --no-shrinkwrap"
   },
   "keywords": [],
