@@ -2,6 +2,7 @@ const express = require("express");
 const auth = require("../middleware/auth");
 const router = express.Router();
 const fileData = require("../../common/xlsx/xlsx");
+const path = require("path");
 const payDates = require("../../common/paydates");
 const multer = require("multer");
 const moment = require("moment");
@@ -13,7 +14,7 @@ const fs = require('fs');
 // @desc Settings for uploading file from Client
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "files");
+    cb(null, path.join(__dirname, '../server/files'));
   },
   filename: (req, file, cb) => {
     cb(null, moment().format("MMMM Do YYYY") + "-" + file.originalname);
