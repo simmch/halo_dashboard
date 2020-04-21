@@ -39,6 +39,8 @@ router.post("/upload", auth, (req, res) => {
       let data = fileData(filename);
       let paydates = payDates(filename);
 
+      console.log("FILENAME: " + filename + ", " + "DATA: " + data)
+
       const exist = paydates.map(record => {
         var exists = PayDates.find({
           PAYDATE: record.PAYDATE
