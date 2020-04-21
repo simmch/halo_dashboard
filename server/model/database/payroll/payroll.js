@@ -28,7 +28,7 @@ const PayrollSchema = new Schema({
   BNS_RATE_C: { type: Number, required: false },
   BNS_HR_D: { type: Number, required: false },
   BNS_RATE_D: { type: Number, required: false },
-  PAY_DATE: { type: String, required: false },
+  PAYDATE: { type: String, required: false },
   UPDATED: { type: Date, required: false },
 });
 

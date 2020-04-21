@@ -109,7 +109,7 @@ router.post("/upload", auth, (req, res) => {
             BNS_RATE_C: record.BNS_RATE_C,
             BNS_HR_D: record.BNS_HR_D,
             BNS_RATE_D: record.BNS_RATE_D,
-            PAY_DATE: record.PAY_DATE,
+            PAYDATE: record.PAYDATE,
             UPDATED: record.UPDATED,
           })
             .save()
@@ -119,8 +119,8 @@ router.post("/upload", auth, (req, res) => {
         });
         res.status(200).send({ success: [{ msg: "File uploaded successfully." }] })
       }).catch(err => console.log(err));
-      const path = '/Users/csim15/Desktop/halo_dashboard/server/files/' + filename;
-      fs.unlinkSync(path);
+      // const path = '/Users/csim15/Desktop/halo_dashboard/server/files/' + filename;
+      // fs.unlinkSync(path);
     } catch (err) {
       res.status(500).json({ errors: [{ msg: "ERROR SAVING TO Database: " + err }] });
     }
@@ -132,14 +132,14 @@ router.post("/upload", auth, (req, res) => {
 // @acc   Admin
 router.post("/records/new", auth, async (req, res) => {
 
-  if (!req.body.EMP || !req.body.EUID || !req.body.PAY_DATE) {
+  if (!req.body.EMP || !req.body.EUID || !req.body.PAYDATE) {
     res.status(500).json({ errors: [{ msg: "INVALID RECORD" }] });
   } else {
     try {
       const exists = await Payroll.find({
         EUID: req.body.EUID,
         EMP: req.body.EMP,
-        PAY_DATE: req.body.PAY_DATE,
+        PAYDATE: req.body.PAYDATE,
       });
 
       if (exists.UPDATED) {
@@ -174,14 +174,14 @@ router.post("/records/new", auth, async (req, res) => {
         BNS_RATE_C: req.body.BNS_RATE_C || 0,
         BNS_HR_D: req.body.BNS_HR_D || 0,
         BNS_RATE_D: req.body.BNS_RATE_D || 0,
-        PAY_DATE: req.body.PAY_DATE,
+        PAYDATE: req.body.PAYDATE,
         UPDATED: moment().format(),
       });
 
       await record.save();
 
       const paydates = new PayDates({
-        PAYDATE: req.body.PAY_DATE,
+        PAYDATE: req.body.PAYDATE,
         UPDATED: moment().format(),
       });
       await paydates.save().then(() => {
@@ -192,6 +192,27 @@ router.post("/records/new", auth, async (req, res) => {
       res.status(200).json({ success: [{ msg: "Record has been saved." }] });
     } catch (err) {
       res.status(500).json({ errors: [{ msg: "Error saving new record: " + err }] });
+    }
+  }
+});
+
+// @route POST payroll/records/date/new
+// @desc  Save new Pay Date
+// @acc   Admin
+router.post("/records/date/new", auth, async (req, res) => {
+  if (!req.body.NEWPAYDATE) {
+    res.status(500).json({ errors: [{ msg: "INVALID RECORD" }] });
+  } else {
+    try {
+
+      const paydates = new PayDates({
+        PAYDATE: req.body.NEWPAYDATE,
+        UPDATED: moment().format(),
+      });
+      await paydates.save();
+      res.status(200).json({ success: [{ msg: "Pay Date has been saved." }] });
+    } catch (err) {
+      res.status(500).json({ errors: [{ msg: "Error saving new Pay Date: " + err }] });
     }
   }
 });
@@ -239,12 +260,12 @@ router.get("/records/euid/:EUID", async (req, res) => {
 });
 
 // @route  GET payroll/records/:pay_date
-// @desc   Get all records by PAY_DATE
+// @desc   Get all records by PAYDATE
 // @access Public
-router.get("/records/sheet_date/:PAY_DATE", async (req, res) => {
+router.get("/records/sheet_date/:PAYDATE", async (req, res) => {
   try {
     const record = await Payroll.find({
-      PAY_DATE: req.params.PAY_DATE,
+      PAYDATE: req.params.PAYDATE,
     });
     res.status(200).json(record);
   } catch (err) {
@@ -299,7 +320,7 @@ router.put("/records/update/:id", async (req, res) => {
       BNS_RATE_C: req.body.BNS_RATE_C,
       BNS_HR_D: req.body.BNS_HR_D,
       BNS_RATE_D: req.body.BNS_RATE_D,
-      PAY_DATE: req.body.PAY_DATE,
+      PAYDATE: req.body.PAYDATE,
       UPDATED: moment().format(),
     };
     const record = await Payroll.findByIdAndUpdate(req.params.id, data, (err, result) => {

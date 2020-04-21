@@ -2,44 +2,30 @@ import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { saveNewRecord } from '../../actions/payroll/payroll';
+import { saveDate } from '../../actions/paydates/paydates';
 import Spinner from '../isLoading/spinner';
 import Alerts from '../alerts/alerts';
-import moment from 'moment';
+import { initialState, dateInitialState } from './state';
+import { Typeahead } from 'react-bootstrap-typeahead';
 
-const NewRecord = ({ saveNewRecord, isLoading }) => {
-    const [data, setData] = useState({
-        EUID: '',
-        EMP: '',
-        WRKD_FLG: '',
-        HRS_VER_FLG: '',
-        BNS_FLG: '',
-        TIMESHEET_FLG: '',
-        PICKUP_PAY_FLG: '',
-        ADJ_FLG: '',
-        ADJUSTMENT: '',
-        SP_RATE: '',
-        NOTES: '',
-        REG_HRS: '',
-        SCH_HRS: '',
-        UNVH: '',
-        S: '',
-        TS_HRS: '',
-        SUP: '',
-        SDP: '',
-        BNS_HRS: '',
-        BNS_RATE: '',
-        BNS_HRS_B: '',
-        BNS_RATE_B: '',
-        BNS_HR_C: '',
-        BNS_RATE_C: '',
-        BNS_HR_D: '',
-        BNS_RATE_D: '',
-        PAY_DATE: '',
-        UPDATED: moment().format(),
+const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
+    const [data, setData] = useState(initialState)
+    const [date, setDate] = useState(dateInitialState)
+    const { NEWPAYDATE } = date;
+    const { EUID, EMP, ADJUSTMENT, SP_RATE, NOTES, REG_HRS, SCH_HRS, UNVH, S, TS_HRS, SUP, SDP, BNS_HRS, BNS_RATE, BNS_HRS_B, BNS_RATE_B, BNS_HR_C, BNS_RATE_C, BNS_HR_D, BNS_RATE_D, PAYDATE } = data;
+
+
+    let options = {};
+    const paydateSelector = paydates.map(date => {
+        return date.map(item => {
+            return {
+                value: item.PAYDATE, label: item.PAYDATE
+            }
+        })
     })
 
-    const { EUID, EMP, WRKD_FLG, BNS_FLG, HRS_VER_FLG, TIMESHEET_FLG, PICKUP_PAY_FLG, ADJ_FLG, ADJUSTMENT, SP_RATE, NOTES, REG_HRS, SCH_HRS, UNVH, S, TS_HRS,
-        SUP, SDP, BNS_HRS, BNS_RATE, BNS_HRS_B, BNS_RATE_B, BNS_HR_C, BNS_RATE_C, BNS_HR_D, BNS_RATE_D, PAY_DATE, UPDATED } = data;
+    options = paydateSelector;
+
 
     const onChangeHandler = (e) => {
         setData({
@@ -48,9 +34,90 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
         })
     }
 
+    // Handles Scheduled Hours and Worked Flag
+    const schHrsHandler = (e) => {
+        if (e.target.value != 0) {
+            setData({ ...data, SCH_HRS: e.target.value, WRKD_FLG: 'Y' })
+        }
+        else {
+            setData({ ...data, SCH_HRS: e.target.value, WRKD_FLG: 'N' })
+        }
+    }
+
+    // Handles Hours Verified flag and Unverified Hours
+    const unvhHandler = (e) => {
+        if ((REG_HRS - UNVH === REG_HRS)) {
+            setData({ ...data, HRS_VER_FLG: 'Y', UNVH: e.target.value })
+        } else {
+            setData({ ...data, HRS_VER_FLG: 'N', UNVH: e.target.value })
+        }
+    }
+
+    // Handles Time Sheet hours and Timesheet Flag
+    const timesheetHandler = (e) => {
+        if (e.target.value !== 0) {
+            setData({ ...data, TIMESHEET_FLG: 'Y', TS_HRS: e.target.value })
+        } else {
+            setData({ ...data, TIMESHEET_FLG: 'N', TS_HRS: e.target.value })
+        }
+    }
+
+    // Handles SDP and Pickup Pay Flag
+    const sdpHandler = (e) => {
+        if (e.target.value > 0) {
+            setData({ ...data, PICKUP_PAY_FLG: 'Y', SDP: e.target.value })
+        } else {
+            setData({ ...data, PICKUP_PAY_FLG: 'N', SDP: e.target.value })
+        }
+    }
+
+    // Handles Adjustment and Adjustment Flag
+    const adjustmentHandler = (e) => {
+        if (e.target.value != "") {
+            setData({ ...data, [e.target.name]: e.target.value, ADJ_FLG: 'Y' })
+        } else {
+            setData({ ...data, [e.target.name]: e.target.value, ADJ_FLG: 'N' })
+        }
+    }
+
+    // Handles Bonus & Bonus Flag
+    const bonusHandler = (e) => {
+        if ((SCH_HRS - S - UNVH) === REG_HRS) {
+            setData({ ...data, [e.target.name]: e.target.value, BNS_FLG: 'N' })
+        } else {
+            setData({ ...data, [e.target.name]: e.target.value, BNS_FLG: 'Y' })
+        }
+    }
+
+    const paydateHandler = (e) => {
+        let value = e[0]
+        if (value != undefined) {
+            setData({ ...data, PAYDATE: e[0].value })
+        } else {
+            setData({ ...data, PAYDATE: '' })
+        }
+    }
+
+    // New Paydate onChange Handler
+    const newPaydateHandler = (e) => {
+        setDate({
+            ...date,
+            NEWPAYDATE: e.target.value
+        })
+    }
+
+    // New Paydate onSubmit Handler
+    const newPaydateSubmitHandler = (e) => {
+        e.preventDefault();
+        saveDate(date)
+    }
+
+
+
     const onSubmitHandler = (e) => {
         e.preventDefault();
         saveNewRecord(data)
+        setData(initialState)
     }
 
 
@@ -70,7 +137,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                 <Form noValidate>
                                     <Form.Row>
                                         <Form.Group as={Col} md="3" controlId="validationCustom01">
-                                            <Form.Label>ID</Form.Label>
+                                            <Form.Label>Identification Number</Form.Label>
                                             <Form.Control
                                                 onChange={onChangeHandler}
                                                 required
@@ -82,107 +149,23 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="3" controlId="validationCustom01">
-                                            <Form.Label>Name</Form.Label>
+                                            <Form.Label>Employee Name</Form.Label>
                                             <Form.Control
-                                                required
                                                 onChange={onChangeHandler}
+                                                minLength={1}
                                                 value={EMP}
+                                                required
                                                 name="EMP"
                                                 type="text"
-
-                                            />
-                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>WRKD_FLG</Form.Label>
-                                            <Form.Control
-                                                onChange={onChangeHandler}
-                                                value={WRKD_FLG}
-                                                minLength={1}
-                                                maxLength={5}
-                                                name="WRKD_FLG"
-                                                required
-                                                type="text"
-
-                                            />
-                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>HRS_VER_FLG</Form.Label>
-                                            <Form.Control
-                                                onChange={onChangeHandler}
-                                                value={HRS_VER_FLG}
-                                                minLength={1}
-                                                maxLength={5}
-                                                name="HRS_VER_FLG"
-                                                required
-                                                type="text"
-
-                                            />
-                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>BNS_FLG</Form.Label>
-                                            <Form.Control
-                                                onChange={onChangeHandler}
-                                                minLength={1}
-                                                maxLength={5}
-                                                name="BNS_FLG"
-                                                value={BNS_FLG}
-                                                required
-                                                type="text"
-
-                                            />
-                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>TIMESHEET_FLG</Form.Label>
-                                            <Form.Control
-                                                onChange={onChangeHandler}
-                                                value={TIMESHEET_FLG}
-                                                minLength={1}
-                                                maxLength={5}
-                                                name="TIMESHEET_FLG"
-                                                required
-                                                type="text"
-
-                                            />
-                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>PICKUP_PAY_FLG</Form.Label>
-                                            <Form.Control
-                                                onChange={onChangeHandler}
-                                                value={PICKUP_PAY_FLG}
-                                                minLength={1}
-                                                maxLength={5}
-                                                name="PICKUP_PAY_FLG"
-                                                required
-                                                type="text"
-
-                                            />
-                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>ADJ_FLG</Form.Label>
-                                            <Form.Control
-                                                onChange={onChangeHandler}
-                                                value={ADJ_FLG}
-                                                minLength={1}
-                                                maxLength={5}
-                                                name="ADJ_FLG"
-                                                required
-                                                type="text"
-
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="4" controlId="validationCustom02">
-                                            <Form.Label>ADJUSTMENT</Form.Label>
+                                            <Form.Label>Adjustment</Form.Label>
                                             <Form.Control
-                                                onChange={onChangeHandler}
+                                                onChange={adjustmentHandler}
                                                 value={ADJUSTMENT}
-                                                minLength={1}
+                                                // minLength={1}
                                                 name="ADJUSTMENT"
                                                 required
                                                 type="text"
@@ -191,7 +174,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>SP_RATE</Form.Label>
+                                            <Form.Label>Special Rate</Form.Label>
                                             <Form.Control
                                                 onChange={onChangeHandler}
                                                 value={SP_RATE}
@@ -204,20 +187,20 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="10" controlId="validationCustom02">
-                                            <Form.Label>NOTES</Form.Label>
+                                            <Form.Label>Notes</Form.Label>
                                             <Form.Control
                                                 onChange={onChangeHandler}
                                                 value={NOTES}
                                                 minLength={1}
                                                 name="NOTES"
                                                 required
-                                                type="text"
+                                                type="textarea"
 
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>REG_HRS</Form.Label>
+                                            <Form.Label>Regular Hours</Form.Label>
                                             <Form.Control
                                                 onChange={onChangeHandler}
                                                 value={REG_HRS}
@@ -230,9 +213,9 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>SCH_HRS</Form.Label>
+                                            <Form.Label>Scheduled Hours</Form.Label>
                                             <Form.Control
-                                                onChange={onChangeHandler}
+                                                onChange={schHrsHandler}
                                                 value={SCH_HRS}
                                                 minLength={1}
                                                 name="SCH_HRS"
@@ -243,9 +226,9 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>UNVH</Form.Label>
+                                            <Form.Label>Unverified Hours</Form.Label>
                                             <Form.Control
-                                                onChange={onChangeHandler}
+                                                onChange={unvhHandler}
                                                 value={UNVH}
                                                 minLength={1}
                                                 name="UNVH"
@@ -255,7 +238,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
-                                        <Form.Group as={Col} md="2" controlId="validationCustom02">
+                                        {/* <Form.Group as={Col} md="2" controlId="validationCustom02">
                                             <Form.Label>S</Form.Label>
                                             <Form.Control
                                                 onChange={onChangeHandler}
@@ -267,11 +250,11 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
 
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group>
+                                        </Form.Group> */}
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>TS_HRS</Form.Label>
+                                            <Form.Label>Timesheet Hours</Form.Label>
                                             <Form.Control
-                                                onChange={onChangeHandler}
+                                                onChange={timesheetHandler}
                                                 value={TS_HRS}
                                                 minLength={1}
                                                 name="TS_HRS"
@@ -282,7 +265,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>SUP</Form.Label>
+                                            <Form.Label>Show Up Pay</Form.Label>
                                             <Form.Control
                                                 onChange={onChangeHandler}
                                                 value={SUP}
@@ -295,9 +278,9 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>SDP</Form.Label>
+                                            <Form.Label>Same Day Pay</Form.Label>
                                             <Form.Control
-                                                onChange={onChangeHandler}
+                                                onChange={sdpHandler}
                                                 value={SDP}
                                                 minLength={1}
                                                 name="SDP"
@@ -308,9 +291,9 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>BNS_HRS</Form.Label>
+                                            <Form.Label>Bonus Hours</Form.Label>
                                             <Form.Control
-                                                onChange={onChangeHandler}
+                                                onChange={bonusHandler}
                                                 value={BNS_HRS}
                                                 minLength={1}
                                                 name="BNS_HRS"
@@ -321,7 +304,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>BNS_RATE</Form.Label>
+                                            <Form.Label>Bonus Rate</Form.Label>
                                             <Form.Control
                                                 onChange={onChangeHandler}
                                                 value={BNS_RATE}
@@ -334,7 +317,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>BNS_HRS_B</Form.Label>
+                                            <Form.Label>Bonus Hours B</Form.Label>
                                             <Form.Control
                                                 value={BNS_HRS_B}
                                                 onChange={onChangeHandler}
@@ -347,7 +330,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>BNS_RATE_B</Form.Label>
+                                            <Form.Label>Bonus Rate B</Form.Label>
                                             <Form.Control
                                                 value={BNS_RATE_B}
                                                 onChange={onChangeHandler}
@@ -360,7 +343,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>BNS_HR_C</Form.Label>
+                                            <Form.Label>Bonus Hours C</Form.Label>
                                             <Form.Control
                                                 value={BNS_HR_C}
                                                 onChange={onChangeHandler}
@@ -373,7 +356,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>BNS_RATE_C</Form.Label>
+                                            <Form.Label>Bonus Rate C</Form.Label>
                                             <Form.Control
                                                 value={BNS_RATE_C}
                                                 onChange={onChangeHandler}
@@ -386,7 +369,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>BNS_HR_D</Form.Label>
+                                            <Form.Label>Bonus Hours D</Form.Label>
                                             <Form.Control
                                                 value={BNS_HR_D}
                                                 onChange={onChangeHandler}
@@ -399,7 +382,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>BNS_RATE_D</Form.Label>
+                                            <Form.Label>Bonus Rate D</Form.Label>
                                             <Form.Control
                                                 onChange={onChangeHandler}
                                                 value={BNS_RATE_D}
@@ -412,28 +395,13 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                         <Form.Group as={Col} md="4" controlId="validationCustom02">
-                                            <Form.Label>PAY_DATE</Form.Label>
-                                            <Form.Control
-                                                value={PAY_DATE}
-                                                onChange={onChangeHandler}
-                                                minLength={1}
-                                                name="PAY_DATE"
-                                                required
-                                                type="text"
-
-                                            />
-                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="6" controlId="validationCustom02">
-                                            <Form.Label>UPDATED</Form.Label>
-                                            <Form.Control
-                                                value={UPDATED}
-                                                onChange={onChangeHandler}
-                                                minLength={1}
-                                                name="UPDATED"
-                                                required
-                                                type="text"
-
+                                            <Form.Label>Pay Date</Form.Label>
+                                            <Typeahead
+                                                labelKey="label"
+                                                id="typeahead-single"
+                                                options={options[0]}
+                                                placeholder="Choose a Date"
+                                                onChange={paydateHandler}
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -447,6 +415,38 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
                         </div>
                     </div>
                 </div>
+                <div className="page-header">
+                    <h3 className="page-title">
+                        New Pay Date
+                    </h3>
+                </div>
+                <div className="row">
+                    <div className="col-md-12 grid-margin">
+                        <div className="card">
+                            <div className="card-body">
+                                <Form noValidate>
+                                    <Form.Row>
+                                        <Form.Group as={Col} md="4" controlId="validationCustom01">
+                                            <Form.Label>Pay Date</Form.Label>
+                                            <Form.Control
+                                                onChange={newPaydateHandler}
+                                                required
+                                                value={NEWPAYDATE}
+                                                name="NEWPAYDATE"
+                                                type="text"
+
+                                            />
+                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                        </Form.Group>
+                                    </Form.Row>
+                                    <Button type="submit" onClick={newPaydateSubmitHandler}>Submit form</Button>
+
+                                </Form>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         )
 }
@@ -454,6 +454,7 @@ const NewRecord = ({ saveNewRecord, isLoading }) => {
 const mapStateToProps = (state) => ({
     payload: state.payload,
     isLoading: state.auth.loading,
+    paydates: state.paydates
 })
 
-export default connect(mapStateToProps, { saveNewRecord })(NewRecord);
+export default connect(mapStateToProps, { saveNewRecord, saveDate })(NewRecord);

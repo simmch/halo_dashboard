@@ -19,9 +19,9 @@ app.listen(port, () => {
 app.use(express.json({ extended: false }));
 app.use(express.static(path.resolve(__dirname, '../client/build')));
 
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
-// })
+app.get('/', (req, res) => {
+  res.send("Your site is working.")
+})
 
 app.use("/payroll", require("./routes/payroll/payroll"));
 app.use("/users", require("./routes/user/user"));

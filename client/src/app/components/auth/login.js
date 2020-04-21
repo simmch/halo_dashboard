@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import { Form } from "react-bootstrap";
@@ -14,9 +14,13 @@ const Login = ({ login, auth, history }) => {
 
   const { email, password } = loginData;
 
-  if (auth.isAuthenticated) {
-    history.push('/')
-  }
+  useEffect(() => {
+    if (auth.isAuthenticated) {
+      history.push('/')
+    }
+  }, [auth])
+
+
 
   const onSubmit = async (e) => {
     e.preventDefault();

@@ -25,7 +25,7 @@ const App = () => {
 
   useEffect(() => {
     store.dispatch(loadUser());
-  }, []);
+  }, [localStorage.token]);
 
 
   return (

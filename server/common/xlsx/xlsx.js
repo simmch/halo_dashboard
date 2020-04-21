@@ -42,7 +42,7 @@ const fileData = (filename) => {
             BNS_RATE_C: record.BONUS_RATE_C || 0,
             BNS_HR_D: record.BONUS_HR_D || 0,
             BNS_RATE_D: record.BONUS_RATE_D || 0,
-            PAY_DATE: sheetname || null,
+            PAYDATE: sheetname || null,
             UPDATED: moment().format(),
           };
         }

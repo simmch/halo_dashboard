@@ -39,6 +39,7 @@ const EmpTable = ({ payroll }) => {
                                             columns={columns}
                                             search
                                             exportCSV
+
                                         >
                                             {
                                                 props => (
@@ -60,6 +61,7 @@ const EmpTable = ({ payroll }) => {
                                                             pagination={paginationFactory()}
                                                             {...props.baseProps}
                                                             wrapperClasses="table-responsive"
+
                                                         />
                                                     </div>
                                                 )

@@ -47,7 +47,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
 
 
     const columns = [{
-        text: 'ID',
+        text: 'Identification Number',
         dataField: 'EUID',
         sort: true,
         editor: {
@@ -110,15 +110,15 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
         dataField: 'S',
         sort: true
     }, {
-        text: 'TS Hours',
+        text: 'Timesheet Hours',
         dataField: 'TS_HRS',
         sort: true
     }, {
-        text: 'SUP',
+        text: 'Show Up Pay',
         dataField: 'SUP',
         sort: true
     }, {
-        text: 'SDP',
+        text: 'Same Day Pay',
         dataField: 'SDP',
         sort: true
     }, {
@@ -130,32 +130,32 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
         dataField: 'BNS_RATE',
         sort: true
     }, {
-        text: 'BNS_HRS_B',
+        text: 'Bonus Hours B',
         dataField: 'BNS_HRS_B',
         sort: true
     }, {
-        text: 'BNS_RATE_B',
+        text: 'Bonus Rate B',
         dataField: 'BNS_RATE_B',
         sort: true
     }, {
-        text: 'BNS_HR_C',
+        text: 'Bonus Hours C',
         dataField: 'BNS_HR_C',
         sort: true
     }, {
-        text: 'BNS_RATE_C',
+        text: 'Bonus Rate C',
         dataField: 'BNS_RATE_C',
         sort: true
     }, {
-        text: 'BNS_HR_D',
+        text: 'Bonus Hours D',
         dataField: 'BNS_HR_D',
         sort: true
     }, {
-        text: 'BNS_RATE_D',
+        text: 'Bonus Rate D',
         dataField: 'BNS_RATE_D',
         sort: true
     }, {
-        text: 'PAY_DATE',
-        dataField: 'PAY_DATE',
+        text: 'Pay Date',
+        dataField: 'PAYDATE',
         sort: true
     }, {
         text: 'UPDATED',

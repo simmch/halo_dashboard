@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Redirect, withRouter } from "react-router-dom";
 import Widget1 from "./widgets/widget_1";
@@ -10,13 +10,15 @@ import EmpTable from "./widgets/empTable";
 
 const Landing = ({ auth, payroll, history }) => {
 
-  let redirect = "";
+  useEffect(() => {
+    if (!auth.isAuthenticated) {
+      history.push('/login')
+    }
+  }, [auth])
 
 
-  if (!auth.isAuthenticated) {
-    history.push('/login')
-  } else {
-    redirect = <div>
+  return (
+    <div >
       <div className="row">
         <Widget1 payroll={payroll} />
         <Widget2 payroll={payroll} />
@@ -24,11 +26,7 @@ const Landing = ({ auth, payroll, history }) => {
         <Widget4 payroll={payroll} />
       </div>
       <EmpTable />
-    </div>
-  }
-
-  return (
-    redirect
+    </div >
   )
 };
 
