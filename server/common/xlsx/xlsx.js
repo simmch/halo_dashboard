@@ -1,7 +1,7 @@
 const xlsx = require("xlsx");
 const fileData = (filename) => {
   var moment = require("moment");
-  var wb = xlsx.readFile("/app/server/routes/payroll/files" + filename, { cellDates: true });
+  var wb = xlsx.readFile("/app/server/routes/payroll/" + filename, { cellDates: true });
 
   // Sheetnames from Excel
   // Also referred to as PAYDATE

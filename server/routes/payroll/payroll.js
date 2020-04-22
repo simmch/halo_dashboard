@@ -14,7 +14,7 @@ const fs = require('fs');
 // @desc Settings for uploading file from Client
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve(__dirname, 'files'));
+    cb(null, path.resolve(__dirname, '/'));
   },
   filename: (req, file, cb) => {
     cb(null, moment().format("MMMM Do YYYY") + "-" + file.originalname);
