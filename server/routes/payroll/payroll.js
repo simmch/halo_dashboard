@@ -12,9 +12,17 @@ const fs = require('fs');
 
 // @Type File Uploader Settings
 // @desc Settings for uploading file from Client
+let fileDestination = '';
+
+if (process.env.NODE_ENV !== 'production') {
+  fileDestination = 'files';
+} else {
+  fileDestination = path.resolve(__dirname, './');
+}
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.resolve(__dirname, './'));
+    cb(null, fileDestination);
   },
   filename: (req, file, cb) => {
     cb(null, moment().format("MMMM Do YYYY") + "-" + file.originalname);
@@ -38,8 +46,6 @@ router.post("/upload", auth, (req, res) => {
       let filename = req.file.filename;
       let data = fileData(filename);
       let paydates = payDates(filename);
-
-      console.log("FILENAME: " + filename + ", " + "DATA: " + data)
 
       const exist = paydates.map(record => {
         var exists = PayDates.find({
@@ -183,15 +189,6 @@ router.post("/records/new", auth, async (req, res) => {
 
       await record.save();
 
-      const paydates = new PayDates({
-        PAYDATE: req.body.PAYDATE,
-        UPDATED: moment().format(),
-      });
-      await paydates.save().then(() => {
-        console.log("Paydates Saved.")
-      }).catch((err) => {
-        console.log(err)
-      })
       res.status(200).json({ success: [{ msg: "Record has been saved." }] });
     } catch (err) {
       res.status(500).json({ errors: [{ msg: "Error saving new record: " + err }] });
