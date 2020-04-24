@@ -1,12 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from "react-router-dom";
 import Spinner from '../isLoading/spinner';
 import { uploadFile } from '../../actions/upload/upload';
 import { Form } from 'react-bootstrap';
 import Alerts from "../alerts/alerts";
 import { removeAlert } from '../../actions/alerts';
 
-const Upload = ({ isLoading, uploadFile }) => {
+const Upload = ({ auth, history, isLoading, uploadFile }) => {
+
+    useEffect(() => {
+        if (!auth.isAuthenticated) {
+            history.push('/login')
+        }
+    }, [])
+
     const [uploadData, setUploadData] = useState({
         selectedFile: null,
         fileName: null,
@@ -60,6 +68,7 @@ const Upload = ({ isLoading, uploadFile }) => {
 const mapStateToProps = (state) => ({
     isLoading: state.auth.loading,
     uploadFile: state.upload,
+    auth: state.auth,
 });
 
-export default connect(mapStateToProps, { uploadFile, removeAlert })(Upload);
+export default connect(mapStateToProps, { uploadFile, removeAlert })(withRouter(Upload));

@@ -16,3 +16,26 @@
     background-color: #2A3038;
   }
 }
+
+.dropdown-item:hover, .dropdown-item:focus {
+  color: white !important;
+}
+
+.css-1uccc91-singleValue {
+  color: white !important;
+}
+
+.css-1n7v3ny-option:hover {
+  color: white !important;
+  background-color: darken($card-bg, 3%) !important;
+}
+
+.css-1n7v3ny-option:focus {
+  color: white !important;
+  background-color: darken($card-bg, 3%) !important;
+}
+
+.css-1n7v3ny-option {
+  color: white;
+  background-color: darken($card-bg, 3%) !important;
+}

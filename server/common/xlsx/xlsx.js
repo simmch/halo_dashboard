@@ -19,10 +19,12 @@ const fileData = (filename) => {
 
     var mappedData = data
       .map((record) => {
-        if (record.Employee) {
+        if (record.ID) {
           var payload = {
-            EUID: record.EUID || null,
-            EMP: record.Employee || null,
+            ID: record.ID || 0,
+            POSITION: record.Position || 0,
+            FIRSTNAME: record.F_name || "N/A",
+            LASTNAME: record.L_name || "N/A",
             WRKD_FLG: record.__EMPTY || "N/A",
             HRS_VER_FLG: record.__EMPTY_1 || "N/A",
             BNS_FLG: record.__EMPTY_2 || "N/A",
@@ -35,7 +37,7 @@ const fileData = (filename) => {
             REG_HRS: record.REG_HOURS || 0,
             SCH_HRS: record.SCH_HOURS || 0,
             UNVH: record.UNVH || 0,
-            S: record.S || "N/A",
+            VRF_HRS: record.Verified_Hours || 0,
             TS_HRS: record.TS_HOURS || 0,
             SUP: record.SUP || 0,
             SDP: record.SDP || 0,
@@ -47,7 +49,7 @@ const fileData = (filename) => {
             BNS_RATE_C: record.BONUS_RATE_C || 0,
             BNS_HR_D: record.BONUS_HR_D || 0,
             BNS_RATE_D: record.BONUS_RATE_D || 0,
-            PAYDATE: sheetname || null,
+            PAYDATE: sheetname || '',
             UPDATED: moment().format(),
           };
         }
@@ -61,6 +63,7 @@ const fileData = (filename) => {
   });
 
   var final = res.reduce((acc, val) => acc.concat(val), []);
+
   return final;
 };
 

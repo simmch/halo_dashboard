@@ -14,6 +14,7 @@ import { loadUser } from "./actions/auth/auth";
 import Navbar from "./components/navigation/navbar";
 import Sidebar from "./components/navigation/sidebar";
 import NewRecord from "./components/newrecord/newrecord";
+import NewAssociate from "./components/newassociate/newassociate";
 
 if (localStorage.token) {
   setAuthToken(localStorage.token);
@@ -45,6 +46,7 @@ const App = () => {
                     <Route exact path="/upload" component={Upload} />
                     <Route exact path="/employees" component={Employees} />
                     <Route exact path="/newrecord" component={NewRecord} />
+                    <Route exact path="/newassociate" component={NewAssociate} />
                   </Switch>
                 </div>
               </div>

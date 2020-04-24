@@ -21,9 +21,19 @@ const Navbar = ({ auth, logout, loadDates, paydates, history }) => {
     loadDates();
   }, [loadDates])
 
+
   const logoutUser = (e) => {
     e.preventDefault();
     logout();
+  }
+
+  let searchHandler = <div></div>;
+  if (location.pathname === "/") {
+    searchHandler = <PaydateDropdown />;
+  } else if (location.pathname === "/employees") {
+    searchHandler = <PayrollSearch />;
+  } else {
+    searchHandler = <div></div>
   }
 
   return !auth.isAuthenticated || !auth.user ? (
@@ -48,8 +58,8 @@ const Navbar = ({ auth, logout, loadDates, paydates, history }) => {
           </button>
           <ul className="navbar-nav w-100">
 
-            {location.pathname !== "/" ? <PayrollSearch /> : <PaydateDropdown />}
-
+            {/* {location.pathname === "/employees" ? <PayrollSearch /> : <PaydateDropdown />} */}
+            {searchHandler}
           </ul>
           <ul className="navbar-nav navbar-nav-right">
             <div as="li" className="nav-item d-none d-lg-block">

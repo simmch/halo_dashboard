@@ -1,13 +1,20 @@
-import { GET_PAY_DATES, SET_SUCCESS_ALERT, SET_ERROR_ALERT } from '../../actionTypes/types';
+import {
+    GET_ALL_ASSOCIATES,
+    // GET_ASSOCIATE_BY_ID,
+    // SAVE_NEW_ASSOCIATE,
+    // DELETE_ASSOCIATE_BY_ID,
+    SET_ERROR_ALERT,
+    SET_SUCCESS_ALERT,
+} from '../../actionTypes/types';
 import { loadUser } from '../../actions/auth/auth';
 import axios from 'axios';
 
 
-export const loadDates = () => async (dispatch) => {
+export const loadAssociates = () => async (dispatch) => {
     try {
-        const res = await axios.get("/payroll/records/paydates/all");
+        const res = await axios.get("/payroll/records/associates/all");
         dispatch({
-            type: GET_PAY_DATES,
+            type: GET_ALL_ASSOCIATES,
             payload: res.data
         })
         dispatch(loadUser());
@@ -16,13 +23,15 @@ export const loadDates = () => async (dispatch) => {
     }
 }
 
-export const saveDate = (date) => async dispatch => {
+export const saveAssociate = (data) => async dispatch => {
     try {
-        const res = await axios.post("/payroll/records/date/new", date);
+        const res = await axios.post("/payroll/associate/new", data);
+        console.log(res)
         dispatch({
             type: SET_SUCCESS_ALERT,
             payload: res.data.success[0].msg
         })
+        // window.location.reload()
         dispatch(loadUser());
     } catch (err) {
         const error = err.response.data.errors[0].msg;
@@ -35,9 +44,9 @@ export const saveDate = (date) => async dispatch => {
     }
 }
 
-export const deletePayDate = (id) => async dispatch => {
+export const deleteAssociate = (id) => async dispatch => {
     try {
-        const res = await axios.delete(`payroll/records/paydate/remove/${id}`)
+        const res = await axios.delete(`payroll/records/associate/remove/${id}`)
 
         dispatch({
             type: SET_SUCCESS_ALERT,

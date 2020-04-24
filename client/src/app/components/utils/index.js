@@ -7,38 +7,123 @@ export const isLogin = () => {
 }
 
 export const columns = [{
-    text: 'Identification Number',
-    dataField: 'EUID',
+    text: 'ID',
+    dataField: 'ID',
     sort: true,
-
 }, {
-    text: 'Name',
-    dataField: 'EMP',
+    text: 'Position',
+    dataField: 'POSITION',
+    sort: true,
+    formatter: (cellContent, row) => {
+        if (cellContent === 0) {
+            return (
+                <label>HHA</label>
+            );
+        } else if (cellContent === 1) {
+            return (
+                <label>DSP</label>
+            );
+        } else if (cellContent === 2) {
+            return (
+                <label>Office</label>
+            );
+        } else if (cellContent === 3) {
+            return (
+                <label>Admin</label>
+            );
+        }
+    }
+}, {
+    text: 'First Name',
+    dataField: 'FIRSTNAME',
+    sort: true
+}, {
+    text: 'Last Name',
+    dataField: 'LASTNAME',
     sort: true
 }, {
     text: 'Worked Flag',
     dataField: 'WRKD_FLG',
-    sort: true
+    sort: true,
+    formatter: (cellContent, row) => {
+        if (cellContent === 'X') {
+            return (
+                <label className="badge badge-success">WORKED</label>
+            );
+        }
+    },
+    editor: true
 }, {
     text: 'Hours Verified Flag',
     dataField: 'HRS_VER_FLG',
-    sort: true
+    sort: true,
+    formatter: (cellContent, row) => {
+        if (cellContent === 'V') {
+            return (
+                <label className="badge badge-success">VERIFIED</label>
+            );
+        } else if (cellContent === 'U') {
+            return (
+                <label className="badge badge-danger">UNVERIFIED</label>
+            );
+        }
+    }
 }, {
     text: 'Bonus Flag',
     dataField: 'BNS_FLG',
-    sort: true
+    sort: true,
+    formatter: (cellContent, row) => {
+        if (cellContent === 'B' || '') {
+            return (
+                <label className="badge badge-success">BONUS</label>
+            );
+        }
+    }
 }, {
     text: 'Timesheet Flag',
     dataField: 'TIMESHEET_FLG',
-    sort: true
+    sort: true,
+    formatter: (cellContent, row) => {
+        if (cellContent === 'N/A') {
+            return (
+                <label className="badge badge-info">TIMESHEET</label>
+            );
+        } else {
+            return (
+                <label></label>
+            );
+        }
+    }
 }, {
     text: 'Pickup Pay Flag',
     dataField: 'PICKUP_PAY_FLG',
-    sort: true
+    sort: true,
+    formatter: (cellContent, row) => {
+        if (cellContent === 'N/A') {
+            return (
+                <label className="badge badge-primary">PICKUP PAY</label>
+            );
+        } else {
+            return (
+                <label></label>
+            );
+        }
+    }
 }, {
     text: 'Adjustment Flag',
     dataField: 'ADJ_FLG',
-    sort: true
+    sort: true,
+    formatter: (cellContent, row) => {
+        if (cellContent === 'N/A') {
+            return (
+                <label className="badge badge-dark">ADJUSTMENT</label>
+            );
+        } else {
+            return (
+                <label></label>
+            );
+        }
+    }
 }, {
     text: 'Adjustment',
     dataField: 'ADJUSTMENT',
@@ -64,8 +149,8 @@ export const columns = [{
     dataField: 'UNVH',
     sort: true
 }, {
-    text: 'S',
-    dataField: 'S',
+    text: 'Verified Hours',
+    dataField: 'VRF_HRS',
     sort: true
 }, {
     text: 'Timesheet Hours',

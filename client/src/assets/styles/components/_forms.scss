@@ -49,6 +49,9 @@
     border: 1px solid rgba(71, 164, 71, 0.5);
     background-color: rgb(190, 190, 190);
   }
+  &:disabled {
+    background-color: #2A3038 !important;
+  }
   &.form-control-lg {
     padding: 0.94rem .75rem;
     height: calc(2.875rem + 2px);

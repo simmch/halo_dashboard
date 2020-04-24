@@ -1,12 +1,12 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { Redirect, withRouter } from "react-router-dom";
-import Widget1 from "./widgets/widget_1";
-import Widget2 from "./widgets/widget_2";
-import Widget3 from "./widgets/widget_3";
-import Widget4 from "./widgets/widget_4";
+import Widget1 from "../widgets/widget_1";
+import Widget2 from "../widgets/widget_2";
+import Widget3 from "../widgets/widget_3";
+import Widget4 from "../widgets/widget_4";
 import Spinner from "../isLoading/spinner";
-import EmpTable from "./widgets/empTable";
+import EmpTable from "../widgets/empTable";
 
 const Landing = ({ auth, payroll, history }) => {
 
@@ -17,22 +17,25 @@ const Landing = ({ auth, payroll, history }) => {
   }, [auth])
 
 
-  return (
-    <div >
-      <div className="row">
-        <Widget1 payroll={payroll} />
-        <Widget2 payroll={payroll} />
-        <Widget3 payroll={payroll} />
-        <Widget4 payroll={payroll} />
-      </div>
-      <EmpTable />
-    </div >
-  )
+
+  return !payroll.payrollData[1] ? (
+    <h1>Select a Payroll Date</h1>
+  ) : (
+      <div>
+        <div className="row">
+          <Widget1 payroll={payroll} />
+          <Widget2 payroll={payroll} />
+          <Widget3 payroll={payroll} />
+          <Widget4 payroll={payroll} />
+        </div>
+        <EmpTable />
+      </div >
+    )
 };
 
 const mapStateToProps = (state) => ({
   auth: state.auth,
-  payroll: state.payroll
+  payroll: state.payroll,
 });
 
 export default connect(mapStateToProps)(withRouter(Landing));

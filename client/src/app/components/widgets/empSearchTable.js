@@ -4,7 +4,7 @@ import BootstrapTable from 'react-bootstrap-table-next';
 import { Button, Modal } from 'react-bootstrap';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search, CSVExport } from 'react-bootstrap-table2-toolkit';
-import { deleteById, updateById } from '../../../actions/payroll/payroll';
+import { deleteById, updateById } from '../../actions/payroll/payroll';
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
 const { SearchBar } = Search;
 const { ExportCSVButton } = CSVExport;
@@ -47,15 +47,39 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
 
 
     const columns = [{
-        text: 'Identification Number',
-        dataField: 'EUID',
+        text: 'ID',
+        dataField: 'ID',
         sort: true,
-        editor: {
-            type: Type.TEXT
+    }, {
+        text: 'Position',
+        dataField: 'POSITION',
+        sort: true,
+        formatter: (cellContent, row) => {
+            if (cellContent === 0) {
+                return (
+                    <label>HHA</label>
+                );
+            } else if (cellContent === 1) {
+                return (
+                    <label>DSP</label>
+                );
+            } else if (cellContent === 2) {
+                return (
+                    <label>Office</label>
+                );
+            } else if (cellContent === 3) {
+                return (
+                    <label>Admin</label>
+                );
+            }
         }
     }, {
-        text: 'Name',
-        dataField: 'EMP',
+        text: 'First Name',
+        dataField: 'FIRSTNAME',
+        sort: true
+    }, {
+        text: 'Last Name',
+        dataField: 'LASTNAME',
         sort: true
     }, {
         text: 'Worked Flag',
@@ -106,8 +130,8 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
         dataField: 'UNVH',
         sort: true
     }, {
-        text: 'S',
-        dataField: 'S',
+        text: 'Verified Hours',
+        dataField: 'VRF_HRS',
         sort: true
     }, {
         text: 'Timesheet Hours',
@@ -198,7 +222,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
     }];
 
     return loading ? (
-        <h1>Search by Employee ID</h1>
+        <h1>Edit Associate Data</h1>
     ) : (
             <div>
                 <Modal
@@ -220,17 +244,11 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                     </Modal.Footer>
                 </Modal>
 
-                <div className="page-header">
-                    <h3 className="page-title">
-                        Employee table
-                    </h3>
-
-                </div>
                 <div className="row">
                     <div className="col-12">
                         <div className="card">
                             <div className="card-body">
-                                <h4 className="card-title">Employee Data</h4>
+                                <h4 className="card-title">Associate Raw Payroll Data</h4>
                                 <div className="row">
                                     <div className="col-12">
                                         <ToolkitProvider

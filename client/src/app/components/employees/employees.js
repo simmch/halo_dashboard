@@ -1,14 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import Widget1 from "../dashboard/widgets/widget_1";
-import Widget2 from "../dashboard/widgets/widget_2";
-import Widget3 from "../dashboard/widgets/widget_3";
-import Widget4 from "../dashboard/widgets/widget_4";
+import { withRouter } from "react-router-dom";
+import Widget1 from "../widgets/widget_1";
+import Widget2 from "../widgets/widget_2";
+import Widget3 from "../widgets/widget_3";
+import Widget4 from "../widgets/widget_4";
 import Spinner from "../isLoading/spinner";
-import EmpSearchTable from "../dashboard/widgets/empSearchTable";
+import EmpSearchTable from "../widgets/empSearchTable";
+import EmpPrimaryData from "../widgets/empPrimaryData";
 import Alerts from "../alerts/alerts";
+import { Form, Col, Button } from 'react-bootstrap';
 
-const Employees = ({ auth, payroll }) => {
+const Employees = ({ auth, payroll, history }) => {
+
+    useEffect(() => {
+        if (!auth.isAuthenticated) {
+            history.push('/login')
+        }
+    }, [])
+
+    const [editButton, setEditButton] = useState(false);
+
+    const onClickHandler = (e) => {
+        e.preventDefault();
+        editButton ? setEditButton(false) : setEditButton(true)
+
+    }
 
     return auth.loading === true ? (
         <Spinner></Spinner>
@@ -19,9 +36,18 @@ const Employees = ({ auth, payroll }) => {
                     <Widget2 payroll={payroll} />
                     <Widget3 payroll={payroll} />
                     <Widget4 payroll={payroll} />
+                    <div className="col-md-6 grid-margin">
+                        <button hidden={payroll.loading} onClick={onClickHandler} type="button" className="btn btn-primary btn-rounded btn-icon">
+                            <i className="mdi mdi-table-edit"></i>
+                        </button>
+                    </div >
+
                 </div>
-                <EmpSearchTable />
+                {!editButton ? <EmpPrimaryData /> : <EmpSearchTable />}
+
+
                 <Alerts />
+
             </div>
         )
 }
@@ -31,4 +57,4 @@ const mapStateToProps = (state) => ({
     auth: state.auth,
 })
 
-export default connect(mapStateToProps)(Employees)
+export default connect(mapStateToProps)(withRouter(Employees))

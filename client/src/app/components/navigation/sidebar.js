@@ -136,7 +136,7 @@ const Sidebar = (props) => {
               <span className="menu-icon">
                 <i className="mdi mdi-upload"></i>
               </span>
-              <span className="menu-title">Upload</span>
+              <span className="menu-title">Upload Payroll</span>
             </Link>
           </li>
 
@@ -152,7 +152,7 @@ const Sidebar = (props) => {
                 <i className="mdi mdi-account"></i>
               </span>
               <span className="menu-title">
-                <Trans>New Record</Trans>
+                <Trans>New Payroll Record</Trans>
               </span>
             </Link>
           </li>
@@ -169,7 +169,24 @@ const Sidebar = (props) => {
                 <i className="mdi mdi-account-multiple"></i>
               </span>
               <span className="menu-title">
-                <Trans>Employees</Trans>
+                <Trans>Search Associate</Trans>
+              </span>
+            </Link>
+          </li>
+
+          <li
+            className={
+              isPathActive("/newassociate")
+                ? "nav-item menu-items active"
+                : "nav-item menu-items"
+            }
+          >
+            <Link className="nav-link" to="/newassociate">
+              <span className="menu-icon">
+                <i className="mdi mdi-new-box"></i>
+              </span>
+              <span className="menu-title">
+                <Trans>New Associate</Trans>
               </span>
             </Link>
           </li>

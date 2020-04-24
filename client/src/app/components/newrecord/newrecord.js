@@ -1,18 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Form, Col, Button } from 'react-bootstrap';
 import { saveNewRecord } from '../../actions/payroll/payroll';
+import { withRouter } from "react-router-dom";
 import { saveDate } from '../../actions/paydates/paydates';
+import { loadAssociates } from '../../actions/associate/associate';
 import Spinner from '../isLoading/spinner';
 import Alerts from '../alerts/alerts';
 import { initialState, dateInitialState } from './state';
 import { Typeahead } from 'react-bootstrap-typeahead';
+import Select from 'react-select';
+import PayDate from './newpaydate';
 
-const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
+const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociates, associate }) => {
     const [data, setData] = useState(initialState)
     const [date, setDate] = useState(dateInitialState)
-    const { NEWPAYDATE } = date;
-    const { EUID, EMP, ADJUSTMENT, SP_RATE, NOTES, REG_HRS, SCH_HRS, UNVH, S, TS_HRS, SUP, SDP, BNS_HRS, BNS_RATE, BNS_HRS_B, BNS_RATE_B, BNS_HR_C, BNS_RATE_C, BNS_HR_D, BNS_RATE_D, PAYDATE } = data;
+
+    const { ID, FIRSTNAME, LASTNAME, POSITION, ADJUSTMENT, SP_RATE, NOTES, REG_HRS, SCH_HRS, UNVH, VRF_HRS, TS_HRS, SUP, SDP, BNS_HRS, BNS_RATE, BNS_HRS_B, BNS_RATE_B, BNS_HR_C, BNS_RATE_C, BNS_HR_D, BNS_RATE_D, PAYDATE } = data;
+
+    useEffect(() => {
+        loadAssociates()
+    }, [])
+
+
+    const associateSelector = associate.map(associate => {
+        return {
+            value: associate.ID, label: `${associate.LASTNAME}, ${associate.FIRSTNAME} ${associate.ID}`
+        }
+    })
+
 
 
     let options = {};
@@ -82,7 +98,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
 
     // Handles Bonus & Bonus Flag
     const bonusHandler = (e) => {
-        if ((SCH_HRS - S - UNVH) === REG_HRS) {
+        if ((SCH_HRS - VRF_HRS - UNVH) === REG_HRS) {
             setData({ ...data, [e.target.name]: e.target.value, BNS_FLG: 'N' })
         } else {
             setData({ ...data, [e.target.name]: e.target.value, BNS_FLG: 'Y' })
@@ -96,6 +112,22 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
         } else {
             setData({ ...data, PAYDATE: '' })
         }
+    }
+
+    const associateHandler = (e) => {
+        let value = e[0]
+        // console.log(e)
+        associate.map(associate => {
+            if (e.value === associate.ID) {
+                setData({
+                    ...data,
+                    FIRSTNAME: associate.FIRSTNAME,
+                    LASTNAME: associate.LASTNAME,
+                    ID: associate.ID,
+                    POSITION: associate.POSITION
+                })
+            }
+        })
     }
 
     // New Paydate onChange Handler
@@ -120,7 +152,6 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
         setData(initialState)
     }
 
-
     return isLoading ? (
         <Spinner />
     ) : (
@@ -136,27 +167,67 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
                             <div className="card-body">
                                 <Form noValidate>
                                     <Form.Row>
-                                        <Form.Group as={Col} md="3" controlId="validationCustom01">
-                                            <Form.Label>Identification Number</Form.Label>
+                                        <Form.Group as={Col} md="6" controlId="validationCustom01">
+                                            <Form.Label><h3>Select Associate</h3></Form.Label>
+                                            <Select
+                                                onChange={associateHandler}
+                                                options={
+                                                    associateSelector
+                                                }
+                                            />
+                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                        </Form.Group>
+                                    </Form.Row>
+                                    <Form.Row>
+                                        <Form.Group hidden={!ID} as={Col} md="1" controlId="validationCustom02">
+                                            <Form.Label>ID</Form.Label>
                                             <Form.Control
-                                                onChange={onChangeHandler}
+                                                value={ID}
+                                                disabled
+                                                // minLength={1}
+                                                name="ID"
                                                 required
-                                                value={EUID}
-                                                name="EUID"
                                                 type="text"
 
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
-                                        <Form.Group as={Col} md="3" controlId="validationCustom01">
-                                            <Form.Label>Employee Name</Form.Label>
+                                        <Form.Group hidden={!POSITION} as={Col} md="1" controlId="validationCustom02">
+                                            <Form.Label>Position</Form.Label>
                                             <Form.Control
-                                                onChange={onChangeHandler}
-                                                minLength={1}
-                                                value={EMP}
+                                                value={POSITION}
+                                                disabled
+                                                // minLength={1}
+                                                name="POSITION"
                                                 required
-                                                name="EMP"
                                                 type="text"
+
+                                            />
+                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                        </Form.Group>
+                                        <Form.Group hidden={!FIRSTNAME} as={Col} md="3" controlId="validationCustom02">
+                                            <Form.Label>First Name</Form.Label>
+                                            <Form.Control
+                                                value={FIRSTNAME}
+                                                disabled
+                                                // minLength={1}
+                                                name="FIRSTNAME"
+                                                required
+                                                type="text"
+
+                                            />
+                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
+                                        </Form.Group>
+                                        <Form.Group hidden={!LASTNAME} as={Col} md="3" controlId="validationCustom02">
+                                            <Form.Label>Last Name</Form.Label>
+                                            <Form.Control
+                                                value={LASTNAME}
+                                                disabled
+                                                // minLength={1}
+                                                name="LASTNAME"
+                                                required
+                                                type="text"
+
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -186,7 +257,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
-                                        <Form.Group as={Col} md="10" controlId="validationCustom02">
+                                        <Form.Group as={Col} md="6" controlId="validationCustom02">
                                             <Form.Label>Notes</Form.Label>
                                             <Form.Control
                                                 onChange={onChangeHandler}
@@ -202,8 +273,10 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
                                             <Form.Label>Regular Hours</Form.Label>
                                             <Form.Control
+                                                hidden={!SCH_HRS}
                                                 onChange={onChangeHandler}
-                                                value={REG_HRS}
+                                                disabled
+                                                value={(SCH_HRS - UNVH - VRF_HRS - TS_HRS - BNS_HRS - BNS_HRS_B - BNS_HR_C - BNS_HR_D)}
                                                 minLength={1}
                                                 name="REG_HRS"
                                                 required
@@ -238,19 +311,19 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
-                                        {/* <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>S</Form.Label>
+                                        <Form.Group as={Col} md="2" controlId="validationCustom02">
+                                            <Form.Label>Verified Hours</Form.Label>
                                             <Form.Control
                                                 onChange={onChangeHandler}
-                                                value={S}
+                                                value={VRF_HRS}
                                                 minLength={1}
-                                                name="S"
+                                                name="VRF_HRS"
                                                 required
                                                 type="text"
 
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group> */}
+                                        </Form.Group>
                                         <Form.Group as={Col} md="2" controlId="validationCustom02">
                                             <Form.Label>Timesheet Hours</Form.Label>
                                             <Form.Control
@@ -415,38 +488,6 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
                         </div>
                     </div>
                 </div>
-                <div className="page-header">
-                    <h3 className="page-title">
-                        New Pay Date
-                    </h3>
-                </div>
-                <div className="row">
-                    <div className="col-md-12 grid-margin">
-                        <div className="card">
-                            <div className="card-body">
-                                <Form noValidate>
-                                    <Form.Row>
-                                        <Form.Group as={Col} md="4" controlId="validationCustom01">
-                                            <Form.Label>Pay Date</Form.Label>
-                                            <Form.Control
-                                                onChange={newPaydateHandler}
-                                                required
-                                                value={NEWPAYDATE}
-                                                name="NEWPAYDATE"
-                                                type="text"
-
-                                            />
-                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group>
-                                    </Form.Row>
-                                    <Button type="submit" onClick={newPaydateSubmitHandler}>Submit form</Button>
-
-                                </Form>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
         )
 }
@@ -454,7 +495,8 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate }) => {
 const mapStateToProps = (state) => ({
     payload: state.payload,
     isLoading: state.auth.loading,
-    paydates: state.paydates
+    paydates: state.paydates,
+    associate: state.associate.associate
 })
 
-export default connect(mapStateToProps, { saveNewRecord, saveDate })(NewRecord);
+export default connect(mapStateToProps, { saveNewRecord, saveDate, loadAssociates })(withRouter(NewRecord));

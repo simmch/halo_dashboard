@@ -30,7 +30,7 @@ const PayrollSearch = ({ getPayrollById }) => {
                     type="text"
                     className="form-control"
                     name="id"
-                    placeholder="Search Employee Id"
+                    placeholder="Search Associate By ID"
                     onChange={onChangeHandler}
                     onKeyPress={enterKeyPressed} />
             </form>
