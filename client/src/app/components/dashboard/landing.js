@@ -33,6 +33,7 @@ const Landing = ({ auth, payroll, history }) => {
   return !payroll.payrollData[0] ? (
     <div>
       <h1>Select a Payroll Date</h1>
+
       <Alert />
     </div>
   ) : (
