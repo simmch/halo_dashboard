@@ -5,6 +5,11 @@ html {
   padding-right: 0; // resets padding right added by Bootstrap modal
 }
 
+.deleteAll {
+  position: relative;
+  right: 13px;
+}
+
 body {
   background: $content-bg;
 }

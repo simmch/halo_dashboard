@@ -5,11 +5,13 @@ import { Link, withRouter } from "react-router-dom";
 import { Trans } from "react-i18next";
 import { logout } from "../../actions/auth/auth";
 import { loadDates } from "../../actions/paydates/paydates";
+import { loadAssociates } from '../../actions/associate/associate';
+
 import PaydateDropdown from "./paydateDropdown/paydateDropdown";
 import PayrollSearch from "./payrollSearch/payrollSearch";
 
 
-const Navbar = ({ auth, logout, loadDates, paydates, history }) => {
+const Navbar = ({ auth, logout, loadDates, loadAssociates, paydates, history }) => {
 
   const { location } = history;
 
@@ -19,6 +21,7 @@ const Navbar = ({ auth, logout, loadDates, paydates, history }) => {
 
   useEffect(() => {
     loadDates();
+    loadAssociates();
   }, [loadDates])
 
 
@@ -123,4 +126,4 @@ const mapStateToProps = (state) => ({
   paydates: state.paydates,
 })
 
-export default connect(mapStateToProps, { logout, loadDates })(withRouter(Navbar));
+export default connect(mapStateToProps, { logout, loadDates, loadAssociates })(withRouter(Navbar));

@@ -7,19 +7,21 @@ import { saveDate } from '../../actions/paydates/paydates';
 import { loadAssociates } from '../../actions/associate/associate';
 import Spinner from '../isLoading/spinner';
 import Alerts from '../alerts/alerts';
-import { initialState, dateInitialState } from './state';
+import { initialState, dateInitialState } from '../STATE';
 import { Typeahead } from 'react-bootstrap-typeahead';
 import Select from 'react-select';
-import PayDate from './newpaydate';
+import { removeAlert } from '../../actions/alerts';
+import { loadDates } from '../../actions/paydates/paydates';
 
-const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociates, associate }) => {
+const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociates, associate, removeAlert, loadDates }) => {
     const [data, setData] = useState(initialState)
     const [date, setDate] = useState(dateInitialState)
 
     const { ID, FIRSTNAME, LASTNAME, POSITION, ADJUSTMENT, SP_RATE, NOTES, REG_HRS, SCH_HRS, UNVH, VRF_HRS, TS_HRS, SUP, SDP, BNS_HRS, BNS_RATE, BNS_HRS_B, BNS_RATE_B, BNS_HR_C, BNS_RATE_C, BNS_HR_D, BNS_RATE_D, PAYDATE } = data;
 
     useEffect(() => {
-        loadAssociates()
+        loadAssociates();
+        removeAlert();
     }, [])
 
 
@@ -53,7 +55,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
     // Handles Scheduled Hours and Worked Flag
     const schHrsHandler = (e) => {
         if (e.target.value != 0) {
-            setData({ ...data, SCH_HRS: e.target.value, WRKD_FLG: 'Y' })
+            setData({ ...data, SCH_HRS: e.target.value, WRKD_FLG: 'X' })
         }
         else {
             setData({ ...data, SCH_HRS: e.target.value, WRKD_FLG: 'N' })
@@ -63,7 +65,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
     // Handles Hours Verified flag and Unverified Hours
     const unvhHandler = (e) => {
         if ((REG_HRS - UNVH === REG_HRS)) {
-            setData({ ...data, HRS_VER_FLG: 'Y', UNVH: e.target.value })
+            setData({ ...data, HRS_VER_FLG: 'X', UNVH: e.target.value })
         } else {
             setData({ ...data, HRS_VER_FLG: 'N', UNVH: e.target.value })
         }
@@ -72,7 +74,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
     // Handles Time Sheet hours and Timesheet Flag
     const timesheetHandler = (e) => {
         if (e.target.value !== 0) {
-            setData({ ...data, TIMESHEET_FLG: 'Y', TS_HRS: e.target.value })
+            setData({ ...data, TIMESHEET_FLG: 'X', TS_HRS: e.target.value })
         } else {
             setData({ ...data, TIMESHEET_FLG: 'N', TS_HRS: e.target.value })
         }
@@ -81,7 +83,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
     // Handles SDP and Pickup Pay Flag
     const sdpHandler = (e) => {
         if (e.target.value > 0) {
-            setData({ ...data, PICKUP_PAY_FLG: 'Y', SDP: e.target.value })
+            setData({ ...data, PICKUP_PAY_FLG: 'X', SDP: e.target.value })
         } else {
             setData({ ...data, PICKUP_PAY_FLG: 'N', SDP: e.target.value })
         }
@@ -90,7 +92,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
     // Handles Adjustment and Adjustment Flag
     const adjustmentHandler = (e) => {
         if (e.target.value != "") {
-            setData({ ...data, [e.target.name]: e.target.value, ADJ_FLG: 'Y' })
+            setData({ ...data, [e.target.name]: e.target.value, ADJ_FLG: 'X' })
         } else {
             setData({ ...data, [e.target.name]: e.target.value, ADJ_FLG: 'N' })
         }
@@ -101,7 +103,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
         if ((SCH_HRS - VRF_HRS - UNVH) === REG_HRS) {
             setData({ ...data, [e.target.name]: e.target.value, BNS_FLG: 'N' })
         } else {
-            setData({ ...data, [e.target.name]: e.target.value, BNS_FLG: 'Y' })
+            setData({ ...data, [e.target.name]: e.target.value, BNS_FLG: 'X' })
         }
     }
 
@@ -152,6 +154,16 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
         setData(initialState)
     }
 
+    let regularHoursHandler = +VRF_HRS + + SCH_HRS - UNVH - TS_HRS - BNS_HRS - BNS_HRS_B - BNS_HR_C - BNS_HR_D;
+
+    const styleSheet = {
+        input: (base, state) => ({
+            ...base,
+            color: 'white'
+
+        })
+    };
+
     return isLoading ? (
         <Spinner />
     ) : (
@@ -174,6 +186,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 options={
                                                     associateSelector
                                                 }
+                                                styles={styleSheet}
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -276,7 +289,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 hidden={!SCH_HRS}
                                                 onChange={onChangeHandler}
                                                 disabled
-                                                value={(SCH_HRS - UNVH - VRF_HRS - TS_HRS - BNS_HRS - BNS_HRS_B - BNS_HR_C - BNS_HR_D)}
+                                                value={regularHoursHandler}
                                                 minLength={1}
                                                 name="REG_HRS"
                                                 required
@@ -499,4 +512,4 @@ const mapStateToProps = (state) => ({
     associate: state.associate.associate
 })
 
-export default connect(mapStateToProps, { saveNewRecord, saveDate, loadAssociates })(withRouter(NewRecord));
+export default connect(mapStateToProps, { saveNewRecord, saveDate, loadAssociates, removeAlert, loadDates })(withRouter(NewRecord));

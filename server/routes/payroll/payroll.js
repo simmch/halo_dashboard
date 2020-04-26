@@ -175,17 +175,17 @@ router.post("/records/new", auth, async (req, res) => {
       const record = new Payroll({
         ID: req.body.ID || 0,
         POSITION: req.body.POSITION || 0,
-        FIRSTNAME: req.body.FIRSTNAME || 'N/A',
-        LASTNAME: req.body.LASTNAME || 'N/A',
-        WRKD_FLG: req.body.WRKD_FLG || 'N/A',
-        HRS_VER_FLG: req.body.HRS_VER_FLG || 'N/A',
-        BNS_FLG: req.body.BNS_FLG || 'N/A',
-        TIMESHEET_FLG: req.body.TIMESHEET_FLG || 'N/A',
-        PICKUP_PAY_FLG: req.body.PICKUP_PAY_FLG || 'N/A',
-        ADJ_FLG: req.body.ADJ_FLG || 'N/A',
-        ADJUSTMENT: req.body.ADJUSTMENT || 'N/A',
-        SP_RATE: req.body.SP_RATE || 'N/A',
-        NOTES: req.body.NOTES || 'N/A',
+        FIRSTNAME: req.body.FIRSTNAME || 'N',
+        LASTNAME: req.body.LASTNAME || 'N',
+        WRKD_FLG: req.body.WRKD_FLG || 'N',
+        HRS_VER_FLG: req.body.HRS_VER_FLG || 'N',
+        BNS_FLG: req.body.BNS_FLG || 'N',
+        TIMESHEET_FLG: req.body.TIMESHEET_FLG || 'N',
+        PICKUP_PAY_FLG: req.body.PICKUP_PAY_FLG || 'N',
+        ADJ_FLG: req.body.ADJ_FLG || 'N',
+        ADJUSTMENT: req.body.ADJUSTMENT || 'N',
+        SP_RATE: req.body.SP_RATE || 'N',
+        NOTES: req.body.NOTES || 'N',
         REG_HRS: req.body.REG_HRS || 0,
         SCH_HRS: req.body.SCH_HRS || 0,
         UNVH: req.body.UNVH || 0,
@@ -329,7 +329,7 @@ router.get("/records/euid/:ID", async (req, res) => {
     if (record.length !== 0) {
       res.status(200).json(record);
     } else {
-      res.status(500).send({ errors: [{ msg: "Record does not exist" }] })
+      res.status(500).send({ errors: [{ msg: "No Payroll for Associate." }] })
     }
   } catch (err) {
     res.status(404).send({ errors: [{ msg: "Error getting record by ID: " + err }] });
@@ -343,8 +343,13 @@ router.get("/records/sheet_date/:PAYDATE", async (req, res) => {
   try {
     const record = await Payroll.find({
       PAYDATE: req.params.PAYDATE,
-    });
-    res.status(200).json(record);
+    })
+
+    if (!record[0]) {
+      res.status(400).json({ errors: [{ msg: "No Payroll Data for this Pay Date." }] })
+    } else {
+      res.status(200).json(record);
+    }
   } catch (err) {
     res.status(500).json({ errors: [{ msg: "Error Fetching Pay Date: " + err }] });
   }

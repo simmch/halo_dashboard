@@ -16,9 +16,19 @@ export const getPayrollByDate = (date) => async dispatch => {
             type: GET_DATA_BY_DATE,
             payload: res.data,
         })
+        removeAlert();
         dispatch(loadUser());
     } catch (err) {
         console.log(err)
+
+        const error = err.response.data.errors[0].msg;
+
+        dispatch({
+            type: SET_ERROR_ALERT,
+            payload: error
+        })
+
+        dispatch(loadUser());
     }
 }
 

@@ -6,6 +6,7 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search, CSVExport } from 'react-bootstrap-table2-toolkit';
 import { deleteById, updateById } from '../../actions/payroll/payroll';
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
+import { initialState, payrollDataMapping } from '../STATE';
 const { SearchBar } = Search;
 const { ExportCSVButton } = CSVExport;
 
@@ -26,12 +27,101 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
 
     }
 
-    const onClickHandlerUpdate = (id) => {
+    // UPDATE ALL ASSOCIATES
+    const onClickUpdateAllHandler = () => {
+        payrollData.map(item => {
+            let data = item;
+            // Worked Flag
+            if (data.SCH_HRS !== 0) {
+                data.WRKD_FLG = 'X';
+            } else {
+                data.WRKD_FLG = 'N';
+            }
+            // Hours Verified Flag
+            if (data.REG_HRS - data.UNVH === data.REG_HRS) {
+                data.HRS_VER_FLG = 'X';
+            } else {
+                data.HRS_VER_FLG = 'N';
+            }
+            // Timesheet Flag
+            if (data.TS_HRS !== 0) {
+                data.TIMESHEET_FLG = 'X';
+            } else {
+                data.TIMESHEET_FLG = 'N';
+            }
+            // Pickup Pay Flag
+            if (data.SDP > 0) {
+                data.PICKUP_PAY_FLG = 'X';
+            } else {
+                data.PICKUP_PAY_FLG = 'N';
+            }
+            // Adjustment Flag
+            if (data.ADJUSTMENT !== "") {
+                data.ADJ_FLG = 'X';
+            } else {
+                data.ADJ_FLG = 'N';
+            }
+            // Bonus Flag
+            if ((data.SCH_HRS - data.VRF_HRS - data.UNVH) === data.REG_HRS) {
+                data.BNS_FLG = 'N';
+            } else {
+                data.BNS_FLG = 'X';
+            }
+            // Regular Hour
+            data.REG_HRS = +data.VRF_HRS + + data.SCH_HRS - data.UNVH - data.TS_HRS - data.BNS_HRS - data.BNS_HRS_B - data.BNS_HR_C - data.BNS_HR_D;
 
+            updateById(data._id, data);
+
+        })
+    }
+
+    const onClickHandlerUpdate = (id) => {
+        console.log(id)
         function idMatch(payrollData) {
             return payrollData._id === id;
         }
         const data = payrollData.find(idMatch)
+
+        // Worked Flag
+        if (data.SCH_HRS !== 0) {
+            data.WRKD_FLG = 'X';
+        } else {
+            data.WRKD_FLG = 'N';
+        }
+        // Hours Verified Flag
+        if (data.REG_HRS - data.UNVH === data.REG_HRS) {
+            data.HRS_VER_FLG = 'X';
+        } else {
+            data.HRS_VER_FLG = 'N';
+        }
+        // Timesheet Flag
+        if (data.TS_HRS !== 0) {
+            data.TIMESHEET_FLG = 'X';
+        } else {
+            data.TIMESHEET_FLG = 'N';
+        }
+        // Pickup Pay Flag
+        if (data.SDP > 0) {
+            data.PICKUP_PAY_FLG = 'X';
+        } else {
+            data.PICKUP_PAY_FLG = 'N';
+        }
+        // Adjustment Flag
+        if (data.ADJUSTMENT !== "") {
+            data.ADJ_FLG = 'X';
+        } else {
+            data.ADJ_FLG = 'N';
+        }
+        // Bonus Flag
+        if ((data.SCH_HRS - data.VRF_HRS - data.UNVH) === data.REG_HRS) {
+            data.BNS_FLG = 'N';
+        } else {
+            data.BNS_FLG = 'X';
+        }
+        // Regular Hour
+        data.REG_HRS = +data.VRF_HRS + + data.SCH_HRS - data.UNVH - data.TS_HRS - data.BNS_HRS - data.BNS_HRS_B - data.BNS_HR_C - data.BNS_HR_D;
+
+        console.log(data)
 
         updateById(id, data);
 
@@ -47,10 +137,6 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
 
 
     const columns = [{
-        text: 'ID',
-        dataField: 'ID',
-        sort: true,
-    }, {
         text: 'Position',
         dataField: 'POSITION',
         sort: true,
@@ -217,7 +303,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
     const { loading, payrollData } = payroll;
 
     const defaultSorted = [{
-        dataField: 'id',
+        dataField: 'ID',
         order: 'desc'
     }];
 
@@ -252,7 +338,8 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                                 <div className="row">
                                     <div className="col-12">
                                         <ToolkitProvider
-                                            keyField="id"
+                                            // Key that differentiates each row for updating
+                                            keyField="_id"
                                             bootstrap4
                                             data={payrollData}
                                             columns={columns}
@@ -267,12 +354,22 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                                                                 <i className="mdi mdi-download"></i>
                                                             </button>
                                                         </ExportCSVButton>
+
+                                                        <button type="button" onClick={onClickUpdateAllHandler} className="btn download btn-outline-warning btn-rounded btn-icon">
+                                                            <i className="mdi mdi-auto-fix"></i>
+                                                        </button>
+
+                                                        {/* <button type="button" className="deleteAll download btn btn-outline-danger btn-rounded btn-icon">
+                                                            <i className="mdi mdi-delete-forever"></i>
+                                                        </button> */}
+
                                                         <div className="d-flex align-items-center">
                                                             <p className="mb-2 mr-2">Search in table:</p>
                                                             <SearchBar {...props.searchProps} />
                                                         </div>
+
                                                         <BootstrapTable
-                                                            cellEdit={cellEditFactory({ mode: 'dbclick' })}
+                                                            cellEdit={cellEditFactory({ mode: 'click' })}
                                                             defaultSorted={defaultSorted}
                                                             pagination={paginationFactory()}
                                                             {...props.baseProps}

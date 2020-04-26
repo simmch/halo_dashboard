@@ -23,7 +23,9 @@ export const saveDate = (date) => async dispatch => {
             type: SET_SUCCESS_ALERT,
             payload: res.data.success[0].msg
         })
+
         dispatch(loadUser());
+        window.location.reload();
     } catch (err) {
         const error = err.response.data.errors[0].msg;
         dispatch({
@@ -43,6 +45,8 @@ export const deletePayDate = (id) => async dispatch => {
             type: SET_SUCCESS_ALERT,
             payload: res.data.success[0].msg
         })
+
+        window.location.reload();
         dispatch(loadUser());
     } catch (err) {
         const error = err.response.data.errors[0].msg;

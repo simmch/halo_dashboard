@@ -7,12 +7,11 @@ import { Form } from 'react-bootstrap';
 import Alerts from "../alerts/alerts";
 import { removeAlert } from '../../actions/alerts';
 
-const Upload = ({ auth, history, isLoading, uploadFile }) => {
+const Upload = ({ auth, history, isLoading, uploadFile, removeAlert }) => {
 
     useEffect(() => {
-        if (!auth.isAuthenticated) {
-            history.push('/login')
-        }
+        removeAlert();
+
     }, [])
 
     const [uploadData, setUploadData] = useState({

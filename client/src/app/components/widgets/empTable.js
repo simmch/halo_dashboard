@@ -18,9 +18,6 @@ const EmpTable = ({ payroll }) => {
     return (
         <div>
             <div className="page-header">
-                <h3 className="page-title">
-                    Payroll Table
-            </h3>
 
             </div>
             <div className="row">

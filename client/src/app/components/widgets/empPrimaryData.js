@@ -46,174 +46,164 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
     }
 
 
-    const columns = [{
-        text: 'First Name',
-        dataField: 'FIRSTNAME',
-        sort: true
-    }, {
-        text: 'Last Name',
-        dataField: 'LASTNAME',
-        sort: true
-    }, {
-        text: 'Worked Flag',
-        dataField: 'WRKD_FLG',
-        sort: true,
-        formatter: (cellContent, row) => {
-            if (cellContent === 'X') {
-                return (
-                    <label className="badge badge-success">WORKED</label>
-                );
+    const columns = [
+        {
+            text: 'Worked Flag',
+            dataField: 'WRKD_FLG',
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent === 'X') {
+                    return (
+                        <label className="badge badge-success">WORKED</label>
+                    );
+                }
             }
+        }, {
+            text: 'Hours Verified Flag',
+            dataField: 'HRS_VER_FLG',
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent === 'X') {
+                    return (
+                        <label className="badge badge-success">VERIFIED</label>
+                    );
+                } else if (cellContent === 'N') {
+                    return (
+                        <label className="badge badge-danger">UNVERIFIED</label>
+                    );
+                }
+            }
+        }, {
+            text: 'Bonus Flag',
+            dataField: 'BNS_FLG',
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent === 'X' || '') {
+                    return (
+                        <label className="badge badge-warning">BONUS</label>
+                    );
+                }
+            }
+        }, {
+            text: 'Timesheet Flag',
+            dataField: 'TIMESHEET_FLG',
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent === 'X') {
+                    return (
+                        <label className="badge badge-info">TIMESHEET</label>
+                    );
+                } else {
+                    return (
+                        <label></label>
+                    );
+                }
+            }
+        }, {
+            text: 'Pickup Pay Flag',
+            dataField: 'PICKUP_PAY_FLG',
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent === 'X') {
+                    return (
+                        <label className="badge badge-primary">PICKUP PAY</label>
+                    );
+                } else {
+                    return (
+                        <label></label>
+                    );
+                }
+            }
+        }, {
+            text: 'Adjustment Flag',
+            dataField: 'ADJ_FLG',
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent !== 'N') {
+                    return (
+                        <label className="badge badge-dark">ADJUSTMENT</label>
+                    );
+                } else {
+                    return (
+                        <label></label>
+                    );
+                }
+            }
+        }, {
+            text: 'Special Rate',
+            dataField: 'SP_RATE',
+            sort: true
         },
-        editor: true
-    }, {
-        text: 'Hours Verified Flag',
-        dataField: 'HRS_VER_FLG',
-        sort: true,
-        formatter: (cellContent, row) => {
-            if (cellContent === 'V') {
-                return (
-                    <label className="badge badge-success">VERIFIED</label>
-                );
-            } else if (cellContent === 'U') {
-                return (
-                    <label className="badge badge-danger">UNVERIFIED</label>
-                );
-            }
+        // {
+        //     text: 'Notes',
+        //     dataField: 'NOTES',
+        //     sort: true
+        // }, 
+        {
+            text: 'Regular Hours',
+            dataField: 'REG_HRS',
+            sort: true
+        }, {
+            text: 'Scheduled Hours',
+            dataField: 'SCH_HRS',
+            sort: true
+        }, {
+            text: 'Unverfied Hours',
+            dataField: 'UNVH',
+            sort: true
+        }, {
+            text: 'Verified Hours',
+            dataField: 'VRF_HRS',
+            sort: true
+        }, {
+            text: 'Timesheet Hours',
+            dataField: 'TS_HRS',
+            sort: true
+        }, {
+            text: 'Show Up Pay',
+            dataField: 'SUP',
+            sort: true
+        }, {
+            text: 'Same Day Pay',
+            dataField: 'SDP',
+            sort: true
+        }, {
+            text: 'Bonus Hours',
+            dataField: 'BNS_HRS',
+            sort: true
+        }, {
+            text: 'Bonus Rate',
+            dataField: 'BNS_RATE',
+            sort: true
+        }, {
+            text: 'Bonus Hours B',
+            dataField: 'BNS_HRS_B',
+            sort: true
+        }, {
+            text: 'Bonus Rate B',
+            dataField: 'BNS_RATE_B',
+            sort: true
+        }, {
+            text: 'Bonus Hours C',
+            dataField: 'BNS_HR_C',
+            sort: true
+        }, {
+            text: 'Bonus Rate C',
+            dataField: 'BNS_RATE_C',
+            sort: true
+        }, {
+            text: 'Bonus Hours D',
+            dataField: 'BNS_HR_D',
+            sort: true
+        }, {
+            text: 'Bonus Rate D',
+            dataField: 'BNS_RATE_D',
+            sort: true
+        }, {
+            text: 'Pay Date',
+            dataField: 'PAYDATE',
+            sort: true
         }
-    }, {
-        text: 'Bonus Flag',
-        dataField: 'BNS_FLG',
-        sort: true,
-        formatter: (cellContent, row) => {
-            if (cellContent === 'B' || '') {
-                return (
-                    <label className="badge badge-success">BONUS</label>
-                );
-            }
-        }
-    }, {
-        text: 'Timesheet Flag',
-        dataField: 'TIMESHEET_FLG',
-        sort: true,
-        formatter: (cellContent, row) => {
-            if (cellContent === 'N/A') {
-                return (
-                    <label className="badge badge-info">TIMESHEET</label>
-                );
-            } else {
-                return (
-                    <label></label>
-                );
-            }
-        }
-    }, {
-        text: 'Pickup Pay Flag',
-        dataField: 'PICKUP_PAY_FLG',
-        sort: true,
-        formatter: (cellContent, row) => {
-            if (cellContent === 'N/A') {
-                return (
-                    <label className="badge badge-primary">PICKUP PAY</label>
-                );
-            } else {
-                return (
-                    <label></label>
-                );
-            }
-        }
-    }, {
-        text: 'Adjustment Flag',
-        dataField: 'ADJ_FLG',
-        sort: true,
-        formatter: (cellContent, row) => {
-            if (cellContent === 'N/A') {
-                return (
-                    <label className="badge badge-dark">ADJUSTMENT</label>
-                );
-            } else {
-                return (
-                    <label></label>
-                );
-            }
-        }
-    }, {
-        text: 'Special Rate',
-        dataField: 'SP_RATE',
-        sort: true
-    }, {
-        text: 'Notes',
-        dataField: 'NOTES',
-        sort: true
-    }, {
-        text: 'Regular Hours',
-        dataField: 'REG_HRS',
-        sort: true
-    }, {
-        text: 'Scheduled Hours',
-        dataField: 'SCH_HRS',
-        sort: true
-    }, {
-        text: 'Unverfied Hours',
-        dataField: 'UNVH',
-        sort: true
-    }, {
-        text: 'Verified Hours',
-        dataField: 'VRF_HRS',
-        sort: true
-    }, {
-        text: 'Timesheet Hours',
-        dataField: 'TS_HRS',
-        sort: true
-    }, {
-        text: 'Show Up Pay',
-        dataField: 'SUP',
-        sort: true
-    }, {
-        text: 'Same Day Pay',
-        dataField: 'SDP',
-        sort: true
-    }, {
-        text: 'Bonus Hours',
-        dataField: 'BNS_HRS',
-        sort: true
-    }, {
-        text: 'Bonus Rate',
-        dataField: 'BNS_RATE',
-        sort: true
-    }, {
-        text: 'Bonus Hours B',
-        dataField: 'BNS_HRS_B',
-        sort: true
-    }, {
-        text: 'Bonus Rate B',
-        dataField: 'BNS_RATE_B',
-        sort: true
-    }, {
-        text: 'Bonus Hours C',
-        dataField: 'BNS_HR_C',
-        sort: true
-    }, {
-        text: 'Bonus Rate C',
-        dataField: 'BNS_RATE_C',
-        sort: true
-    }, {
-        text: 'Bonus Hours D',
-        dataField: 'BNS_HR_D',
-        sort: true
-    }, {
-        text: 'Bonus Rate D',
-        dataField: 'BNS_RATE_D',
-        sort: true
-    }, {
-        text: 'Pay Date',
-        dataField: 'PAYDATE',
-        sort: true
-    }, {
-        text: 'UPDATED',
-        dataField: 'UPDATED',
-        sort: true
-    },
     ]
 
     const { loading, payrollData } = payroll;
@@ -235,7 +225,7 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
                                 <div className="row">
                                     <div className="col-12">
                                         <ToolkitProvider
-                                            keyField="id"
+                                            keyField="ID"
                                             bootstrap4
                                             data={payrollData}
                                             columns={columns}

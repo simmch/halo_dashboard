@@ -1,45 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux';
 import { getPayrollById } from '../../../actions/payroll/payroll';
+import { loadAssociates } from '../../../actions/associate/associate';
+import Select from 'react-select';
+import { Form, Col, Button } from 'react-bootstrap';
 
-const PayrollSearch = ({ getPayrollById }) => {
-    const [empId, setEmpId] = useState({
-        id: 0
+const PayrollSearch = ({ getPayrollById, loadAssociates, associate, auth }) => {
+
+    const associateSelector = associate.map(associate => {
+        return {
+            value: associate.ID, label: `${associate.LASTNAME}, ${associate.FIRSTNAME} ${associate.ID}`
+        }
     })
 
-    const { id } = empId;
+    const associateHandler = (e) => {
+        getPayrollById(e.value);
+    }
 
-    const onChangeHandler = (e) => {
-        setEmpId({
-            ...empId,
-            id: e.target.value
+    const styleSheet = {
+        input: (base, state) => ({
+            ...base,
+            color: 'white'
+
         })
-    }
-
-    const enterKeyPressed = (e) => {
-        if (e.key === "Enter") {
-            getPayrollById(id);
-            e.preventDefault();
-        }
-    }
+    };
 
     return (
         <li className="nav-item w-100">
-            <form className="nav-link d-lg-flex search">
-                <input
-                    type="text"
-                    className="form-control"
-                    name="id"
-                    placeholder="Search Associate By ID"
-                    onChange={onChangeHandler}
-                    onKeyPress={enterKeyPressed} />
-            </form>
+
+            <Select
+                type="text"
+                placeholder="Select an Associate"
+                onChange={associateHandler}
+                options={
+                    associateSelector
+                }
+                styles={styleSheet}
+            />
+
+
+
         </li>
     )
 }
 
 const mapStateToProps = (state) => ({
-    payroll: state.payroll
+    payroll: state.payroll,
+    auth: state.auth,
+    associate: state.associate.associate
 })
 
-export default connect(mapStateToProps, { getPayrollById })(PayrollSearch)
+export default connect(mapStateToProps, { getPayrollById, loadAssociates })(PayrollSearch)

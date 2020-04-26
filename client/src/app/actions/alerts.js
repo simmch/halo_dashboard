@@ -1,5 +1,6 @@
 import uuid from 'uuid';
 import { SET_SUCCESS_ALERT, SET_ERROR_ALERT, REMOVE_ALERT } from '../actionTypes/types';
+import { loadUser } from './auth/auth';
 
 export const setSuccessAlert = (msg, alertType) => async dispatch => {
     const id = uuid.v4();
@@ -24,4 +25,5 @@ export const removeAlert = () => async dispatch => {
     dispatch({
         type: REMOVE_ALERT,
     })
+    dispatch(loadUser());
 }

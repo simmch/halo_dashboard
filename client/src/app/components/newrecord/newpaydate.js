@@ -5,7 +5,7 @@ import { saveDate, deletePayDate } from '../../actions/paydates/paydates';
 import { saveAssociate } from '../../actions/associate/associate';
 import Spinner from '../isLoading/spinner';
 import Alerts from '../alerts/alerts';
-import { dateInitialState } from './state';
+import { dateInitialState } from '../STATE';
 import { Typeahead } from 'react-bootstrap-typeahead';
 
 const PayDate = ({ isLoading, paydates, saveDate, saveAssociate, deletePayDate }) => {

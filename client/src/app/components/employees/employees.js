@@ -9,15 +9,9 @@ import Spinner from "../isLoading/spinner";
 import EmpSearchTable from "../widgets/empSearchTable";
 import EmpPrimaryData from "../widgets/empPrimaryData";
 import Alerts from "../alerts/alerts";
-import { Form, Col, Button } from 'react-bootstrap';
+import { removeAlert } from '../../actions/alerts';
 
-const Employees = ({ auth, payroll, history }) => {
-
-    useEffect(() => {
-        if (!auth.isAuthenticated) {
-            history.push('/login')
-        }
-    }, [])
+const Employees = ({ auth, payroll, removeAlert }) => {
 
     const [editButton, setEditButton] = useState(false);
 
@@ -27,10 +21,21 @@ const Employees = ({ auth, payroll, history }) => {
 
     }
 
+    useEffect(() => {
+        removeAlert();
+    }, [])
+
+    let associateName = "";
+
+    if (payroll.payrollData[0]) {
+        associateName = `${payroll.payrollData[0].LASTNAME}, ${payroll.payrollData[0].FIRSTNAME}`
+    }
+
     return auth.loading === true ? (
         <Spinner></Spinner>
     ) : (
             <div>
+                {payroll.loading ? <h1></h1> : <h1>{associateName}</h1>}
                 <div className="row">
                     <Widget1 payroll={payroll} />
                     <Widget2 payroll={payroll} />
@@ -40,7 +45,7 @@ const Employees = ({ auth, payroll, history }) => {
                         <button hidden={payroll.loading} onClick={onClickHandler} type="button" className="btn btn-primary btn-rounded btn-icon">
                             <i className="mdi mdi-table-edit"></i>
                         </button>
-                    </div >
+                    </div>
 
                 </div>
                 {!editButton ? <EmpPrimaryData /> : <EmpSearchTable />}
@@ -57,4 +62,4 @@ const mapStateToProps = (state) => ({
     auth: state.auth,
 })
 
-export default connect(mapStateToProps)(withRouter(Employees))
+export default connect(mapStateToProps, { removeAlert })(withRouter(Employees))

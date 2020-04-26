@@ -4,11 +4,11 @@ import { Form, Col, Button } from 'react-bootstrap';
 import { loadAssociates, saveAssociate, deleteAssociate } from '../../actions/associate/associate';
 import Spinner from '../isLoading/spinner';
 import Alerts from '../alerts/alerts';
-import { initialState, dateInitialState } from './state';
+import { removeAlert } from '../../actions/alerts';
 import Select from 'react-select';
 import PayDate from '../newrecord/newpaydate';
 
-const NewAssociate = ({ isLoading, loadAssociates, associate, saveAssociate, deleteAssociate }) => {
+const NewAssociate = ({ isLoading, loadAssociates, associate, saveAssociate, deleteAssociate, removeAlert }) => {
     const [data, setData] = useState({
         ID: '',
         FIRSTNAME: '',
@@ -21,7 +21,8 @@ const NewAssociate = ({ isLoading, loadAssociates, associate, saveAssociate, del
     })
 
     useEffect(() => {
-        loadAssociates()
+        loadAssociates();
+        removeAlert();
     }, [])
 
 
@@ -68,6 +69,14 @@ const NewAssociate = ({ isLoading, loadAssociates, associate, saveAssociate, del
             _id: ''
         })
     }
+
+    const styleSheet = {
+        input: (base, state) => ({
+            ...base,
+            color: 'white'
+
+        })
+    };
 
     return isLoading ? (
         <Spinner />
@@ -161,6 +170,7 @@ const NewAssociate = ({ isLoading, loadAssociates, associate, saveAssociate, del
                                                 options={
                                                     associateSelector
                                                 }
+                                                styles={styleSheet}
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
@@ -188,4 +198,4 @@ const mapStateToProps = (state) => ({
     associate: state.associate.associate
 })
 
-export default connect(mapStateToProps, { saveAssociate, loadAssociates, deleteAssociate })(NewAssociate);
+export default connect(mapStateToProps, { saveAssociate, loadAssociates, deleteAssociate, removeAlert })(NewAssociate);
