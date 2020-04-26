@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import BootstrapTable from 'react-bootstrap-table-next';
 import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search, CSVExport } from 'react-bootstrap-table2-toolkit';
+import { Pagination } from 'react-bootstrap';
 const { SearchBar } = Search;
 const { ExportCSVButton } = CSVExport;
 
@@ -53,7 +54,7 @@ const EmpTable = ({ payroll }) => {
 
                                                     <BootstrapTable
                                                         defaultSorted={defaultSorted}
-                                                        pagination={paginationFactory()}
+                                                        pagination={paginationFactory({ sizePerPageList: [50, 100, 200] })}
                                                         {...props.baseProps}
                                                         wrapperClasses="table-responsive"
 

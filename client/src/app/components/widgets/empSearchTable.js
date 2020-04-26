@@ -371,7 +371,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                                                         <BootstrapTable
                                                             cellEdit={cellEditFactory({ mode: 'click' })}
                                                             defaultSorted={defaultSorted}
-                                                            pagination={paginationFactory()}
+                                                            pagination={paginationFactory({ sizePerPageList: [50, 100, 200] })}
                                                             {...props.baseProps}
                                                             wrapperClasses="table-responsive"
                                                             striped={true}
