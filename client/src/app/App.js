@@ -33,9 +33,11 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
-        <Route exact path="/excelview" component={ExcelView} />
+
         <Fragment>
+          <Route exact path="/excelview" component={ExcelView} />
           <section className="container-scroller">
+
             <Route component={Sidebar} />
             <div className="container-fluid page-body-wrapper">
               <Route component={Navbar} />

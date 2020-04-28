@@ -2,7 +2,14 @@
 body,
 html {
   overflow-x: hidden;
+  min-height: 100% !important;
+  height: 100% !important;
   padding-right: 0; // resets padding right added by Bootstrap modal
+}
+
+#root {
+  min-height: 100% !important;
+  height: 100% !important;
 }
 
 .deleteAll {
@@ -68,15 +75,14 @@ body {
   }
 }
 
-.login-card {
-  margin-right: 150px;
-}
+// .login-card {
+//   margin-right: 150px;
+// }
 
 .content-wrapper {
   background: $content-bg;
   padding: $content-padding;
   width: 100%;
-  padding-left: 150px;
   @include flex-grow(1);
 }
 
@@ -98,6 +104,8 @@ body {
   overflow: hidden;
   display: flex;
   position: relative;
+  min-height: 100% !important;
+  // height: 100% !important;
 }
 
 pre {
