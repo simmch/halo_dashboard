@@ -33,9 +33,9 @@ const App = () => {
   return (
     <Provider store={store}>
       <Router>
+        <Route exact path="/excelview" component={ExcelView} />
         <Fragment>
           <section className="container-scroller">
-            <Route exact path="/excelview" component={ExcelView} />
             <Route component={Sidebar} />
             <div className="container-fluid page-body-wrapper">
               <Route component={Navbar} />
@@ -55,6 +55,7 @@ const App = () => {
               </div>
             </div>
           </section>
+
         </Fragment>
       </Router>
     </Provider>

@@ -266,14 +266,6 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
             dataField: 'BNS_RATE_D',
             sort: true
         }, {
-            text: 'Pay Date',
-            dataField: 'PAYDATE',
-            sort: true
-        }, {
-            text: 'UPDATED',
-            dataField: 'UPDATED',
-            sort: true
-        }, {
             dataField: '_id',
             text: 'Delete',
             sort: false,
@@ -333,12 +325,12 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
                 </Modal>
 
                 <div className="row">
-                    <div className="col-10">
+                    <div className="col-12">
                         <div className="card">
                             <div className="card-body">
                                 <h4 className="card-title">Excel Mode</h4>
                                 <div className="row">
-                                    <div className="col-10">
+                                    <div className="col-12">
                                         <ToolkitProvider
                                             // Key that differentiates each row for updating
                                             keyField="_id"
