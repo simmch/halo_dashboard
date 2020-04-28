@@ -5,6 +5,7 @@ import store from "./store";
 import "./App.scss";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import Landing from "./components/dashboard/landing";
+import ExcelView from "./components/dashboard/excelview";
 import Login from "./components/auth/login";
 import Register from "./components/auth/register";
 import Upload from "./components/upload/upload";
@@ -34,9 +35,11 @@ const App = () => {
       <Router>
         <Fragment>
           <section className="container-scroller">
+            <Route exact path="/excelview" component={ExcelView} />
             <Route component={Sidebar} />
             <div className="container-fluid page-body-wrapper">
               <Route component={Navbar} />
+
               <div className="main-panel">
                 <div className="content-wrapper">
                   <Switch>

@@ -54,7 +54,7 @@ const EmpTable = ({ payroll }) => {
 
                                                     <BootstrapTable
                                                         defaultSorted={defaultSorted}
-                                                        pagination={paginationFactory({ sizePerPageList: [50, 100, 200] })}
+                                                        pagination={paginationFactory({ sizePerPageList: [20, 100, 200] })}
                                                         {...props.baseProps}
                                                         wrapperClasses="table-responsive"
 

@@ -12,7 +12,7 @@ import EmpPrimaryData from "../widgets/empPrimaryData";
 import Alert from '../alerts/alerts';
 
 
-const Landing = ({ auth, payroll, history }) => {
+const Landing = ({ auth, payroll, history, associate }) => {
 
   const [editButton, setEditButton] = useState(false);
 
@@ -20,6 +20,11 @@ const Landing = ({ auth, payroll, history }) => {
     e.preventDefault();
     editButton ? setEditButton(false) : setEditButton(true)
 
+  }
+
+  const onExcelModeHandler = (e) => {
+    e.preventDefault();
+    history.location.pathname === "/" ? history.push('/excelview') : history.push('/')
   }
 
   useEffect(() => {
@@ -44,10 +49,19 @@ const Landing = ({ auth, payroll, history }) => {
           <Widget3 payroll={payroll} />
           <Widget4 payroll={payroll} />
         </div>
-        <div className="col-md-6 grid-margin">
-          <button hidden={payroll.loading} onClick={onClickHandler} type="button" className="btn btn-primary btn-rounded btn-icon">
-            <i className="mdi mdi-table-edit"></i>
-          </button>
+        <div className="row">
+          <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 grid-margin stretch-card">
+            <div className="card card-statistics">
+              <div className="card-body">
+                <button hidden={payroll.loading} onClick={onClickHandler} type="button" className="btn btn-primary btn-rounded btn-icon">
+                  <i className="mdi mdi-table-edit"></i>
+                </button> Edit Table
+                <button hidden={payroll.loading} onClick={onExcelModeHandler} type="button" style={{ 'margin-left': '10px' }} className="btn btn-info btn-rounded btn-icon">
+                  <i className="mdi mdi-file-excel"></i>
+                </button> Enter Excel Mode
+              </div>
+            </div>
+          </div>
         </div>
         {!editButton ? <EmpTable /> : <EmpSearchTable />}
       </div >
@@ -57,6 +71,7 @@ const Landing = ({ auth, payroll, history }) => {
 const mapStateToProps = (state) => ({
   auth: state.auth,
   payroll: state.payroll,
+  associate: state.associate.associate
 });
 
 export default connect(mapStateToProps)(withRouter(Landing));

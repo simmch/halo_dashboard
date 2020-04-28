@@ -7,11 +7,11 @@ export const isLogin = () => {
 }
 
 export const columns = [
-    {
-        text: 'ID',
-        dataField: 'ID',
-        sort: true,
-    },
+    // {
+    //     text: 'ID',
+    //     dataField: 'ID',
+    //     sort: true,
+    // },
     //{
     //     text: 'Position',
     //     dataField: 'POSITION',
@@ -45,7 +45,7 @@ export const columns = [
         dataField: 'LASTNAME',
         sort: true
     }, {
-        text: 'W',
+        text: '',
         dataField: 'WRKD_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -57,7 +57,7 @@ export const columns = [
         },
         editor: true
     }, {
-        text: 'HV',
+        text: '',
         dataField: 'HRS_VER_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -72,7 +72,7 @@ export const columns = [
             }
         }
     }, {
-        text: 'BF',
+        text: '',
         dataField: 'BNS_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -83,7 +83,7 @@ export const columns = [
             }
         }
     }, {
-        text: 'TF',
+        text: '',
         dataField: 'TIMESHEET_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -98,7 +98,7 @@ export const columns = [
             }
         }
     }, {
-        text: 'PUF',
+        text: '',
         dataField: 'PICKUP_PAY_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -113,7 +113,7 @@ export const columns = [
             }
         }
     }, {
-        text: 'AF',
+        text: '',
         dataField: 'ADJ_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -136,15 +136,19 @@ export const columns = [
         dataField: 'NOTES',
         sort: true
     }, {
-        text: 'Regular Hours',
+        text: 'Adjustment',
+        dataField: 'ADJUSTMENT',
+        sort: true
+    }, {
+        text: 'REG Hours',
         dataField: 'REG_HRS',
         sort: true
     }, {
-        text: 'Scheduled Hours',
+        text: 'SCH Hours',
         dataField: 'SCH_HRS',
         sort: true
     }, {
-        text: 'Unverfied Hours',
+        text: 'UNVH',
         dataField: 'UNVH',
         sort: true
     }, {
@@ -152,15 +156,15 @@ export const columns = [
         dataField: 'VRF_HRS',
         sort: true
     }, {
-        text: 'Timesheet Hours',
+        text: 'TS Hours',
         dataField: 'TS_HRS',
         sort: true
     }, {
-        text: 'Show Up Pay',
+        text: 'SUP',
         dataField: 'SUP',
         sort: true
     }, {
-        text: 'Same Day Pay',
+        text: 'SDP',
         dataField: 'SDP',
         sort: true
     }, {

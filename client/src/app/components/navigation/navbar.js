@@ -39,7 +39,7 @@ const Navbar = ({ auth, logout, loadDates, loadAssociates, paydates, history }) 
     searchHandler = <div></div>
   }
 
-  return !auth.isAuthenticated || !auth.user ? (
+  return !auth.isAuthenticated || !auth.user || history.location.pathname === "/excelview" ? (
     <div></div>
   ) : (
       <nav className="navbar p-0 fixed-top d-flex flex-row">

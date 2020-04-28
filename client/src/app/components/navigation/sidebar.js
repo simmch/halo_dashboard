@@ -76,7 +76,7 @@ const Sidebar = (props) => {
 
 
 
-  return !auth.isAuthenticated || !auth.user ? (
+  return !auth.isAuthenticated || !auth.user || props.history.location.pathname === "/excelview" ? (
     <div></div>
   ) : (
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
