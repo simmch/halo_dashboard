@@ -49,7 +49,7 @@ const ExcelView = ({ auth, payroll, history }) => {
                             <div className="card-body">
                                 <button hidden={payroll.loading} onClick={onExcelModeHandler} type="button" style={{ 'margin-left': '10px' }} className={excelModeStyle}>
                                     <i className="mdi mdi-file-excel"></i>
-                                </button> Excel Mode
+                                </button> Wide Mode
                             </div>
                         </div>
                     </div>

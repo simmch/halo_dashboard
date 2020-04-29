@@ -48,65 +48,65 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
 
     const columns = [
         {
-            text: 'Worked Flag',
+            text: '',
             dataField: 'WRKD_FLG',
             sort: true,
             formatter: (cellContent, row) => {
                 if (cellContent === 'X') {
                     return (
-                        <label className="badge badge-success">WORKED</label>
+                        <label className="badge badge-success">X</label>
+                    );
+                } else {
+                    return (
+                        <label className="badge badge-danger">N</label>
                     );
                 }
             }
         }, {
-            text: 'Hours Verified Flag',
+            text: '',
             dataField: 'HRS_VER_FLG',
             sort: true,
             formatter: (cellContent, row) => {
                 if (cellContent === 'X') {
                     return (
-                        <label className="badge badge-success">VERIFIED</label>
+                        <label className="badge badge-success">X</label>
                     );
                 } else if (cellContent === 'N') {
                     return (
-                        <label className="badge badge-danger">UNVERIFIED</label>
+                        <label className="badge badge-danger">N</label>
                     );
                 }
             }
         }, {
-            text: 'Bonus Flag',
+            text: '',
             dataField: 'BNS_FLG',
             sort: true,
             formatter: (cellContent, row) => {
                 if (cellContent === 'X' || '') {
                     return (
-                        <label className="badge badge-warning">BONUS</label>
+                        <label className="badge badge-warning">B</label>
                     );
                 }
             }
         }, {
-            text: 'Timesheet Flag',
+            text: '',
             dataField: 'TIMESHEET_FLG',
             sort: true,
             formatter: (cellContent, row) => {
                 if (cellContent === 'X') {
                     return (
-                        <label className="badge badge-info">TIMESHEET</label>
-                    );
-                } else {
-                    return (
-                        <label></label>
+                        <label className="badge badge-info">X</label>
                     );
                 }
             }
         }, {
-            text: 'Pickup Pay Flag',
+            text: '',
             dataField: 'PICKUP_PAY_FLG',
             sort: true,
             formatter: (cellContent, row) => {
                 if (cellContent === 'X') {
                     return (
-                        <label className="badge badge-primary">PICKUP PAY</label>
+                        <label className="badge badge-primary">X</label>
                     );
                 } else {
                     return (
@@ -115,13 +115,13 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: 'Adjustment Flag',
+            text: '',
             dataField: 'ADJ_FLG',
             sort: true,
             formatter: (cellContent, row) => {
                 if (cellContent !== 'N') {
                     return (
-                        <label className="badge badge-dark">ADJUSTMENT</label>
+                        <label className="badge badge-dark">X</label>
                     );
                 } else {
                     return (
@@ -133,22 +133,24 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
             text: 'Special Rate',
             dataField: 'SP_RATE',
             sort: true
-        },
-        // {
-        //     text: 'Notes',
-        //     dataField: 'NOTES',
-        //     sort: true
-        // }, 
-        {
-            text: 'Regular Hours',
+        }, {
+            text: 'Notes',
+            dataField: 'NOTES',
+            sort: true
+        }, {
+            text: 'Adjustment',
+            dataField: 'ADJUSTMENT',
+            sort: true
+        }, {
+            text: 'REG Hours',
             dataField: 'REG_HRS',
             sort: true
         }, {
-            text: 'Scheduled Hours',
+            text: 'SCH_HRS',
             dataField: 'SCH_HRS',
             sort: true
         }, {
-            text: 'Unverfied Hours',
+            text: 'UNVH',
             dataField: 'UNVH',
             sort: true
         }, {
@@ -156,47 +158,47 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
             dataField: 'VRF_HRS',
             sort: true
         }, {
-            text: 'Timesheet Hours',
+            text: 'TS Hours',
             dataField: 'TS_HRS',
             sort: true
         }, {
-            text: 'Show Up Pay',
+            text: 'SUP',
             dataField: 'SUP',
             sort: true
         }, {
-            text: 'Same Day Pay',
+            text: 'SDP',
             dataField: 'SDP',
             sort: true
         }, {
-            text: 'Bonus Hours',
+            text: 'BNS Hours',
             dataField: 'BNS_HRS',
             sort: true
         }, {
-            text: 'Bonus Rate',
+            text: 'BNS Rate',
             dataField: 'BNS_RATE',
             sort: true
         }, {
-            text: 'Bonus Hours B',
+            text: 'BNS Hours B',
             dataField: 'BNS_HRS_B',
             sort: true
         }, {
-            text: 'Bonus Rate B',
+            text: 'BNS Rate B',
             dataField: 'BNS_RATE_B',
             sort: true
         }, {
-            text: 'Bonus Hours C',
+            text: 'BNS Hours C',
             dataField: 'BNS_HR_C',
             sort: true
         }, {
-            text: 'Bonus Rate C',
+            text: 'BNS Rate C',
             dataField: 'BNS_RATE_C',
             sort: true
         }, {
-            text: 'Bonus Hours D',
+            text: 'BNS Hours D',
             dataField: 'BNS_HR_D',
             sort: true
         }, {
-            text: 'Bonus Rate D',
+            text: 'BNS Rate D',
             dataField: 'BNS_RATE_D',
             sort: true
         }, {
@@ -247,7 +249,7 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
                                                         <BootstrapTable
                                                             cellEdit={cellEditFactory({ mode: 'dbclick' })}
                                                             defaultSorted={defaultSorted}
-                                                            pagination={paginationFactory()}
+                                                            pagination={paginationFactory({ sizePerPageList: [5, 50, 200] })}
                                                             {...props.baseProps}
                                                             wrapperClasses="table-responsive"
                                                             striped={true}

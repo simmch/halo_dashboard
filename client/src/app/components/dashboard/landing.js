@@ -58,7 +58,7 @@ const Landing = ({ auth, payroll, history, associate }) => {
                 </button> Edit Table
                 <button hidden={payroll.loading} onClick={onExcelModeHandler} type="button" style={{ 'margin-left': '10px' }} className="btn btn-info btn-rounded btn-icon">
                   <i className="mdi mdi-file-excel"></i>
-                </button> Enter Excel Mode
+                </button> Enter Wide Mode
               </div>
             </div>
           </div>

@@ -6,7 +6,6 @@ import paginationFactory from 'react-bootstrap-table2-paginator';
 import ToolkitProvider, { Search, CSVExport } from 'react-bootstrap-table2-toolkit';
 import { deleteById, updateById } from '../../actions/payroll/payroll';
 import cellEditFactory, { Type } from 'react-bootstrap-table2-editor';
-import { initialState, payrollDataMapping } from '../STATE';
 const { SearchBar } = Search;
 const { ExportCSVButton } = CSVExport;
 
@@ -75,6 +74,8 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
         })
     }
 
+
+
     const onClickHandlerUpdate = (id) => {
         console.log(id)
         function idMatch(payrollData) {
@@ -121,11 +122,59 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
         // Regular Hour
         data.REG_HRS = +data.VRF_HRS + + data.SCH_HRS - data.UNVH - data.TS_HRS - data.BNS_HRS - data.BNS_HRS_B - data.BNS_HR_C - data.BNS_HR_D;
 
-        console.log(data)
-
         updateById(id, data);
 
     }
+
+    const onChangeHandlerUpdate = () => {
+        function idMatch(payrollData) {
+            return payrollData._id === id;
+        }
+        const data = payrollData.find(idMatch)
+
+        // Worked Flag
+        if (data.SCH_HRS !== 0) {
+            data.WRKD_FLG = 'X';
+        } else {
+            data.WRKD_FLG = 'N';
+        }
+        // Hours Verified Flag
+        if (data.REG_HRS - data.UNVH === data.REG_HRS) {
+            data.HRS_VER_FLG = 'X';
+        } else {
+            data.HRS_VER_FLG = 'N';
+        }
+        // Timesheet Flag
+        if (data.TS_HRS !== 0) {
+            data.TIMESHEET_FLG = 'X';
+        } else {
+            data.TIMESHEET_FLG = 'N';
+        }
+        // Pickup Pay Flag
+        if (data.SDP > 0) {
+            data.PICKUP_PAY_FLG = 'X';
+        } else {
+            data.PICKUP_PAY_FLG = 'N';
+        }
+        // Adjustment Flag
+        if (data.ADJUSTMENT !== "") {
+            data.ADJ_FLG = 'X';
+        } else {
+            data.ADJ_FLG = 'N';
+        }
+        // Bonus Flag
+        if ((data.SCH_HRS - data.VRF_HRS - data.UNVH) === data.REG_HRS) {
+            data.BNS_FLG = 'N';
+        } else {
+            data.BNS_FLG = 'X';
+        }
+        // Regular Hour
+        data.REG_HRS = +data.VRF_HRS + + data.SCH_HRS - data.UNVH - data.TS_HRS - data.BNS_HRS - data.BNS_HRS_B - data.BNS_HR_C - data.BNS_HR_D;
+
+        console.log(data)
+
+    }
+
 
     const onSubmitHandler = () => {
         deleteById(id);
@@ -162,37 +211,95 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
         //     }
         // }, 
         {
-            text: 'F_Name',
+            text: 'First Name',
             dataField: 'FIRSTNAME',
             sort: true
         }, {
-            text: 'L_Name',
+            text: 'Last Name',
             dataField: 'LASTNAME',
             sort: true
         }, {
             text: '',
             dataField: 'WRKD_FLG',
-            sort: true
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent === 'X') {
+                    return (
+                        <label className="badge badge-success">X</label>
+                    );
+                } else {
+                    return (
+                        <label className="badge badge-danger">N</label>
+                    );
+                }
+            }
         }, {
             text: '',
             dataField: 'HRS_VER_FLG',
-            sort: true
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent === 'X') {
+                    return (
+                        <label className="badge badge-success">X</label>
+                    );
+                } else if (cellContent === 'N') {
+                    return (
+                        <label className="badge badge-danger">N</label>
+                    );
+                }
+            }
         }, {
             text: '',
             dataField: 'BNS_FLG',
-            sort: true
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent === 'X' || '') {
+                    return (
+                        <label className="badge badge-warning">B</label>
+                    );
+                }
+            }
         }, {
             text: '',
             dataField: 'TIMESHEET_FLG',
-            sort: true
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent === 'X') {
+                    return (
+                        <label className="badge badge-info">X</label>
+                    );
+                }
+            }
         }, {
             text: '',
             dataField: 'PICKUP_PAY_FLG',
-            sort: true
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent === 'X') {
+                    return (
+                        <label className="badge badge-primary">X</label>
+                    );
+                } else {
+                    return (
+                        <label></label>
+                    );
+                }
+            }
         }, {
             text: '',
             dataField: 'ADJ_FLG',
-            sort: true
+            sort: true,
+            formatter: (cellContent, row) => {
+                if (cellContent !== 'N') {
+                    return (
+                        <label className="badge badge-dark">X</label>
+                    );
+                } else {
+                    return (
+                        <label></label>
+                    );
+                }
+            }
         }, {
             text: 'Special Rate',
             dataField: 'SP_RATE',
@@ -210,7 +317,7 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
             dataField: 'REG_HRS',
             sort: true
         }, {
-            text: 'SCH Hours',
+            text: 'SCH_HRS',
             dataField: 'SCH_HRS',
             sort: true
         }, {
@@ -294,12 +401,75 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
         }
     ]
 
+    const afterSaveCell = (oldValue, newValue, row, column) => {
+
+        if (column.dataField === "SCH_HRS") {
+            // Worked Flag
+            if (row.SCH_HRS != 0) {
+                row.WRKD_FLG = 'X';
+            } else {
+                row.WRKD_FLG = 'N';
+            }
+        }
+
+        if (column.dataField === "UNVH") {
+            // Hours Verified Flag
+            if (row.REG_HRS - row.UNVH === row.REG_HRS) {
+                row.HRS_VER_FLG = 'X';
+            } else {
+                row.HRS_VER_FLG = 'N';
+            }
+        }
+
+        if (column.dataField === "TS_HRS") {
+            // Hours Verified Flag
+            if (row.TS_HRS != 0) {
+                row.TIMESHEET_FLG = 'X';
+            } else {
+                row.TIMESHEET_FLG = 'N';
+            }
+        }
+
+        if (column.dataField === "SDP") {
+            // Pickup Pay Flag
+            if (row.SDP > 0) {
+                row.PICKUP_PAY_FLG = 'X';
+            } else {
+                row.PICKUP_PAY_FLG = 'N';
+            }
+        }
+
+        if (column.dataField === "ADJUSTMENT") {
+            // Adjustment Flag
+            if (row.ADJUSTMENT !== "") {
+                row.ADJ_FLG = 'X';
+            } else {
+                row.ADJ_FLG = 'N';
+            }
+        }
+        if (column.dataField === "SCH_HRS" || column.dataField === "VRF_HRS" || column.dataField === "UNVH") {
+            // Bonus Flag
+            if ((row.SCH_HRS - row.VRF_HRS - row.UNVH) === row.REG_HRS) {
+                row.BNS_FLG = 'N';
+            } else {
+                row.BNS_FLG = 'X';
+            }
+        }
+
+        row.REG_HRS = +row.VRF_HRS + + row.SCH_HRS - row.UNVH - row.TS_HRS - row.BNS_HRS - row.BNS_HRS_B - row.BNS_HR_C - row.BNS_HR_D;
+
+    }
+
     const { loading, payrollData } = payroll;
 
     const defaultSorted = [{
         dataField: 'ID',
         order: 'desc'
     }];
+
+    const rowStyle = (row, rowIndex) => {
+        return { 'font-size': '8px' }
+    }
 
     return loading ? (
         <h1>Edit Associate Data</h1>
@@ -363,7 +533,10 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
                                                         </div>
 
                                                         <BootstrapTable
-                                                            cellEdit={cellEditFactory({ mode: 'click' })}
+                                                            cellEdit={cellEditFactory({
+                                                                mode: 'click',
+                                                                afterSaveCell
+                                                            })}
                                                             defaultSorted={defaultSorted}
                                                             pagination={paginationFactory({ sizePerPageList: [10, 50, 300] })}
                                                             {...props.baseProps}
