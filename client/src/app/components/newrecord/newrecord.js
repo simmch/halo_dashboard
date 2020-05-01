@@ -17,7 +17,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
     const [data, setData] = useState(initialState)
     const [date, setDate] = useState(dateInitialState)
 
-    const { ID, FIRSTNAME, LASTNAME, POSITION, ADJUSTMENT, SP_RATE, NOTES, REG_HRS, SCH_HRS, UNVH, VRF_HRS, TS_HRS, SUP, SDP, BNS_HRS, BNS_RATE, BNS_HRS_B, BNS_RATE_B, BNS_HR_C, BNS_RATE_C, BNS_HR_D, BNS_RATE_D, PAYDATE } = data;
+    const { ID, FIRSTNAME, LASTNAME, POSITION, ADJUSTMENT, SP_RATE, NOTES, REG_HRS, SCH_HRS, UNVH, VRF_HRS, SUP, SDP, BNS_HRS, BNS_RATE, BNS_HRS_B, BNS_RATE_B, BNS_HR_C, BNS_RATE_C, BNS_HR_D, BNS_RATE_D, PAYDATE } = data;
 
     useEffect(() => {
         loadAssociates();
@@ -71,14 +71,14 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
         }
     }
 
-    // Handles Time Sheet hours and Timesheet Flag
-    const timesheetHandler = (e) => {
-        if (e.target.value !== 0) {
-            setData({ ...data, TIMESHEET_FLG: 'X', TS_HRS: e.target.value })
-        } else {
-            setData({ ...data, TIMESHEET_FLG: 'N', TS_HRS: e.target.value })
-        }
-    }
+    // // Handles Time Sheet hours and Timesheet Flag
+    // const timesheetHandler = (e) => {
+    //     if (e.target.value !== 0) {
+    //         setData({ ...data, TIMESHEET_FLG: 'X', TS_HRS: e.target.value })
+    //     } else {
+    //         setData({ ...data, TIMESHEET_FLG: 'N', TS_HRS: e.target.value })
+    //     }
+    // }
 
     // Handles SDP and Pickup Pay Flag
     const sdpHandler = (e) => {
@@ -154,7 +154,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
         setData(initialState)
     }
 
-    let regularHoursHandler = +VRF_HRS + + SCH_HRS - UNVH - TS_HRS - BNS_HRS - BNS_HRS_B - BNS_HR_C - BNS_HR_D;
+    let regularHoursHandler = +VRF_HRS + + SCH_HRS - UNVH - BNS_HRS - BNS_HRS_B - BNS_HR_C - BNS_HR_D;
 
     const styleSheet = {
         input: (base, state) => ({
@@ -331,19 +331,6 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 value={VRF_HRS}
                                                 minLength={1}
                                                 name="VRF_HRS"
-                                                required
-                                                type="text"
-
-                                            />
-                                            <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
-                                        </Form.Group>
-                                        <Form.Group as={Col} md="2" controlId="validationCustom02">
-                                            <Form.Label>Timesheet Hours</Form.Label>
-                                            <Form.Control
-                                                onChange={timesheetHandler}
-                                                value={TS_HRS}
-                                                minLength={1}
-                                                name="TS_HRS"
                                                 required
                                                 type="text"
 

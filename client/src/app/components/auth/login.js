@@ -79,13 +79,13 @@ const Login = ({ login, auth, history }) => {
                       SIGN IN
                   </button>
                   </div>
-
-                  <div className="text-center mt-4 font-weight-light">
+                  {/* CREATE AN ACCOUNT DISABLED BY CLIENT REQUEST */}
+                  {/* <div className="text-center mt-4 font-weight-light">
                     Don't have an account?{" "}
                     <Link to="/register" className="text-primary">
                       Create
                   </Link>
-                  </div>
+                  </div> */}
                 </Form>
               </div>
               <Alert />

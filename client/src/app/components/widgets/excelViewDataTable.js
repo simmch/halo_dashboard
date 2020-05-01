@@ -219,7 +219,7 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
             dataField: 'LASTNAME',
             sort: true
         }, {
-            text: '',
+            text: 'WRKD_FLG',
             dataField: 'WRKD_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -234,7 +234,7 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: '',
+            text: 'HRS_VER_FLG',
             dataField: 'HRS_VER_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -249,7 +249,7 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: '',
+            text: 'BNS_FLG',
             dataField: 'BNS_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -260,18 +260,7 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: '',
-            dataField: 'TIMESHEET_FLG',
-            sort: true,
-            formatter: (cellContent, row) => {
-                if (cellContent === 'X') {
-                    return (
-                        <label className="badge badge-info">X</label>
-                    );
-                }
-            }
-        }, {
-            text: '',
+            text: 'PICKUP_PAY_FLG',
             dataField: 'PICKUP_PAY_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -286,7 +275,7 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: '',
+            text: 'ADJ_FLG',
             dataField: 'ADJ_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -327,10 +316,6 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
         }, {
             text: 'Verified Hours',
             dataField: 'VRF_HRS',
-            sort: true
-        }, {
-            text: 'TS Hours',
-            dataField: 'TS_HRS',
             sort: true
         }, {
             text: 'SUP',
@@ -380,25 +365,26 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
                 return (
                     <div>
                         <button className="btn btn-dark" onClick={e => { e.preventDefault(); onClickHandlerDelete(cellContent) }}>
-                            <i className="mdi mdi-delete text-danger"></i>Delete
-                </button>
+                            <i className="mdi mdi-delete text-danger"></i>
+                        </button>
                     </div>
                 );
             }
-        }, {
-            dataField: '_id',
-            text: 'Update',
-            sort: false,
-            formatter: (cellContent) => {
-                return (
-                    <div>
-                        <button className="btn btn-dark" onClick={e => { e.preventDefault(); onClickHandlerUpdate(cellContent) }}>
-                            <i className="mdi mdi-cloud-upload text-warning"></i>Update
-              </button>
-                    </div>
-                );
-            }
-        }
+        },
+        // {
+        //     dataField: '_id',
+        //     text: 'Update',
+        //     sort: false,
+        //     formatter: (cellContent) => {
+        //         return (
+        //             <div>
+        //                 <button className="btn btn-dark" onClick={e => { e.preventDefault(); onClickHandlerUpdate(cellContent) }}>
+        //                     <i className="mdi mdi-cloud-upload text-warning"></i>
+        //                 </button>
+        //             </div>
+        //         );
+        //     }
+        // }
     ]
 
     const afterSaveCell = (oldValue, newValue, row, column) => {
@@ -498,7 +484,7 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
                     <div className="col-12">
                         <div className="card">
                             <div className="card-body">
-                                <h4 className="card-title">Excel Mode</h4>
+                                <h4 className="card-title">Wide Mode</h4>
                                 <div className="row">
                                     <div className="col-12">
                                         <ToolkitProvider

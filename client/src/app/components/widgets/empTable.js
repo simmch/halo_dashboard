@@ -35,7 +35,6 @@ const EmpTable = ({ payroll }) => {
                                         columns={columns}
                                         search
                                         exportCSV
-
                                     >
                                         {
                                             props => (
@@ -57,7 +56,6 @@ const EmpTable = ({ payroll }) => {
                                                         pagination={paginationFactory({ sizePerPageList: [5, 50, 200] })}
                                                         {...props.baseProps}
                                                         wrapperClasses="table-responsive"
-
                                                     />
                                                 </div>
                                             )

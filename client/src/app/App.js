@@ -46,7 +46,7 @@ const App = () => {
                 <div className="content-wrapper">
                   <Switch>
                     <Route exact path="/login" component={Login} />
-                    <Route exact path="/register" component={Register} />
+                    {/* <Route exact path="/register" component={Register} /> */}
                     <Route exact path="/" component={Landing} />
                     <Route exact path="/upload" component={Upload} />
                     <Route exact path="/employees" component={Employees} />

@@ -43,12 +43,12 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
             } else {
                 data.HRS_VER_FLG = 'N';
             }
-            // Timesheet Flag
-            if (data.TS_HRS !== 0) {
-                data.TIMESHEET_FLG = 'X';
-            } else {
-                data.TIMESHEET_FLG = 'N';
-            }
+            // // Timesheet Flag
+            // if (data.TS_HRS !== 0) {
+            //     data.TIMESHEET_FLG = 'X';
+            // } else {
+            //     data.TIMESHEET_FLG = 'N';
+            // }
             // Pickup Pay Flag
             if (data.SDP > 0) {
                 data.PICKUP_PAY_FLG = 'X';
@@ -68,7 +68,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                 data.BNS_FLG = 'X';
             }
             // Regular Hour
-            data.REG_HRS = +data.VRF_HRS + + data.SCH_HRS - data.UNVH - data.TS_HRS - data.BNS_HRS - data.BNS_HRS_B - data.BNS_HR_C - data.BNS_HR_D;
+            data.REG_HRS = +data.VRF_HRS + + data.SCH_HRS - data.UNVH - data.BNS_HRS - data.BNS_HRS_B - data.BNS_HR_C - data.BNS_HR_D;
 
             updateById(data._id, data);
 
@@ -94,12 +94,12 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
         } else {
             data.HRS_VER_FLG = 'N';
         }
-        // Timesheet Flag
-        if (data.TS_HRS !== 0) {
-            data.TIMESHEET_FLG = 'X';
-        } else {
-            data.TIMESHEET_FLG = 'N';
-        }
+        // // Timesheet Flag
+        // if (data.TS_HRS !== 0) {
+        //     data.TIMESHEET_FLG = 'X';
+        // } else {
+        //     data.TIMESHEET_FLG = 'N';
+        // }
         // Pickup Pay Flag
         if (data.SDP > 0) {
             data.PICKUP_PAY_FLG = 'X';
@@ -119,7 +119,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
             data.BNS_FLG = 'X';
         }
         // Regular Hour
-        data.REG_HRS = +data.VRF_HRS + + data.SCH_HRS - data.UNVH - data.TS_HRS - data.BNS_HRS - data.BNS_HRS_B - data.BNS_HR_C - data.BNS_HR_D;
+        data.REG_HRS = +data.VRF_HRS + + data.SCH_HRS - data.UNVH - data.BNS_HRS - data.BNS_HRS_B - data.BNS_HR_C - data.BNS_HR_D;
 
         console.log(data)
 
@@ -170,7 +170,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
             dataField: 'LASTNAME',
             sort: true
         }, {
-            text: '',
+            text: 'WRKD_FLG',
             dataField: 'WRKD_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -185,7 +185,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: '',
+            text: 'HRS_VER_FLG',
             dataField: 'HRS_VER_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -200,7 +200,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: '',
+            text: 'BNS_FLG',
             dataField: 'BNS_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -210,19 +210,21 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                     );
                 }
             }
-        }, {
-            text: '',
-            dataField: 'TIMESHEET_FLG',
-            sort: true,
-            formatter: (cellContent, row) => {
-                if (cellContent === 'X') {
-                    return (
-                        <label className="badge badge-info">X</label>
-                    );
-                }
-            }
-        }, {
-            text: '',
+        },
+        // {
+        //     text: '',
+        //     dataField: 'TIMESHEET_FLG',
+        //     sort: true,
+        //     formatter: (cellContent, row) => {
+        //         if (cellContent === 'X') {
+        //             return (
+        //                 <label className="badge badge-info">X</label>
+        //             );
+        //         }
+        //     }
+        // }, 
+        {
+            text: 'PICKUP_PAY_FLG',
             dataField: 'PICKUP_PAY_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -237,7 +239,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: '',
+            text: 'ADJ_FLG',
             dataField: 'ADJ_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -278,10 +280,6 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
         }, {
             text: 'Verified Hours',
             dataField: 'VRF_HRS',
-            sort: true
-        }, {
-            text: 'TS Hours',
-            dataField: 'TS_HRS',
             sort: true
         }, {
             text: 'SUP',
@@ -328,10 +326,6 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
             dataField: 'PAYDATE',
             sort: true
         }, {
-            text: 'UPDATED',
-            dataField: 'UPDATED',
-            sort: true
-        }, {
             dataField: '_id',
             text: 'Delete',
             sort: false,
@@ -339,8 +333,8 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                 return (
                     <div>
                         <button className="btn btn-dark" onClick={e => { e.preventDefault(); onClickHandlerDelete(cellContent) }}>
-                            <i className="mdi mdi-delete text-danger"></i>Delete
-                </button>
+                            <i className="mdi mdi-delete text-danger"></i>
+                        </button>
                     </div>
                 );
             }
@@ -352,8 +346,8 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                 return (
                     <div>
                         <button className="btn btn-dark" onClick={e => { e.preventDefault(); onClickHandlerUpdate(cellContent) }}>
-                            <i className="mdi mdi-cloud-upload text-warning"></i>Update
-              </button>
+                            <i className="mdi mdi-cloud-upload text-warning"></i>
+                        </button>
                     </div>
                 );
             }
@@ -380,14 +374,14 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
             }
         }
 
-        if (column.dataField === "TS_HRS") {
-            // Hours Verified Flag
-            if (row.TS_HRS != 0) {
-                row.TIMESHEET_FLG = 'X';
-            } else {
-                row.TIMESHEET_FLG = 'N';
-            }
-        }
+        // if (column.dataField === "TS_HRS") {
+        //     // Hours Verified Flag
+        //     if (row.TS_HRS != 0) {
+        //         row.TIMESHEET_FLG = 'X';
+        //     } else {
+        //         row.TIMESHEET_FLG = 'N';
+        //     }
+        // }
 
         if (column.dataField === "SDP") {
             // Pickup Pay Flag
@@ -415,7 +409,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
             }
         }
 
-        row.REG_HRS = +row.VRF_HRS + + row.SCH_HRS - row.UNVH - row.TS_HRS - row.BNS_HRS - row.BNS_HRS_B - row.BNS_HR_C - row.BNS_HR_D;
+        row.REG_HRS = +row.VRF_HRS + + row.SCH_HRS - row.UNVH - row.BNS_HRS - row.BNS_HRS_B - row.BNS_HR_C - row.BNS_HR_D;
 
     }
 
@@ -493,7 +487,7 @@ const EmpSearchTable = ({ payroll, deleteById, updateById }) => {
                                                                 afterSaveCell
                                                             })}
                                                             defaultSorted={defaultSorted}
-                                                            pagination={paginationFactory({ sizePerPageList: [5, 50, 200] })}
+                                                            pagination={paginationFactory({ sizePerPageList: [8, 50, 200] })}
                                                             {...props.baseProps}
                                                             wrapperClasses="table-responsive"
                                                             striped={true}

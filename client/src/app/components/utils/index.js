@@ -45,7 +45,7 @@ export const columns = [
         dataField: 'LASTNAME',
         sort: true
     }, {
-        text: '',
+        text: 'WRKD_FLG',
         dataField: 'WRKD_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -57,7 +57,7 @@ export const columns = [
         },
         editor: true
     }, {
-        text: '',
+        text: 'HRS_VER_FLG',
         dataField: 'HRS_VER_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -72,7 +72,7 @@ export const columns = [
             }
         }
     }, {
-        text: '',
+        text: 'BNS_FLG',
         dataField: 'BNS_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -82,23 +82,25 @@ export const columns = [
                 );
             }
         }
-    }, {
-        text: '',
-        dataField: 'TIMESHEET_FLG',
-        sort: true,
-        formatter: (cellContent, row) => {
-            if (cellContent === 'X') {
-                return (
-                    <label className="badge badge-info">X</label>
-                );
-            } else {
-                return (
-                    <label></label>
-                );
-            }
-        }
-    }, {
-        text: '',
+    },
+    // {
+    //     text: '',
+    //     dataField: 'TIMESHEET_FLG',
+    //     sort: true,
+    //     formatter: (cellContent, row) => {
+    //         if (cellContent === 'X') {
+    //             return (
+    //                 <label className="badge badge-info">X</label>
+    //             );
+    //         } else {
+    //             return (
+    //                 <label></label>
+    //             );
+    //         }
+    //     }
+    // }, 
+    {
+        text: 'PICKUP_PAY_FLG',
         dataField: 'PICKUP_PAY_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -113,7 +115,7 @@ export const columns = [
             }
         }
     }, {
-        text: '',
+        text: 'ADJ_FLG',
         dataField: 'ADJ_FLG',
         sort: true,
         formatter: (cellContent, row) => {
@@ -154,10 +156,6 @@ export const columns = [
     }, {
         text: 'Verified Hours',
         dataField: 'VRF_HRS',
-        sort: true
-    }, {
-        text: 'TS Hours',
-        dataField: 'TS_HRS',
         sort: true
     }, {
         text: 'SUP',

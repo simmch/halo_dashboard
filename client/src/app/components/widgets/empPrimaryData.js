@@ -48,7 +48,7 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
 
     const columns = [
         {
-            text: '',
+            text: 'WRKD_FLG',
             dataField: 'WRKD_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -63,7 +63,7 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: '',
+            text: 'HRS_VER_FLG',
             dataField: 'HRS_VER_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -78,7 +78,7 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: '',
+            text: 'BNS_FLG',
             dataField: 'BNS_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -88,19 +88,21 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
                     );
                 }
             }
-        }, {
-            text: '',
-            dataField: 'TIMESHEET_FLG',
-            sort: true,
-            formatter: (cellContent, row) => {
-                if (cellContent === 'X') {
-                    return (
-                        <label className="badge badge-info">X</label>
-                    );
-                }
-            }
-        }, {
-            text: '',
+        },
+        // {
+        //     text: '',
+        //     dataField: 'TIMESHEET_FLG',
+        //     sort: true,
+        //     formatter: (cellContent, row) => {
+        //         if (cellContent === 'X') {
+        //             return (
+        //                 <label className="badge badge-info">X</label>
+        //             );
+        //         }
+        //     }
+        // }, 
+        {
+            text: 'PICKUP_PAY_FLG',
             dataField: 'PICKUP_PAY_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -115,7 +117,7 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
                 }
             }
         }, {
-            text: '',
+            text: 'ADJ_FLG',
             dataField: 'ADJ_FLG',
             sort: true,
             formatter: (cellContent, row) => {
@@ -156,10 +158,6 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
         }, {
             text: 'Verified Hours',
             dataField: 'VRF_HRS',
-            sort: true
-        }, {
-            text: 'TS Hours',
-            dataField: 'TS_HRS',
             sort: true
         }, {
             text: 'SUP',
@@ -249,7 +247,7 @@ const EmpPrimaryData = ({ payroll, deleteById, updateById }) => {
                                                         <BootstrapTable
                                                             cellEdit={cellEditFactory({ mode: 'dbclick' })}
                                                             defaultSorted={defaultSorted}
-                                                            pagination={paginationFactory({ sizePerPageList: [5, 50, 200] })}
+                                                            pagination={paginationFactory({ sizePerPageList: [8, 50, 200] })}
                                                             {...props.baseProps}
                                                             wrapperClasses="table-responsive"
                                                             striped={true}
