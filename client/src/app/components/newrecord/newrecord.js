@@ -16,6 +16,7 @@ import { loadDates } from '../../actions/paydates/paydates';
 const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociates, associate, removeAlert, loadDates }) => {
     const [data, setData] = useState(initialState)
     const [date, setDate] = useState(dateInitialState)
+    const [validated, setValidated] = useState(false);
 
     const { ID, FIRSTNAME, LASTNAME, POSITION, ADJUSTMENT, SP_RATE, NOTES, REG_HRS, SCH_HRS, UNVH, VRF_HRS, SUP, SDP, BNS_HRS, BNS_RATE, BNS_HRS_B, BNS_RATE_B, BNS_HR_C, BNS_RATE_C, BNS_HR_D, BNS_RATE_D, PAYDATE } = data;
 
@@ -149,9 +150,21 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
 
 
     const onSubmitHandler = (e) => {
-        e.preventDefault();
-        saveNewRecord(data)
-        setData(initialState)
+        const form = e.currentTarget;
+        if (form.checkValidity() === false) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            setValidated(true);
+        } else {
+            setValidated(false)
+            e.preventDefault();
+
+            saveNewRecord(data)
+            setData(initialState)
+
+        }
+
     }
 
     let regularHoursHandler = +VRF_HRS + + SCH_HRS - UNVH - BNS_HRS - BNS_HRS_B - BNS_HR_C - BNS_HR_D;
@@ -177,7 +190,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                     <div className="col-md-12 grid-margin">
                         <div className="card">
                             <div className="card-body">
-                                <Form noValidate>
+                                <Form noValidate validated={validated} onSubmit={onSubmitHandler}>
                                     <Form.Row>
                                         <Form.Group as={Col} md="6" controlId="validationCustom01">
                                             <Form.Label><h3>Select Associate</h3></Form.Label>
@@ -251,7 +264,6 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 value={ADJUSTMENT}
                                                 // minLength={1}
                                                 name="ADJUSTMENT"
-                                                required
                                                 type="text"
 
                                             />
@@ -264,7 +276,6 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 value={SP_RATE}
                                                 minLength={1}
                                                 name="SP_RATE"
-                                                required
                                                 type="text"
 
                                             />
@@ -277,7 +288,6 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 value={NOTES}
                                                 minLength={1}
                                                 name="NOTES"
-                                                required
                                                 type="textarea"
 
                                             />
@@ -396,7 +406,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 onChange={onChangeHandler}
                                                 minLength={1}
                                                 name="BNS_HRS_B"
-                                                required
+
                                                 type="text"
 
                                             />
@@ -409,7 +419,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 onChange={onChangeHandler}
                                                 minLength={1}
                                                 name="BNS_RATE_B"
-                                                required
+
                                                 type="text"
 
                                             />
@@ -422,7 +432,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 onChange={onChangeHandler}
                                                 minLength={1}
                                                 name="BNS_HR_C"
-                                                required
+
                                                 type="text"
 
                                             />
@@ -435,7 +445,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 onChange={onChangeHandler}
                                                 minLength={1}
                                                 name="BNS_RATE_C"
-                                                required
+
                                                 type="text"
 
                                             />
@@ -448,7 +458,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 onChange={onChangeHandler}
                                                 minLength={1}
                                                 name="BNS_HR_D"
-                                                required
+
                                                 type="text"
 
                                             />
@@ -461,7 +471,7 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 value={BNS_RATE_D}
                                                 minLength={1}
                                                 name="BNS_RATE_D"
-                                                required
+
                                                 type="text"
 
                                             />
@@ -475,11 +485,12 @@ const NewRecord = ({ saveNewRecord, isLoading, paydates, saveDate, loadAssociate
                                                 options={options[0]}
                                                 placeholder="Choose a Date"
                                                 onChange={paydateHandler}
+                                                required
                                             />
                                             <Form.Control.Feedback>Looks good!</Form.Control.Feedback>
                                         </Form.Group>
                                     </Form.Row>
-                                    <Button type="submit" onClick={onSubmitHandler}>Submit form</Button>
+                                    <Button type="submit" >Submit Payroll</Button>
 
                                 </Form>
 
