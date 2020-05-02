@@ -387,6 +387,13 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
         // }
     ]
 
+    // const rowStyles = (row, rowIndex) => {
+    //     if (row === clickedRow) {
+    //         return { color: '#FD0303' };
+    //     }
+    // };
+
+
     const afterSaveCell = (oldValue, newValue, row, column) => {
 
         if (column.dataField === "SCH_HRS") {
@@ -528,6 +535,7 @@ const ExcelViewDataTable = ({ payroll, deleteById, updateById }) => {
                                                             {...props.baseProps}
                                                             wrapperClasses="table-responsive"
                                                             striped={true}
+                                                        // rowStyle={rowStyles}
 
                                                         />
                                                     </div>

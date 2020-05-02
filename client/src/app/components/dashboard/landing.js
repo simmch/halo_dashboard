@@ -22,7 +22,7 @@ const Landing = ({ auth, payroll, history, associate }) => {
 
   }
 
-  const onExcelModeHandler = (e) => {
+  const onWideModeHandler = (e) => {
     e.preventDefault();
     history.location.pathname === "/" ? history.push('/excelview') : history.push('/')
   }
@@ -56,7 +56,7 @@ const Landing = ({ auth, payroll, history, associate }) => {
                 <button hidden={payroll.loading} onClick={onClickHandler} type="button" className="btn btn-primary btn-rounded btn-icon">
                   <i className="mdi mdi-table-edit"></i>
                 </button> Edit Table
-                <button hidden={payroll.loading} onClick={onExcelModeHandler} type="button" style={{ 'margin-left': '10px' }} className="btn btn-info btn-rounded btn-icon">
+                <button hidden={payroll.loading} onClick={onWideModeHandler} type="button" style={{ 'margin-left': '10px' }} className="btn btn-info btn-rounded btn-icon">
                   <i className="mdi mdi-file-excel"></i>
                 </button> Enter Wide Mode
               </div>
